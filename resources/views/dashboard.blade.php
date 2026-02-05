@@ -88,11 +88,11 @@
         <a href="{{ url('rka/dashboard') }}">RKA</a>
 
         <!-- Menu lain kosong -->
-        <a href="">Current Data</a>
+        <a href="{{ url('current/dashboard') }}">Current Data</a>
         <a href="{{ url('leasing/dashboard') }}">Leasing</a>
-        <a href="">Evalwira</a>
+        <a href="{{ url('evaluasi/dashboard') }}">Evaluasi Wiraniaga</a>
         <a href="{{ url('activity/dashboard') }}">Activity</a>
-        <a href="">Summary</a>
+        <a href="{{ url('summary/dashboard') }}">Summary</a>
     </div>
 
     <!-- Content -->
