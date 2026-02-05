@@ -89,7 +89,7 @@
             <div class="card">
                 <h2>Activity Plan</h2>
                 <p>Tabel Activity Plan.</p>
-                <a href="{{ route('activity.activity.index') }}" class="btn">
+                <a href="{{ route('activity.index') }}" class="btn">
                     Masuk
                 </a>
             </div>

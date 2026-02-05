@@ -82,7 +82,7 @@ class ActivityPlanController extends Controller
     {
         $activity->delete();
 
-        return redirect()->route('activity.activity.index')
+        return redirect()->route('activity.index')
                          ->with('success', 'Data berhasil dihapus');
     }
 }
