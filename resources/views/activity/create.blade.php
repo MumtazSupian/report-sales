@@ -13,7 +13,7 @@
     color:#222;
 ">
 
-<form action="{{ route('activity.activity.store') }}" method="POST">
+<form action="{{ route('activity.store') }}" method="POST">
 @csrf
 
 <div style="display:grid; gap:18px;">
@@ -136,7 +136,7 @@
 
     <!-- Tombol -->
     <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:15px;">
-        <a href="{{ route('activity.activity.index') }}"
+        <a href="{{ route('activity.index') }}"
            style="padding:10px 20px; border-radius:8px; border:1px solid #999; color:#111; text-decoration:none;">Kembali</a>
         <button type="submit"
             style="background:#28a745; color:white; padding:10px 22px; border:none; border-radius:8px;">Simpan</button>

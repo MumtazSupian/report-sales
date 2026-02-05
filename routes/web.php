@@ -52,10 +52,8 @@ Route::prefix('leasing')->name('leasing.')->group(function () {
 });
 
 
-Route::prefix('activity')->name('activity.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('activity.dashboard_activity');
-    });
+Route::prefix('activity')->group(function () {
+    Route::get('/dashboard', function () {return view('activity.dashboard_activity');});
     Route::resource('activity', ActivityPlanController::class);
 });
 

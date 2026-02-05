@@ -19,7 +19,7 @@
     max-width:1600px; 
 ">
 
-    <a href="{{ route('activity.activity.create') }}"
+    <a href="{{ route('activity.create') }}"
         style="
             padding:6px 12px; 
             background:#1e88e5; 
@@ -172,7 +172,7 @@
             <td style="border:1px solid #bbb;">{{ $item->keterangan }}</td>
 
             <td style="border:1px solid #bbb;">
-                <a href="{{ route('activity.activity.edit', $item->id) }}" 
+                <a href="{{ route('activity.edit', $item->id) }}" 
                     style="
                         color:#1976d2; 
                         font-weight:600; 
@@ -182,7 +182,7 @@
                     Edit
                 </a>
 
-                <form action="{{ route('activity.activity.destroy', $item->id) }}" method="POST" style="display:inline;">
+                <form action="{{ route('activity.destroy', $item->id) }}" method="POST" style="display:inline;">
                     @csrf
                     @method('DELETE')
                     <button type="submit"
