@@ -53,8 +53,15 @@ Route::prefix('leasing')->name('leasing.')->group(function () {
 
 
 Route::prefix('activity')->group(function () {
-    Route::get('/dashboard', function () {return view('activity.dashboard_activity');});
-    Route::resource('activity', ActivityPlanController::class);
+    Route::get('/', function () { return redirect()->route('activity.index'); });
+    Route::resource('plans', ActivityPlanController::class)->names([
+        'index' => 'activity.index',
+        'create' => 'activity.create',
+        'store' => 'activity.store',
+        'edit' => 'activity.edit',
+        'update' => 'activity.update',
+        'destroy' => 'activity.destroy',
+    ]);
 });
 
 
@@ -72,7 +79,7 @@ Route::prefix('current')->name('current.')->group(function () {
 
 
 Route::prefix('evaluasi')->group(function () {
-    Route::get('/dashboard', function () {return view('evaluasi.dashboard_evaluasi');});
+    Route::get('/dashboard', function () {return redirect()->route('evaluasi.index');});
     Route::resource('evaluasi', EvaluasiWiraniagaController::class);
 });
 

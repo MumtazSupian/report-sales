@@ -1,200 +1,148 @@
-<!DOCTYPE html>
-<html lang="id">
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <title>Evaluasi Wiraniaga</title>
+@section('title', 'Evaluasi Wiraniaga')
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+@section('content')
+    <div style="padding: 20px;">
+        <h2
+            style="text-align:center; font-weight:800; color:#fff; letter-spacing:0.5px; text-transform:uppercase; margin-bottom:5px;">
+            📊 EVALUASI WIRANIAGA
+        </h2>
+        <p style="text-align:center; color: #8fb3d9; margin-bottom:20px;">Monitoring kinerja wiraniaga secara periodik</p>
 
-    <style>
-        body {
-            background: #f4f6f9;
-            font-family: 'Segoe UI', sans-serif;
-        }
-
-        .excel-header {
-            background: linear-gradient(90deg, #0d6efd, #0aa2c0);
-            color: white;
-            padding: 18px 24px;
-            font-weight: 600;
-            font-size: 22px;
-            box-shadow: 0 3px 10px rgba(0,0,0,.08);
-            margin-bottom: 30px;
-        }
-
-        .card {
-            border: none;
-            border-radius: 14px;
-            box-shadow: 0 6px 18px rgba(0,0,0,.06);
-        }
-
-        table th {
-            background: #0d6efd;
-            color: white;
-            text-align: center;
-            vertical-align: middle;
-            white-space: nowrap;
-            font-size: 14px;
-        }
-
-        table td {
-            vertical-align: middle;
-            white-space: nowrap;
-            font-size: 14px;
-        }
-
-        tbody tr:hover {
-            background-color: #f1f7ff;
-        }
-
-        tfoot td {
-            background: #e9f2ff;
-            font-weight: bold;
-            font-size: 15px;
-        }
-
-        .badge-grading {
-            padding: 6px 10px;
-            border-radius: 6px;
-            font-size: 13px;
-        }
-    </style>
-</head>
-
-<body>
-
-    <div class="excel-header">
-        📊 EVALUASI WIRANIAGA
-    </div>
-
-    <div class="container-fluid">
-
-        <div class="card">
-            <div class="card-body">
-
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <div>
-                        <h4 class="mb-0 fw-semibold">Data Evaluasi</h4>
-                        <small class="text-muted">Monitoring kinerja wiraniaga</small>
-                    </div>
-
-                    <a href="{{ route('evaluasi.create') }}"
-                       class="btn btn-primary shadow-sm">
-                        ➕ Tambah Data
-                    </a>
-                </div>
-
-                @if (session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                @endif
-
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover align-middle">
-
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Sales Head</th>
-                                <th>Nama Sales</th>
-                                <th>Tgl Masuk</th>
-                                <th>Tgl Evaluasi</th>
-                                <th>Grading</th>
-                                <th>Jan</th>
-                                <th>Feb</th>
-                                <th>Mar</th>
-                                <th>Apr</th>
-                                <th>Mei</th>
-                                <th>Jun</th>
-                                <th>Total</th>
-                                <th>Evaluasi</th>
-                                <th>Tgl Keluar</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            @foreach ($data as $i => $d)
-                                <tr>
-                                    <td class="text-center">{{ $i + 1 }}</td>
-                                    <td>{{ $d->nama_sales_head }}</td>
-                                    <td>{{ $d->nama_sales }}</td>
-                                    <td>{{ $d->tanggal_masuk }}</td>
-                                    <td>{{ $d->tanggal_evaluasi }}</td>
-
-                                    <!-- GRADING BADGE -->
-                                    <td class="text-center">
-                                        <span class="badge
-                                            @if($d->grading == 'A') bg-success
-                                            @elseif($d->grading == 'B') bg-primary
-                                            @elseif($d->grading == 'C') bg-warning text-dark
-                                            @else bg-danger
-                                            @endif
-                                            badge-grading">
-                                            {{ $d->grading }}
-                                        </span>
-                                    </td>
-
-                                    <td class="text-end">{{ $d->jan }}</td>
-                                    <td class="text-end">{{ $d->feb }}</td>
-                                    <td class="text-end">{{ $d->mar }}</td>
-                                    <td class="text-end">{{ $d->apr }}</td>
-                                    <td class="text-end">{{ $d->mei }}</td>
-                                    <td class="text-end">{{ $d->jun }}</td>
-
-                                    <td class="text-end fw-bold text-primary">
-                                        {{ $d->total }}
-                                    </td>
-
-                                    <td>{{ $d->evaluasi }}</td>
-                                    <td>{{ $d->tanggal_keluar }}</td>
-
-                                    <td class="text-center">
-
-                                        <a href="{{ route('evaluasi.edit', $d->id) }}"
-                                           class="btn btn-sm btn-warning shadow-sm">
-                                            ✏️
-                                        </a>
-
-                                        <form action="{{ route('evaluasi.destroy', $d->id) }}"
-                                              method="POST"
-                                              class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
-
-                                            <button onclick="return confirm('Hapus data ini?')"
-                                                    class="btn btn-sm btn-danger shadow-sm">
-                                                🗑️
-                                            </button>
-                                        </form>
-
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-
-                        <tfoot>
-                            <tr>
-                                <td colspan="12" class="text-end fw-bold">
-                                     GRAND TOTAL
-                                </td>
-                                <td class="text-end text-primary fw-bold">
-                                    {{ $grandTotal }}
-                                </td>
-                                <td colspan="3"></td>
-                            </tr>
-                        </tfoot>
-
-                    </table>
-                </div>
-
-            </div>
+        <div
+            style="display:flex; justify-content:flex-end; align-items:center; gap:8px; margin:0 auto 15px auto; width:98%;">
+            <a href="{{ route('evaluasi.create') }}"
+                style="padding:8px 16px; background:#1e88e5; color:#fff; border-radius:6px; font-size:13px; font-weight:600; text-decoration:none; box-shadow:0 2px 5px rgba(0,0,0,0.1); transition:0.3s;"
+                onmouseover="this.style.background='#1565c0'" onmouseout="this.style.background='#1e88e5'">
+                + Tambah Data
+            </a>
         </div>
 
+        {{-- SweetAlert2 Library --}}
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        {{-- Notifikasi Sukses --}}
+        @if (session('success'))
+            <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: "{{ session('success') }}",
+                    showConfirmButton: false,
+                    timer: 2000,
+                    customClass: {
+                        popup: 'rounded-4'
+                    }
+                });
+            </script>
+        @endif
+
+        <div
+            style="background:#fff; padding:20px; border-radius:14px; box-shadow:0 6px 20px rgba(0,0,0,0.08); overflow-x:auto;">
+            <table width="100%" cellpadding="8" cellspacing="0"
+                style="width:100%; border-collapse:collapse; font-family:'Segoe UI',sans-serif; font-size:12px; text-align:center; border:1px solid #bbb;">
+                <thead style="background:#e3f2fd; color:#0d47a1;">
+                    <tr style="border-bottom:2px solid #90caf9;">
+                        <th style="border:1px solid #999;">NO</th>
+                        <th style="border:1px solid #999;">SALES HEAD</th>
+                        <th style="border:1px solid #999;">NAMA SALES</th>
+                        <th style="border:1px solid #999;">TGL MASUK</th>
+                        <th style="border:1px solid #999;">TGL EVALUASI</th>
+                        <th style="border:1px solid #999;">GRADING</th> {{-- Kolom Baru --}}
+                        <th style="border:1px solid #999;">JAN</th>
+                        <th style="border:1px solid #999;">FEB</th>
+                        <th style="border:1px solid #999;">MAR</th>
+                        <th style="border:1px solid #999;">APR</th>
+                        <th style="border:1px solid #999;">MEI</th>
+                        <th style="border:1px solid #999;">JUN</th>
+                        <th style="border:1px solid #999;">TOTAL</th>
+                        <th style="border:1px solid #999;">EVALUASI</th>
+                        <th style="border:1px solid #999;">TGL KELUAR</th>
+                        <th style="border:1px solid #999;">AKSI</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($data as $i => $d)
+                        <tr
+                            style="background:{{ $loop->iteration % 2 == 0 ? '#f7f9fb' : '#ffffff' }}; border-bottom:1px solid #ccc;">
+                            <td style="border:1px solid #bbb;">{{ $i + 1 }}</td>
+                            <td style="border:1px solid #bbb;">{{ $d->nama_sales_head }}</td>
+                            <td style="border:1px solid #bbb;">{{ $d->nama_sales }}</td>
+                            <td style="border:1px solid #bbb;">{{ $d->tanggal_masuk }}</td>
+                            <td style="border:1px solid #bbb;">{{ $d->tanggal_evaluasi }}</td>
+
+                            {{-- Baris Grading Baru --}}
+                            <td style="border:1px solid #bbb;">
+                                <span
+                                    style="padding: 2px 8px; border-radius: 4px; color: #fff; font-weight: bold; font-size: 10px; background:
+                                    @if ($d->grading == 'A') #2e7d32
+                                    @elseif($d->grading == 'B') #1565c0
+                                    @elseif($d->grading == 'C') #f9a825
+                                    @else #c62828 @endif;">
+                                    {{ $d->grading }}
+                                </span>
+                            </td>
+
+                            <td style="border:1px solid #bbb;">{{ $d->jan }}</td>
+                            <td style="border:1px solid #bbb;">{{ $d->feb }}</td>
+                            <td style="border:1px solid #bbb;">{{ $d->mar }}</td>
+                            <td style="border:1px solid #bbb;">{{ $d->apr }}</td>
+                            <td style="border:1px solid #bbb;">{{ $d->mei }}</td>
+                            <td style="border:1px solid #bbb;">{{ $d->jun }}</td>
+                            <td style="border:1px solid #bbb; font-weight: 700;">{{ $d->total }}</td>
+                            <td style="border:1px solid #bbb;">{{ Str::limit($d->evaluasi, 20) }}</td>
+                            <td style="border:1px solid #bbb;">{{ $d->tanggal_keluar }}</td>
+                            <td style="border:1px solid #bbb; white-space:nowrap;">
+                                <a href="{{ route('evaluasi.edit', $d->id) }}"
+                                    style="color:#1976d2; font-weight:600; text-decoration:none; margin-right:5px;">Edit</a>
+
+                                <form action="{{ route('evaluasi.destroy', $d->id) }}" method="POST"
+                                    style="display:inline;" id="delete-form-{{ $d->id }}">
+                                    @csrf @method('DELETE')
+                                    <button type="button" onclick="confirmDelete('{{ $d->id }}')"
+                                        style="background:#e53935; color:white; border:none; padding:3px 7px; border-radius:4px; font-size:11px; cursor:pointer;">
+                                        Hapus
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+                <tfoot style="background:#0d47a1; color:white; font-weight:bold;">
+                    <tr>
+                        <td colspan="12" style="border:1px solid #999; text-align: center;">GRAND TOTAL</td>
+                        <td style="border:1px solid #999;">{{ $grandTotal }}</td>
+                        <td colspan="3" style="border:1px solid #999;">-</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
     </div>
 
-</body>
-</html>
+    {{-- Script Konfirmasi Hapus --}}
+    <script>
+        function confirmDelete(id) {
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Data yang dihapus tidak dapat dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#e53935',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal',
+                reverseButtons: true,
+                background: '#ffffff',
+                customClass: {
+                    title: 'text-dark',
+                    popup: 'rounded-4'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            })
+        }
+    </script>
+@endsection

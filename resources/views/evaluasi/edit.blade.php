@@ -1,183 +1,121 @@
-<!DOCTYPE html>
-<html lang="id">
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <title>Edit Evaluasi Wiraniaga</title>
+@section('title', 'Edit Evaluasi Wiraniaga')
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+@section('content')
+    <div style="padding: 40px 20px; min-height: 100vh;">
+        <div style="text-align: center; margin-bottom: 30px;">
+            <h2 style="font-weight:800; color:#fff; letter-spacing:1px; text-transform:uppercase; margin-bottom:5px;">
+                ✏️ EDIT DATA EVALUASI
+            </h2>
+            <p style="color: #8fb3d9;">Perbarui informasi kinerja untuk <strong>{{ $row->nama_sales }}</strong></p>
+        </div>
 
-    <style>
-        body {
-            background: #f4f6f9;
-            font-family: 'Segoe UI', sans-serif;
-        }
-
-        .excel-header {
-            background: linear-gradient(90deg, #ffc107, #ffda6a);
-            color: #333;
-            padding: 18px 24px;
-            font-weight: 600;
-            font-size: 22px;
-            box-shadow: 0 3px 10px rgba(0,0,0,.08);
-            margin-bottom: 30px;
-        }
-
-        .card {
-            border: none;
-            border-radius: 14px;
-            box-shadow: 0 6px 18px rgba(0,0,0,.06);
-        }
-
-        .card-body {
-            padding: 30px;
-        }
-
-        .form-label {
-            font-weight: 600;
-        }
-
-        .form-control {
-            border-radius: 8px;
-            padding: 10px;
-        }
-
-        .form-control:focus {
-            box-shadow: 0 0 0 0.15rem rgba(255,193,7,.35);
-            border-color: #ffc107;
-        }
-
-        .section-title {
-            font-weight: 600;
-            color: #0d6efd;
-            margin-top: 10px;
-        }
-
-        hr {
-            margin: 25px 0;
-        }
-
-        .btn {
-            border-radius: 8px;
-            padding: 8px 18px;
-            font-weight: 500;
-        }
-    </style>
-</head>
-
-<body>
-
-<div class="excel-header">
-    ✏️ Edit Evaluasi Wiraniaga
-</div>
-
-<div class="container">
-
-    <div class="card">
-        <div class="card-body">
-
-            <h4 class="mb-4 fw-semibold">Form Edit Data</h4>
+        <div
+            style="background:#fff; max-width: 900px; margin: 0 auto; padding:30px; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.2);">
 
             <form method="POST" action="{{ route('evaluasi.update', $row->id) }}">
                 @csrf
                 @method('PUT')
 
-                <div class="row g-3">
-
-                    <div class="col-md-6">
-                        <label class="form-label">Nama Sales Head</label>
-                        <input type="text"
-                               class="form-control"
-                               name="nama_sales_head"
-                               value="{{ $row->nama_sales_head }}">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
+                    <div>
+                        <label style="display:block; font-weight:700; color:#333; margin-bottom:8px; font-size:13px;">SALES
+                            HEAD</label>
+                        <input type="text" name="nama_sales_head" required value="{{ $row->nama_sales_head }}"
+                            style="width:100%; padding:10px; border:1px solid #ccc; border-radius:6px; outline:none;"
+                            placeholder="Nama Sales Head...">
                     </div>
 
-                    <div class="col-md-6">
-                        <label class="form-label">Nama Sales</label>
-                        <input type="text"
-                               class="form-control"
-                               name="nama_sales"
-                               value="{{ $row->nama_sales }}">
+                    <div>
+                        <label style="display:block; font-weight:700; color:#333; margin-bottom:8px; font-size:13px;">NAMA
+                            SALES</label>
+                        <input type="text" name="nama_sales" required value="{{ $row->nama_sales }}"
+                            style="width:100%; padding:10px; border:1px solid #ccc; border-radius:6px; outline:none;"
+                            placeholder="Nama Sales...">
                     </div>
 
-                    <div class="col-md-4">
-                        <label class="form-label">Tanggal Masuk</label>
-                        <input type="date"
-                               class="form-control"
-                               name="tanggal_masuk"
-                               value="{{ $row->tanggal_masuk }}">
+                    <div>
+                        <label
+                            style="display:block; font-weight:700; color:#333; margin-bottom:8px; font-size:13px;">TANGGAL
+                            MASUK</label>
+                        <input type="date" name="tanggal_masuk" required value="{{ $row->tanggal_masuk }}"
+                            style="width:100%; padding:10px; border:1px solid #ccc; border-radius:6px; outline:none;">
                     </div>
 
-                    <div class="col-md-4">
-                        <label class="form-label">Tanggal Evaluasi</label>
-                        <input type="date"
-                               class="form-control"
-                               name="tanggal_evaluasi"
-                               value="{{ $row->tanggal_evaluasi }}">
+                    <div>
+                        <label
+                            style="display:block; font-weight:700; color:#333; margin-bottom:8px; font-size:13px;">TANGGAL
+                            EVALUASI</label>
+                        <input type="date" name="tanggal_evaluasi" required value="{{ $row->tanggal_evaluasi }}"
+                            style="width:100%; padding:10px; border:1px solid #ccc; border-radius:6px; outline:none;">
                     </div>
 
-                    <div class="col-md-4">
-                        <label class="form-label">Grading</label>
-                        <select name="grading" class="form-control">
-                            <option value="A" {{ $row->grading == 'A' ? 'selected' : '' }}>A</option>
-                            <option value="B" {{ $row->grading == 'B' ? 'selected' : '' }}>B</option>
-                            <option value="C" {{ $row->grading == 'C' ? 'selected' : '' }}>C</option>
+                    {{-- BAGIAN GRADING BARU --}}
+                    <div style="grid-column: span 2;">
+                        <label
+                            style="display:block; font-weight:700; color:#333; margin-bottom:8px; font-size:13px;">GRADING
+                            PERFORMA</label>
+                        <select name="grading" required
+                            style="width:100%; padding:10px; border:1px solid #ccc; border-radius:6px; outline:none; background-color: #f9f9f9; font-weight: 600;">
+                            <option value="A" {{ $row->grading == 'A' ? 'selected' : '' }} style="color: #2e7d32;">
+                                Grade A (Excellent)</option>
+                            <option value="B" {{ $row->grading == 'B' ? 'selected' : '' }} style="color: #1565c0;">
+                                Grade B (Good)</option>
+                            <option value="C" {{ $row->grading == 'C' ? 'selected' : '' }} style="color: #f9a825;">
+                                Grade C (Fair)</option>
+                            <option value="D" {{ $row->grading == 'D' ? 'selected' : '' }} style="color: #c62828;">
+                                Grade D (Poor)</option>
                         </select>
                     </div>
-
-                    <div class="col-12">
-                        <hr>
-                        <h5 class="section-title">📊 Nilai Bulanan</h5>
-                    </div>
-
-                    @foreach (['jan', 'feb', 'mar', 'apr', 'mei', 'jun'] as $m)
-                        <div class="col-md-2">
-                            <label class="form-label">{{ strtoupper($m) }}</label>
-                            <input type="number"
-                                   class="form-control text-end"
-                                   name="{{ $m }}"
-                                   value="{{ $row->$m }}">
-                        </div>
-                    @endforeach
-
-                    <div class="col-md-6">
-                        <label class="form-label">Evaluasi</label>
-                        <textarea class="form-control"
-                                  rows="4"
-                                  name="evaluasi">{{ $row->evaluasi }}</textarea>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="form-label">Tanggal Keluar</label>
-                        <input type="date"
-                               class="form-control"
-                               name="tanggal_keluar"
-                               value="{{ $row->tanggal_keluar }}">
-                    </div>
-
                 </div>
 
-                <div class="mt-4 d-flex justify-content-between">
+                <hr style="border:0; border-top:1px solid #eee; margin:30px 0;">
 
+                <h3
+                    style="font-size:15px; font-weight:800; color:#0d47a1; margin-bottom:20px; display:flex; align-items:center; gap:8px;">
+                    📊 PERBARUI NILAI BULANAN
+                </h3>
+
+                <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-bottom: 30px;">
+                    @foreach (['jan', 'feb', 'mar', 'apr', 'mei', 'jun'] as $m)
+                        <div style="text-align: center;">
+                            <label
+                                style="display:block; font-weight:700; color:#555; margin-bottom:5px; font-size:11px;">{{ strtoupper($m) }}</label>
+                            <input type="number" name="{{ $m }}" value="{{ $row->$m }}" min="0"
+                                style="width:100%; padding:8px; border:1px solid #ddd; border-radius:6px; text-align:center; font-weight:600; color:#0d47a1;">
+                        </div>
+                    @endforeach
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label style="display:block; font-weight:700; color:#333; margin-bottom:8px; font-size:13px;">HASIL
+                        EVALUASI</label>
+                    <textarea name="evaluasi" rows="3" placeholder="Tulis catatan evaluasi..."
+                        style="width:100%; padding:10px; border:1px solid #ccc; border-radius:6px; outline:none; resize: none;">{{ $row->evaluasi }}</textarea>
+                </div>
+
+                <div style="margin-bottom: 35px; width: 50%;">
+                    <label style="display:block; font-weight:700; color:#333; margin-bottom:8px; font-size:13px;">TANGGAL
+                        KELUAR</label>
+                    <input type="date" name="tanggal_keluar" value="{{ $row->tanggal_keluar }}"
+                        style="width:100%; padding:10px; border:1px solid #ccc; border-radius:6px; outline:none;">
+                </div>
+
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #eee; padding-top: 20px;">
                     <a href="{{ route('evaluasi.index') }}"
-                       class="btn btn-secondary">
-                        ← Kembali
+                        style="text-decoration:none; color:#666; font-weight:600; font-size:14px;">
+                        ← Batal
                     </a>
 
                     <button type="submit"
-                            class="btn btn-warning text-dark shadow-sm">
-                        💾 Update Data
+                        style="background:#fb8c00; color:#fff; border:none; padding:12px 35px; border-radius:8px; font-weight:700; cursor:pointer; font-size:14px; transition:0.3s; box-shadow:0 4px 10px rgba(251,140,0,0.3);"
+                        onmouseover="this.style.background='#ef6c00'" onmouseout="this.style.background='#fb8c00'">
+                        💾 SIMPAN PERUBAHAN
                     </button>
-
                 </div>
-
             </form>
-
         </div>
     </div>
-
-</div>
-
-</body>
-</html>
+@endsection
