@@ -1,86 +1,91 @@
-<h2 style="font-family: Arial; margin-bottom:20px;">Tambah Actual Sales By Leasing</h2>
+@extends('layouts.app')
 
-<style>
-    .form-box {
-        width: 600px;
-        padding: 20px;
-        border: 1px solid #ddd;
-        border-radius: 10px;
-        background: white;
-        font-family: Arial, sans-serif;
-    }
+@section('title', 'Tambah Actual Sales By Leasing')
 
-    label {
-        display: block;
-        margin-top: 12px;
-        font-weight: bold;
-        font-size: 14px;
-    }
+@section('content')
+    <div style="padding: 40px 20px; display: flex; flex-direction: column; align-items: center; min-height: 100vh;">
 
-    input,
-    select {
-        width: 100%;
-        padding: 8px;
-        margin-top: 5px;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        font-size: 14px;
-    }
-
-    input:focus,
-    select:focus {
-        outline: none;
-        border-color: black;
-    }
-
-    .month-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 12px;
-        margin-top: 15px;
-    }
-
-    .btn-save {
-        margin-top: 20px;
-        padding: 10px 15px;
-        background: black;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 14px;
-    }
-
-    .btn-save:hover {
-        background: #333;
-    }
-</style>
-
-<div class="form-box">
-    <form action="{{ route('current.actual-sales-by-leasing.store') }}" method="POST">
-        @csrf
-
-        <label>Leasing</label>
-        <select name="leasing_name">
-            @foreach ($leasingOptions as $l)
-                <option value="{{ $l }}">{{ $l }}</option>
-            @endforeach
-        </select>
-
-        <label>Tahun</label>
-        <input type="number" name="tahun" value="{{ date('Y') }}">
-
-        <label>Target Per Bulan</label>
-        @php $months = ['jan','feb','mar','apr','mei','jun','jul','agu','sep','okt','nov','des']; @endphp
-        <div class="month-grid">
-            @foreach ($months as $m)
-                <div>
-                    <label>{{ strtoupper($m) }}</label>
-                    <input type="number" name="{{ $m }}" value="0">
-                </div>
-            @endforeach
+        <div style="text-align: center; margin-bottom: 30px;">
+            <h2 style="font-weight:800; color:#fff; letter-spacing:1px; text-transform:uppercase; margin:0;">
+                🏦 TAMBAH ACTUAL SALES BY LEASING
+            </h2>
+            <div style="width: 50px; height: 4px; background: #3182ce; margin: 10px auto; border-radius: 10px;"></div>
+            <p style="color: #cbd5e0; font-size: 14px;">Input data realisasi penjualan baru berdasarkan mitra leasing</p>
         </div>
 
-        <button type="submit" class="btn-save">Simpan Data</button>
-    </form>
-</div>
+        <div
+            style="background: white; width: 100%; max-width: 750px; padding: 35px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.2);">
+            <form action="{{ route('current.actual-sales-by-leasing.store') }}" method="POST">
+                @csrf
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 10px;">
+                    <div>
+                        <label
+                            style="display: block; font-weight: 700; color: #2d3748; margin-bottom: 8px; font-size: 13px; text-transform: uppercase;">
+                            Pilih Leasing
+                        </label>
+                        <select name="leasing_name"
+                            style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 14px; color: #4a5568; outline: none; transition: 0.3s; cursor: pointer;">
+                            <option value="" disabled selected>Pilih Leasing</option>
+                            @foreach ($leasingOptions as $l)
+                                <option value="{{ $l }}">{{ ucwords(str_replace('_', ' ', $l)) }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div>
+                        <label
+                            style="display: block; font-weight: 700; color: #2d3748; margin-bottom: 8px; font-size: 13px; text-transform: uppercase;">
+                            Tahun
+                        </label>
+                        <input type="number" name="tahun" value="{{ date('Y') }}"
+                            style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 14px; color: #4a5568; outline: none; transition: 0.3s;">
+                    </div>
+                </div>
+
+                <div style="margin: 25px 0 15px 0; border-bottom: 2px dashed #edf2f7;"></div>
+
+                <label
+                    style="display: block; font-weight: 800; color: #3182ce; margin-bottom: 15px; font-size: 14px; text-transform: uppercase; text-align: center;">
+                    Data Penjualan Per Bulan
+                </label>
+
+                @php $months = ['jan','feb','mar','apr','mei','jun','jul','agu','sep','okt','nov','des']; @endphp
+
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;">
+                    @foreach ($months as $m)
+                        <div style="background: #f7fafc; padding: 10px; border-radius: 12px; border: 1px solid #edf2f7;">
+                            <label
+                                style="display: block; font-weight: 700; color: #718096; margin-bottom: 5px; font-size: 11px; text-align: center;">
+                                {{ strtoupper($m) }}
+                            </label>
+                            <input type="number" name="{{ $m }}" value="0"
+                                style="width: 100%; padding: 8px; border: 1px solid #cbd5e0; border-radius: 8px; font-size: 14px; text-align: center; color: #2d3748; outline: none;">
+                        </div>
+                    @endforeach
+                </div>
+
+                <div style="margin-top: 35px; display: flex; gap: 15px;">
+                    <a href="{{ route('current.actual-sales-by-leasing.index') }}"
+                        style="flex: 1; padding: 14px; background: #edf2f7; color: #4a5568; text-align: center; border-radius: 12px; text-decoration: none; font-weight: 700; font-size: 14px; transition: 0.3s;"
+                        onmouseover="this.style.background='#e2e8f0'" onmouseout="this.style.background='#edf2f7'">
+                        Batal
+                    </a>
+                    <button type="submit"
+                        style="flex: 2; padding: 14px; background: #1e88e5; color: white; border: none; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 12px rgba(30, 136, 229, 0.3);"
+                        onmouseover="this.style.background='#1565c0'; this.style.transform='translateY(-2px)'"
+                        onmouseout="this.style.background='#1e88e5'; this.style.transform='translateY(0)'">
+                        Simpan Data
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <style>
+        input:focus,
+        select:focus {
+            border-color: #3182ce !important;
+            box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+        }
+    </style>
+@endsection

@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Http\Controllers\current;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\current\ActualSalesByLeasing;
@@ -10,7 +12,7 @@ class ActualSalesByLeasingController extends Controller
     {
         $data = ActualSalesByLeasing::orderBy('tahun', 'desc')->get();
         $months = ['jan', 'feb', 'mar', 'apr', 'mei', 'jun', 'jul', 'agu', 'sep', 'okt', 'nov', 'des'];
-        return view('actual_sales_by_leasing.index', compact('data', 'months'));
+        return view('current.actual_sales_by_leasing.index', compact('data', 'months'));
     }
 
     public function create()

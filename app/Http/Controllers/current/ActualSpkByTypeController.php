@@ -20,7 +20,7 @@ class ActualSpkByTypeController extends Controller
     public function create()
     {
         $year = now()->year;
-        return view('current.actual_do_by_type.create', compact('year'));
+        return view('current.actual_spk_by_type.create', compact('year'));
     }
 
     public function store(Request $request)
@@ -37,15 +37,15 @@ class ActualSpkByTypeController extends Controller
             ['total' => $total]
         ));
 
-        return redirect()->route('current.actual-do-by-type.index');
+        return redirect()->route('current.actual-spk-by-type.index');
     }
 
-    public function edit(ActualSpkByType $actualDoByType)
+    public function edit(ActualSpkByType $actualSpkByType)
     {
-        return view('current.actual_do_by_type.edit', compact('actualDoByType'));
+        return view('current.actual_spk_by_type.edit', compact('actualSpkByType'));
     }
 
-    public function update(Request $request, ActualSpkByType $actualDoByType)
+    public function update(Request $request, ActualSpkByType $actualSpkByType)
     {
         $months = ['jan', 'feb', 'mar', 'apr', 'mei', 'jun', 'jul', 'agu', 'sep', 'okt', 'nov', 'des'];
 
@@ -54,16 +54,16 @@ class ActualSpkByTypeController extends Controller
             $total += $request->$m;
         }
 
-        $actualDoByType->update(array_merge(
+        $actualSpkByType->update(array_merge(
             $request->only(array_merge(['mobil_type', 'tahun'], $months)),
             ['total' => $total]
         ));
-        return redirect()->route('current.actual-do-by-type.index');
+        return redirect()->route('current.actual-spk-by-type.index');
     }
 
-    public function destroy(ActualSpkByType $actualDoByType)
+    public function destroy(ActualSpkByType $actualSpkByType)
     {
-        $actualDoByType->delete();
+        $actualSpkByType->delete();
         return back();
     }
 }
