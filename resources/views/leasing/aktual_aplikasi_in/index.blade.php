@@ -1,138 +1,89 @@
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-    <h2 style="font-family: Arial; margin: 0;">
-        Aktual Aplikasi In
-    </h2>
+@extends('layouts.app')
 
-    <div style="display: flex; gap: 10px;">
-        <a href="{{ route('leasing.aktual-aplikasi-in.create') }}"
-            style="
-                padding: 8px 15px;
-                background: black;
-                color: white;
-                text-decoration: none;
-                border-radius: 6px;
-            ">
-            + Tambah Data
-        </a>
+@section('content')
+    <div style="padding: 20px; max-width: 1300px; margin: 0 auto;">
+        <h2 style="text-align:center; font-weight:800; color:#fff; letter-spacing:0.5px; text-transform:uppercase; margin-bottom:5px;">
+            📊 AKTUAL APLIKASI IN
+        </h2>
+        <p style="text-align:center; color: #8fb3d9; margin-bottom:20px; font-size: 14px;">Monitoring data aplikasi masuk dari setiap leasing partner</p>
 
-        <a href="{{ url('/leasing/dashboard') }}"
-            style="
-                padding: 8px 15px;
-                background: gray;
-                color: white;
-                text-decoration: none;
-                border-radius: 6px;
-            ">
-            Kembali ke Dashboard
-        </a>
-    </div>
-</div>
-
-@php
-    $months = ['jan','feb','mar','apr','mei','jun','jul','agu','sep','okt','nov','des'];
-    $grandTotals = [];
-    foreach ($months as $m) {
-        $grandTotals[$m] = $data->sum($m);
-    }
-    $grandTotalAll = $data->sum('total');
-@endphp
-
-<style>
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        font-family: Arial, sans-serif;
-        font-size: 14px;
-        background: white;
-    }
-
-    th {
-        background: #111;
-        color: white;
-        padding: 10px;
-        text-align: center;
-    }
-
-    td {
-        padding: 8px;
-        text-align: center;
-        border-bottom: 1px solid #ddd;
-    }
-
-    tr:hover {
-        background: #f5f5f5;
-    }
-
-    .btn-edit {
-        padding: 5px 10px;
-        background: #2563eb;
-        color: white;
-        text-decoration: none;
-        border-radius: 5px;
-        font-size: 13px;
-    }
-
-    .btn-delete {
-        padding: 5px 10px;
-        background: #dc2626;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 13px;
-    }
-
-    form {
-        display: inline;
-    }
-</style>
-
-<table>
-    <tr>
-        <th>Leasing</th>
-        <th>Tahun</th>
-
-        @foreach ($months as $m)
-            <th>{{ strtoupper($m) }}</th>
-        @endforeach
-
-        <th>Total</th>
-        <th>Aksi</th>
-    </tr>
-
-    @foreach ($data as $row)
-        <tr>
-            <td>{{ $row->leasing }}</td>
-            <td>{{ $row->tahun }}</td>
-
-            @foreach ($months as $m)
-                <td>{{ $row->$m }}</td>
-            @endforeach
-
-            <td><b>{{ $row->total }}</b></td>
-
-            <td>
-                <a href="{{ route('leasing.aktual-aplikasi-in.edit', $row->id) }}" class="btn-edit">
-                    Edit
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; padding: 0 10px;">
+            <div style="display:flex; gap:10px; align-items:center;">
+                <a href="{{ url('/leasing/dashboard') }}"
+                    style="padding: 8px 15px; background: rgba(255,255,255,0.1); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 12px; border: 1px solid rgba(255,255,255,0.2); transition: 0.3s;">
+                    ← Dashboard
                 </a>
+                <a href="{{ route('leasing.aktual-aplikasi-in.index') }}"
+                    style="padding: 8px 15px; background: rgba(255,255,255,0.1); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 12px; border: 1px solid rgba(255,255,255,0.1); transition: 0.3s;">
+                    🔄 Refresh
+                </a>
+            </div>
 
-                <form action="{{ route('leasing.aktual-aplikasi-in.destroy', $row->id) }}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn-delete">
-                        Hapus
-                    </button>
-                </form>
-            </td>
-        </tr>
-    @endforeach
+            <a href="{{ route('leasing.aktual-aplikasi-in.create') }}"
+                style="padding: 8px 18px; background: #3182ce; color: white; text-decoration: none; border-radius: 8px; font-weight: 700; font-size: 12px; box-shadow: 0 4px 12px rgba(49, 130, 206, 0.3); transition: 0.3s;">
+                + TAMBAH DATA
+            </a>
+        </div>
 
-    <tr style="background: #e5e7eb; font-weight: bold;">
-        <td colspan="2">GRAND TOTAL</td>
-        @foreach ($months as $m)
-            <td>{{ $grandTotals[$m] }}</td>
-        @endforeach
-        <td>{{ $grandTotalAll }}</td>
-        <td>-</td>
-    </tr>
-</table>
+        <div style="background:#fff; padding:15px; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.3); overflow-x:auto;">
+            @php
+                $months = ['jan', 'feb', 'mar', 'apr', 'mei', 'jun', 'jul', 'agu', 'sep', 'okt', 'nov', 'des'];
+                $grandTotals = [];
+                foreach ($months as $m) { $grandTotals[$m] = $data->sum($m); }
+                $grandTotalAll = $data->sum('total');
+            @endphp
+
+            <table width="100%" cellpadding="0" cellspacing="0"
+                style="width:100%; border-collapse:collapse; font-family:'Segoe UI',sans-serif; font-size:11px; text-align:center; border:1px solid #bbb;">
+                <thead style="background:#e3f2fd; color:#0d47a1;">
+                    <tr style="border-bottom:2px solid #90caf9;">
+                        <th style="border:1px solid #999; padding: 12px; text-align: left;">LEASING NAME</th>
+                        <th style="border:1px solid #999; width: 60px;">TAHUN</th>
+                        @foreach ($months as $m)
+                            <th style="border:1px solid #999; width: 45px;">{{ strtoupper($m) }}</th>
+                        @endforeach
+                        <th style="border:1px solid #999; background:#bbdefb; width: 65px;">TOTAL</th>
+                        <th style="border:1px solid #999; width: 110px;">AKSI</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($data as $row)
+                        <tr style="background:{{ $loop->iteration % 2 == 0 ? '#f7faff' : '#ffffff' }}; border-bottom:1px solid #ccc;">
+                            <td style="border:1px solid #bbb; font-weight:600; text-align:left; padding-left:12px;">{{ $row->leasing }}</td>
+                            <td style="border:1px solid #bbb;">{{ $row->tahun }}</td>
+                            @foreach ($months as $m)
+                                <td style="border:1px solid #bbb;">{{ number_format($row->$m, 0, ',', '.') }}</td>
+                            @endforeach
+                            <td style="border:1px solid #bbb; font-weight: 800; background:#ebf5ff;">{{ number_format($row->total, 0, ',', '.') }}</td>
+                            <td style="border:1px solid #bbb; padding: 6px;">
+                                <div style="display: flex; gap: 4px; justify-content: center;">
+                                    <a href="{{ route('leasing.aktual-aplikasi-in.edit', $row->id) }}" 
+                                       style="padding: 4px 8px; background: #3182ce; color: #fff; text-decoration: none; border-radius: 4px; font-weight: 700; font-size: 10px;">
+                                       EDIT
+                                    </a>
+                                    <form action="{{ route('leasing.aktual-aplikasi-in.destroy', $row->id) }}" method="POST" onsubmit="return confirm('Hapus data?')">
+                                        @csrf @method('DELETE')
+                                        <button type="submit" 
+                                                style="padding: 4px 8px; background: #fff5f5; color: #e53e3e; border: 1px solid #fed7d7; border-radius: 4px; font-weight: 700; font-size: 10px; cursor: pointer;">
+                                            HAPUS
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+                <tfoot style="background:#1565c0; color:white; font-weight:bold;">
+                    <tr>
+                        <td colspan="2" style="border:1px solid #999; padding: 10px; text-align: center;">GRAND TOTAL</td>
+                        @foreach ($months as $m)
+                            <td style="border:1px solid #999;">{{ number_format($grandTotals[$m], 0, ',', '.') }}</td>
+                        @endforeach
+                        <td style="border:1px solid #999; background:#0d47a1;">{{ number_format($grandTotalAll, 0, ',', '.') }}</td>
+                        <td style="border:1px solid #999;">-</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+@endsection

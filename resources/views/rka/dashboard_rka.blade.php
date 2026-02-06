@@ -1,125 +1,114 @@
-<!DOCTYPE html>
-<html lang="id">
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <title>Dashboard Target</title>
+@section('content')
+<div style="padding: 40px 20px; min-height: calc(100vh - 100px); display: flex; flex-direction: column; align-items: center;">
+    
+    <div style="text-align: center; margin-bottom: 40px;">
+        <h1 style="color: white; font-size: 24px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; margin: 0;">
+            Dashboard Target (RKA)
+        </h1>
+        <div style="width: 60px; height: 4px; background: #3182ce; margin: 10px auto; border-radius: 10px;"></div>
+        <p style="color: #cbd5e0; font-size: 14px; margin-top: 5px;">Pilih modul untuk mengelola rencana kerja anggaran.</p>
+    </div>
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f9fafb;
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 50px auto;
-            padding: 20px;
-        }
-
-        h1 {
-            font-size: 26px;
-            margin-bottom: 10px;
-            color: #111;
-        }
-
-        p {
-            color: #555;
-            margin-bottom: 30px;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-        }
-
-        .card {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            border: 1px solid #e5e7eb;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-            transition: 0.2s;
-        }
-
-        .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        }
-
-        .card h2 {
-            margin: 0;
-            font-size: 18px;
-            color: #111;
-        }
-
-        .card p {
-            font-size: 14px;
-            margin: 10px 0 20px;
-            color: #666;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 10px 14px;
-            background: black;
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            font-size: 14px;
-        }
-
-        .btn:hover {
-            background: #333;
-        }
-    </style>
-</head>
-
-<body>
-
-    <div class="container">
-
-        <h1>Dashboard Target</h1>
-        <p>Pilih tabel target yang ingin kamu kelola.</p>
-
-        <div class="grid">
-            <div class="card">
-                <h2>Target DO Unit</h2>
-                <p>Kelola target penjualan unit mobil per bulan.</p>
-                <a href="{{ route('rka.target-do-units.index') }}" class="btn">
-                    Masuk
-                </a>
-            </div>
-
-            <div class="card">
-                <h2>Target Salesforce</h2>
-                <p>Kelola target grading salesforce per bulan.</p>
-                <a href="{{ route('rka.target-salesforces.index') }}" class="btn">
-                    Masuk
-                </a>
-            </div>
-
-            <div class="card">
-                <h2>Target Inquiries</h2>
-                <p>Kelola target jumlah inquiry dari berbagai sumber setiap bulan.</p>
-                <a href="{{ route('rka.target-inquiries.index') }}" class="btn">
-                    Masuk
-                </a>
-            </div>
-
-            <div class="card">
-                <h2>Target DO by SOI</h2>
-                <p>Kelola target DO berdasarkan Source of Inquiry setiap bulan.</p>
-                <a href="{{ route('rka.target-do-by-soi.index') }}" class="btn">
-                    Masuk
-                </a>
-            </div>
-
+    <div style="
+        display: grid; 
+        grid-template-columns: repeat(4, 1fr); 
+        gap: 20px; 
+        width: 100%; 
+        max-width: 1200px; /* Menjaga agar tidak terlalu lebar di monitor raksasa */
+    ">
+        
+        <div class="rka-card">
+            <div class="icon-box">🚗</div>
+            <h3>Target DO Unit</h3>
+            <p>Rencana penjualan unit mobil bulanan.</p>
+            <a href="{{ route('rka.target-do-units.index') }}" class="rka-btn">Kelola</a>
         </div>
 
-</body>
+        <div class="rka-card">
+            <div class="icon-box">👥</div>
+            <h3>Target Salesforce</h3>
+            <p>Grading dan performa salesforce.</p>
+            <a href="{{ route('rka.target-salesforces.index') }}" class="rka-btn">Kelola</a>
+        </div>
 
-</html>
+        <div class="rka-card">
+            <div class="icon-box">📞</div>
+            <h3>Target Inquiries</h3>
+            <p>Monitoring jumlah prospek masuk.</p>
+            <a href="{{ route('rka.target-inquiries.index') }}" class="rka-btn">Kelola</a>
+        </div>
+
+        <div class="rka-card">
+            <div class="icon-box">📊</div>
+            <h3>Target DO by SOI</h3>
+            <p>Analisis DO berdasarkan sumber prospek.</p>
+            <a href="{{ route('rka.target-do-by-soi.index') }}" class="rka-btn">Kelola</a>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    .rka-card {
+        background: white;
+        border-radius: 16px;
+        padding: 25px 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        transition: 0.3s;
+    }
+
+    .rka-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+    }
+
+    .icon-box {
+        font-size: 30px;
+        background: #f0f7ff;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 15px;
+    }
+
+    .rka-card h3 {
+        color: #1a202c;
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    .rka-card p {
+        color: #718096;
+        font-size: 12px;
+        line-height: 1.4;
+        margin-bottom: 20px;
+        flex-grow: 1;
+    }
+
+    .rka-btn {
+        background: #1a202c;
+        color: white;
+        padding: 10px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 12px;
+        width: 100%;
+        transition: 0.3s;
+    }
+
+    .rka-btn:hover {
+        background: #3182ce;
+    }
+</style>
+@endsection

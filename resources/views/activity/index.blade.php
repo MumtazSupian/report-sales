@@ -15,6 +15,7 @@
             + Tambah Data
         </a>
     </div>
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <div style="background:#fff; padding:20px; border-radius:14px; box-shadow:0 6px 20px rgba(0,0,0,0.08); overflow-x:auto;">
         <table width="100%" cellpadding="8" cellspacing="0" style="width:100%; border-collapse:collapse; font-family:'Segoe UI',sans-serif; font-size:12px; text-align:center; border:1px solid #bbb;">
@@ -76,10 +77,14 @@
                     <td style="border:1px solid #bbb;">{{ $item->cost_do > 0 ? 'Rp '.number_format($item->cost_do, 0, ',', '.') : '-' }}</td>
                     <td style="border:1px solid #bbb; white-space:nowrap;">
                         <a href="{{ route('activity.edit', $item->id) }}" style="color:#1976d2; font-weight:600; text-decoration:none; margin-right:5px;">Edit</a>
-                        <form action="{{ route('activity.destroy', $item->id) }}" method="POST" style="display:inline;">
-                            @csrf @method('DELETE')
-                            <button type="submit" onclick="return confirm('Hapus?')" style="background:#e53935; color:white; border:none; padding:3px 7px; border-radius:4px; font-size:11px; cursor:pointer;">Hapus</button>
-                        </form>
+                        <form action="{{ route('activity.destroy', $item->id) }}" method="POST"
+                                    style="display:inline;" id="delete-form-{{ $item->id }}">
+                                    @csrf @method('DELETE')
+                                    <button type="button" onclick="confirmDelete('{{ $item->id }}')"
+                                        style="background:#e53935; color:white; border:none; padding:3px 7px; border-radius:4px; font-size:11px; cursor:pointer;">
+                                        Hapus
+                                    </button>
+                                </form>
                     </td>
                 </tr>
                 @endforeach
@@ -101,4 +106,30 @@
         </table>
     </div>
 </div>
+
+{{-- Script Konfirmasi Hapus --}}
+    <script>
+        function confirmDelete(id) {
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Data yang dihapus tidak dapat dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#e53935',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal',
+                reverseButtons: true,
+                background: '#ffffff',
+                customClass: {
+                    title: 'text-dark',
+                    popup: 'rounded-4'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            })
+        }
+    </script>
 @endsection

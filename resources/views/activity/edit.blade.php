@@ -1,155 +1,153 @@
-<h2 style="text-align:center; font-weight:700; color:#111; margin-bottom:25px;">
-    Edit Activity Plan
-</h2>
+@extends('layouts.app') 
 
-<div style="
-    max-width:700px;
-    margin:0 auto;
-    background:#fdfdfd;
-    border-radius:16px;
-    box-shadow:0 4px 20px rgba(0,0,0,0.08);
-    padding:30px 40px;
-    font-family:'Segoe UI',sans-serif;
-    color:#222;
-">
-
-<form action="{{ route('activity.update', $activity->id) }}"
-      method="POST" enctype="multipart/form-data">
-@csrf
-@method('PUT')
-
-<div style="display:grid; gap:18px;">
-
-    <!-- Jenis Activity -->
-    <div>
-        <label style="font-weight:600;">Jenis Activity</label>
-        <select name="jenis_activity" style="width:100%; padding:10px; border:1px solid #ccc; border-radius:8px;">
-            <option value="Offline" {{ $activity->jenis_activity == 'Offline' ? 'selected' : '' }}>Offline</option>
-            <option value="Online" {{ $activity->jenis_activity == 'Online' ? 'selected' : '' }}>Online</option>
-        </select>
+@section('content')
+<div style="padding: 20px 40px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+    
+    <div style="margin-bottom: 25px;">
+        <h2 style="color: white; margin: 0; font-weight: 700; letter-spacing: 1px;">EDIT ACTIVITY PLAN</h2>
+        <p style="color: #cbd5e0; margin: 5px 0 0 0; font-size: 14px;">Perbarui data rencana dan realisasi aktivitas</p>
     </div>
 
-    <!-- Activity -->
-    <div>
-        <label style="font-weight:600;">Activity</label>
-        <select name="activity" style="width:100%; padding:10px; border:1px solid #ccc; border-radius:8px;">
-            @foreach ([
-                'D_MARKETING','EXHIBITION','MOVING_EXHIBITION','SHOWROOM_EVENT',
-                'GROUP_PRESENTATION','EVENT_TEST_DRIVE','OPEN_TABLE','CETAK_FLYER'
-            ] as $act)
-                <option value="{{ $act }}" {{ $activity->activity == $act ? 'selected' : '' }}>
-                    {{ str_replace('_',' ', $act) }}
-                </option>
-            @endforeach
-        </select>
+    <div style="
+        background: #ffffff; 
+        border-radius: 15px; 
+        padding: 40px; 
+        color: #333; 
+        box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        max-width: 1900px;
+        margin: 0 auto 40px 0;
+    ">
+
+        <form action="{{ route('activity.update', $activity->id) }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+
+            <div style="display: grid; gap: 30px;">
+                
+                <div style="border-left: 5px solid #28a745; padding-left: 25px; background: #f0fff4; padding: 25px; border-radius: 0 12px 12px 0;">
+                    <h3 style="color: #2f855a; margin-top: 0; font-size: 17px; margin-bottom: 20px; font-weight: 800; text-transform: uppercase;">A. Activity Plan</h3>
+                    
+                    <div style="display: flex; gap: 25px; margin-bottom: 20px;">
+                        <div style="flex: 1;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 700; font-size: 14px;">Jenis Activity</label>
+                            <select name="jenis_activity" style="width: 100%; padding: 12px; border: 1px solid #cbd5e0; border-radius: 8px; background: white;">
+                                <option value="Offline" {{ $activity->jenis_activity == 'Offline' ? 'selected' : '' }}>Offline</option>
+                                <option value="Online" {{ $activity->jenis_activity == 'Online' ? 'selected' : '' }}>Online</option>
+                            </select>
+                        </div>
+                        <div style="flex: 1;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 700; font-size: 14px;">Activity</label>
+                            <select name="activity" style="width: 100%; padding: 12px; border: 1px solid #cbd5e0; border-radius: 8px; background: white;">
+                                @foreach (['D_MARKETING','EXHIBITION','MOVING_EXHIBITION','SHOWROOM_EVENT','GROUP_PRESENTATION','EVENT_TEST_DRIVE','OPEN_TABLE','CETAK_FLYER'] as $act)
+                                    <option value="{{ $act }}" {{ $activity->activity == $act ? 'selected' : '' }}>{{ str_replace('_',' ', $act) }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label style="display: block; margin-bottom: 8px; font-weight: 700; font-size: 14px;">Platform / Lokasi</label>
+                        <input type="text" name="platform_lokasi" value="{{ $activity->platform_lokasi }}" style="width: 100%; padding: 12px; border: 1px solid #cbd5e0; border-radius: 8px; background: white;">
+                    </div>
+                </div>
+
+                <div style="border-left: 5px solid #e53e3e; padding-left: 25px; background: #fff5f5; padding: 25px; border-radius: 0 12px 12px 0;">
+                    <h3 style="color: #c53030; margin-top: 0; font-size: 17px; margin-bottom: 20px; font-weight: 800; text-transform: uppercase;">B. Activity Actual (Update Hasil)</h3>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 15px;">
+                        <div>
+                            <span style="font-size: 11px; font-weight: 800; color: #c53030;">TARGET P</span>
+                            <input type="number" name="target_p" value="{{ $activity->target_p }}" style="width: 100%; padding: 10px; border: 1px solid #feb2b2; border-radius: 8px; margin-top: 5px;">
+                        </div>
+                        <div>
+                            <span style="font-size: 11px; font-weight: 800; color: #c53030;">TARGET HP</span>
+                            <input type="number" name="target_hp" value="{{ $activity->target_hp }}" style="width: 100%; padding: 10px; border: 1px solid #feb2b2; border-radius: 8px; margin-top: 5px;">
+                        </div>
+                        <div>
+                            <span style="font-size: 11px; font-weight: 800; color: #c53030;">TARGET SPK</span>
+                            <input type="number" name="target_spk" value="{{ $activity->target_spk }}" style="width: 100%; padding: 10px; border: 1px solid #feb2b2; border-radius: 8px; margin-top: 5px;">
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;">
+                        <div>
+                            <span style="font-size: 11px; font-weight: 700; color: #4a5568;">ACTUAL P</span>
+                            <input type="number" name="actual_p" value="{{ $activity->actual_p }}" style="width: 100%; padding: 10px; border: 1px solid #cbd5e0; border-radius: 8px; margin-top: 5px;">
+                        </div>
+                        <div>
+                            <span style="font-size: 11px; font-weight: 700; color: #4a5568;">ACTUAL HP</span>
+                            <input type="number" name="actual_hp" value="{{ $activity->actual_hp }}" style="width: 100%; padding: 10px; border: 1px solid #cbd5e0; border-radius: 8px; margin-top: 5px;">
+                        </div>
+                        <div>
+                            <span style="font-size: 11px; font-weight: 700; color: #4a5568;">ACTUAL SPK</span>
+                            <input type="number" name="actual_spk" value="{{ $activity->actual_spk }}" style="width: 100%; padding: 10px; border: 1px solid #cbd5e0; border-radius: 8px; margin-top: 5px;">
+                        </div>
+                        <div>
+                            <span style="font-size: 11px; font-weight: 700; color: #4a5568;">ACTUAL DO</span>
+                            <input type="number" name="actual_do" value="{{ $activity->actual_do }}" style="width: 100%; padding: 10px; border: 1px solid #cbd5e0; border-radius: 8px; margin-top: 5px;">
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                    <div style="display: grid; gap: 15px;">
+                        <div style="display: flex; gap: 15px;">
+                            <div style="flex: 1;">
+                                <label style="display: block; margin-bottom: 8px; font-weight: 700; font-size: 14px;">Jenis Unit</label>
+                                <select id="jenis_unit" name="jenis_unit" style="width: 100%; padding: 12px; border: 1px solid #cbd5e0; border-radius: 8px;">
+                                    <option value="Commercial" {{ $activity->jenis_unit == 'Commercial' ? 'selected' : '' }}>Commercial</option>
+                                    <option value="Passenger" {{ $activity->jenis_unit == 'Passenger' ? 'selected' : '' }}>Passenger</option>
+                                </select>
+                            </div>
+                            <div style="flex: 1;">
+                                <label style="display: block; margin-bottom: 8px; font-weight: 700; font-size: 14px;">Type Unit</label>
+                                <select id="type_unit" name="type_unit" data-current="{{ $activity->type_unit }}" style="width: 100%; padding: 12px; border: 1px solid #cbd5e0; border-radius: 8px;">
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 8px; font-weight: 700; font-size: 14px;">PIC</label>
+                            <input type="text" name="pic" value="{{ $activity->pic }}" style="width: 100%; padding: 12px; border: 1px solid #cbd5e0; border-radius: 8px;">
+                        </div>
+                    </div>
+
+                    <div style="display: grid; gap: 15px;">
+                        <div style="display: flex; gap: 15px;">
+                            <div style="flex: 1;">
+                                <label style="display: block; margin-bottom: 8px; font-weight: 700; font-size: 14px;">Tanggal</label>
+                                <input type="date" name="tanggal" value="{{ $activity->tanggal }}" style="width: 100%; padding: 12px; border: 1px solid #cbd5e0; border-radius: 8px;">
+                            </div>
+                            <div style="flex: 1;">
+                                <label style="display: block; margin-bottom: 8px; font-weight: 700; font-size: 14px;">Jam</label>
+                                <input type="time" name="jam" value="{{ $activity->jam }}" style="width: 100%; padding: 12px; border: 1px solid #cbd5e0; border-radius: 8px;">
+                            </div>
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 8px; font-weight: 700; font-size: 14px;">Sales / Shift</label>
+                            <input type="text" name="jml_sales_shift" value="{{ $activity->jml_sales_shift }}" style="width: 100%; padding: 12px; border: 1px solid #cbd5e0; border-radius: 8px;">
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 30px;">
+                    <div style="flex: 1;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 700; font-size: 14px;">Total Cost (Rp)</label>
+                        <input type="number" name="total_cost" value="{{ $activity->total_cost }}" style="width: 100%; padding: 12px; border: 1px solid #cbd5e0; border-radius: 8px; background: #fffaf0;">
+                    </div>
+                    <div style="flex: 2;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 700; font-size: 14px;">Keterangan / Evaluasi</label>
+                        <textarea name="keterangan" rows="2" style="width: 100%; padding: 12px; border: 1px solid #cbd5e0; border-radius: 8px; font-family: inherit;">{{ $activity->keterangan }}</textarea>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 15px; margin-top: 10px; border-top: 2px solid #f7fafc; padding-top: 30px;">
+                    <a href="{{ route('activity.index') }}" style="padding: 14px 30px; background: #e2e8f0; color: #4a5568; border-radius: 10px; text-decoration: none; font-weight: 700;">Kembali</a>
+                    <button type="submit" style="padding: 14px 45px; background: #2d3748; color: white; border-radius: 10px; border: none; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">UPDATE DATA</button>
+                </div>
+
+            </div>
+        </form>
     </div>
-
-    <!-- Platform -->
-    <div>
-        <label style="font-weight:600;">Platform / Lokasi</label>
-        <input type="text" name="platform_lokasi"
-            value="{{ $activity->platform_lokasi }}"
-            style="width:100%; padding:10px; border:1px solid #ccc; border-radius:8px;">
-    </div>
-
-    <!-- Upload Konten Display -->
-    <hr style="border:none; border-top:1px dashed #bbb;">
-    <h3 style="font-weight:700;">Upload Konten Display</h3>
-
-    <div style="display:flex; gap:15px;">
-        <div style="flex:1;">
-            <label style="font-weight:600;">Jenis Unit</label>
-            <select id="jenis_unit" name="jenis_unit" style="width:100%; padding:10px; border:1px solid #ccc; border-radius:8px;">
-                <option value="Commercial" {{ $activity->jenis_unit == 'Commercial' ? 'selected' : '' }}>Commercial</option>
-                <option value="Passenger" {{ $activity->jenis_unit == 'Passenger' ? 'selected' : '' }}>Passenger</option>
-            </select>
-        </div>
-
-        <div style="flex:1;">
-            <label style="font-weight:600;">Type Unit</label>
-            <select id="type_unit" name="type_unit"
-                data-current="{{ $activity->type_unit }}"
-                style="width:100%; padding:10px; border:1px solid #ccc; border-radius:8px;">
-            </select>
-        </div>
-    </div>
-
-    <!-- Waktu -->
-    <hr style="border:none; border-top:1px dashed #bbb;">
-    <h3 style="font-weight:700;">Waktu Pelaksanaan</h3>
-
-    <div style="display:flex; gap:15px;">
-        <div style="flex:1;">
-            <label style="font-weight:600;">Tanggal</label>
-            <input type="date" name="tanggal"
-                value="{{ $activity->tanggal }}"
-                style="width:100%; padding:10px; border:1px solid #ccc; border-radius:8px;">
-        </div>
-
-        <div style="flex:1;">
-            <label style="font-weight:600;">Jam</label>
-            <input type="time" name="jam"
-                value="{{ $activity->jam }}"
-                style="width:100%; padding:10px; border:1px solid #ccc; border-radius:8px;">
-        </div>
-    </div>
-
-    <!-- PIC -->
-    <div>
-        <label style="font-weight:600;">PIC</label>
-        <input type="text" name="pic" value="{{ $activity->pic }}"
-            style="width:100%; padding:10px; border:1px solid #ccc; border-radius:8px;">
-    </div>
-
-    <!-- Jumlah Sales -->
-    <div>
-        <label style="font-weight:600;">Jumlah Sales / Shift</label>
-        <input type="text" name="jml_sales_shift"
-            value="{{ $activity->jml_sales_shift }}"
-            style="width:100%; padding:10px; border:1px solid #ccc; border-radius:8px;">
-    </div>
-
-    <!-- Target & Actual -->
-    <hr style="border:none; border-top:1px dashed #bbb;">
-    <h3 style="font-weight:700;">Target & Actual</h3>
-
-    <div style="display:grid; grid-template-columns: repeat(auto-fit,minmax(120px,1fr)); gap:10px;">
-        <input type="number" name="target_p" value="{{ $activity->target_p }}" placeholder="Target P">
-        <input type="number" name="target_hp" value="{{ $activity->target_hp }}" placeholder="Target HP">
-        <input type="number" name="target_spk" value="{{ $activity->target_spk }}" placeholder="Target SPK">
-    </div>
-
-    <div style="display:grid; grid-template-columns: repeat(auto-fit,minmax(120px,1fr)); gap:10px;">
-        <input type="number" name="actual_p" value="{{ $activity->actual_p }}" placeholder="Actual P">
-        <input type="number" name="actual_hp" value="{{ $activity->actual_hp }}" placeholder="Actual HP">
-        <input type="number" name="actual_spk" value="{{ $activity->actual_spk }}" placeholder="Actual SPK">
-        <input type="number" name="actual_do" value="{{ $activity->actual_do }}" placeholder="Actual DO">
-    </div>
-
-    <!-- Cost -->
-    <label style="font-weight:600;">Total Cost (Rp)</label>
-    <input type="number" name="total_cost" value="{{ $activity->total_cost }}"
-        style="width:100%; padding:10px; border:1px solid #ccc; border-radius:8px;">
-
-    <!-- Keterangan -->
-    <label style="font-weight:600;">Keterangan</label>
-    <textarea name="keterangan" rows="3"
-        style="width:100%; padding:10px; border:1px solid #ccc; border-radius:8px;">{{ $activity->keterangan }}</textarea>
-
-    <!-- Tombol -->
-    <div style="display:flex; justify-content:space-between; margin-top:15px;">
-        <a href="{{ route('activity.index') }}"
-            style="padding:10px 20px; border-radius:8px; border:1px solid #999; color:#111; text-decoration:none;">
-            Kembali
-        </a>
-        <button type="submit"
-            style="background:#111; color:white; padding:10px 22px; border:none; border-radius:8px;">
-            Update Activity
-        </button>
-    </div>
-
-</div>
-</form>
 </div>
 
 <script>
@@ -174,7 +172,9 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // Ambil data current dari atribut data-current yang kita set di atas
     updateTypeUnit(typeSelect.dataset.current);
     jenisSelect.addEventListener('change', () => updateTypeUnit());
 });
 </script>
+@endsection
