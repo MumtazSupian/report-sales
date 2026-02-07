@@ -16,19 +16,21 @@
             <div style="display: flex; gap: 10px;">
                 <a href="{{ url('/current/dashboard') }}"
                     style="padding:8px 16px; background:#6c757d; color:#fff; border-radius:6px; font-size:13px; font-weight:600; text-decoration:none; box-shadow:0 2px 5px rgba(0,0,0,0.1); transition:0.3s;"
-                    onmouseover="this.style.background='#5a6268'" onmouseout="this.style.background='#6c757d'">
+                    onmouseover="this.style.background='#5a6268'; this.style.transform='translateY(-1px)'"
+                    onmouseout="this.style.background='#6c757d'; this.style.transform='translateY(0)'">
                     ⬅ Kembali
                 </a>
                 <a href="{{ route('current.actual-sales-by-leasing.index') }}"
-                    style="padding:8px 16px; background:#f8f9fa; color:#333; border: 1px solid #ddd; border-radius:6px; font-size:13px; font-weight:600; text-decoration:none; transition:0.3s;"
+                    style="padding:8px 16px; background:#f8f9fa; color:#333; border: 1px solid #ddd; border-radius:6px; font-size:13px; font-weight:600; text-decoration:none; transition:0.3s; box-shadow:0 2px 5px rgba(0,0,0,0.05);"
                     onmouseover="this.style.background='#e2e6ea'" onmouseout="this.style.background='#f8f9fa'">
                     🔄 Refresh
                 </a>
             </div>
 
             <a href="{{ route('current.actual-sales-by-leasing.create') }}"
-                style="padding:8px 16px; background:#1e88e5; color:#fff; border-radius:6px; font-size:13px; font-weight:600; text-decoration:none; box-shadow:0 2px 5px rgba(0,0,0,0.1); transition:0.3s;"
-                onmouseover="this.style.background='#1565c0'" onmouseout="this.style.background='#1e88e5'">
+                style="padding:8px 16px; background:#1e88e5; color:#fff; border-radius:6px; font-size:13px; font-weight:600; text-decoration:none; box-shadow:0 4px 10px rgba(30, 136, 229, 0.3); transition:0.3s;"
+                onmouseover="this.style.background='#1565c0'; this.style.transform='translateY(-2px)'"
+                onmouseout="this.style.background='#1e88e5'; this.style.transform='translateY(0)'">
                 + Tambah Data
             </a>
         </div>
@@ -36,7 +38,6 @@
         {{-- SweetAlert2 Library --}}
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-        {{-- Notifikasi Sukses --}}
         @if (session('success'))
             <script>
                 Swal.fire({
@@ -56,7 +57,6 @@
             style="background:#fff; padding:20px; border-radius:14px; box-shadow:0 6px 20px rgba(0,0,0,0.08); overflow-x:auto;">
             @php
                 $months = ['jan', 'feb', 'mar', 'apr', 'mei', 'jun', 'jul', 'agu', 'sep', 'okt', 'nov', 'des'];
-
                 $grandTotals = [];
                 foreach ($months as $m) {
                     $grandTotals[$m] = $data->sum($m);
@@ -68,7 +68,7 @@
                 style="width:100%; border-collapse:collapse; font-family:'Segoe UI',sans-serif; font-size:12px; text-align:center; border:1px solid #bbb;">
                 <thead style="background:#e3f2fd; color:#0d47a1;">
                     <tr style="border-bottom:2px solid #90caf9;">
-                        <th style="border:1px solid #999;">LEASING NAME</th>
+                        <th style="border:1px solid #999; padding: 12px;">LEASING NAME</th>
                         <th style="border:1px solid #999;">TAHUN</th>
                         @foreach ($months as $m)
                             <th style="border:1px solid #999;">{{ strtoupper($m) }}</th>
@@ -79,8 +79,9 @@
                 </thead>
                 <tbody>
                     @foreach ($data as $row)
-                        <tr
-                            style="background:{{ $loop->iteration % 2 == 0 ? '#f7f9fb' : '#ffffff' }}; border-bottom:1px solid #ccc;">
+                        <tr style="background:{{ $loop->iteration % 2 == 0 ? '#f7f9fb' : '#ffffff' }}; border-bottom:1px solid #ccc; transition: 0.2s;"
+                            onmouseover="this.style.background='#edf2f7'"
+                            onmouseout="this.style.background='{{ $loop->iteration % 2 == 0 ? '#f7f9fb' : '#ffffff' }}'">
                             <td
                                 style="border:1px solid #bbb; font-weight:700; text-align:left; padding-left:15px; color:#0d47a1;">
                                 {{ $row->leasing_name }}
@@ -97,16 +98,16 @@
 
                             <td style="border:1px solid #bbb; white-space:nowrap;">
                                 <a href="{{ route('current.actual-sales-by-leasing.edit', $row->id) }}"
-                                    style="color:#1976d2; font-weight:600; text-decoration:none; margin-right:8px; border-bottom: 1px solid transparent; transition: 0.2s;"
-                                    onmouseover="this.style.borderBottom='1px solid #1976d2'">Edit</a>
+                                    style="color:#1976d2; font-weight:600; text-decoration:none; margin-right:8px; transition: 0.2s;"
+                                    onmouseover="this.style.color='#0d47a1'; this.style.textDecoration='underline'">Edit</a>
 
                                 <form action="{{ route('current.actual-sales-by-leasing.destroy', $row->id) }}"
                                     method="POST" style="display:inline;" id="delete-form-{{ $row->id }}">
                                     @csrf @method('DELETE')
                                     <button type="button" onclick="confirmDelete('{{ $row->id }}')"
-                                        style="background:#e53935; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:11px; cursor:pointer; transition:0.2s;"
-                                        onmouseover="this.style.background='#b71c1c'"
-                                        onmouseout="this.style.background='#e53935'">
+                                        style="background:#e53935; color:white; border:none; padding:5px 10px; border-radius:4px; font-size:11px; font-weight:600; cursor:pointer; transition:0.2s; box-shadow: 0 2px 4px rgba(229, 57, 53, 0.2);"
+                                        onmouseover="this.style.background='#b71c1c'; this.style.transform='scale(1.05)'"
+                                        onmouseout="this.style.background='#e53935'; this.style.transform='scale(1)'">
                                         Hapus
                                     </button>
                                 </form>
@@ -116,13 +117,15 @@
                 </tbody>
                 <tfoot style="background:#0d47a1; color:white; font-weight:bold;">
                     <tr>
-                        <td colspan="2" style="border:1px solid #999; text-align: center; letter-spacing:1px;">GRAND
+                        <td colspan="2"
+                            style="border:1px solid #999; text-align: center; letter-spacing:1px; padding: 12px;">GRAND
                             TOTAL</td>
                         @foreach ($months as $m)
                             <td style="border:1px solid #999;">{{ number_format($grandTotals[$m], 0, ',', '.') }}</td>
                         @endforeach
                         <td style="border:1px solid #999; background:#1565c0;">
-                            {{ number_format($grandTotalAll, 0, ',', '.') }}</td>
+                            {{ number_format($grandTotalAll, 0, ',', '.') }}
+                        </td>
                         <td style="border:1px solid #999;">-</td>
                     </tr>
                 </tfoot>
@@ -130,12 +133,11 @@
         </div>
     </div>
 
-    {{-- Script Konfirmasi Hapus --}}
     <script>
         function confirmDelete(id) {
             Swal.fire({
                 title: 'Hapus Data Leasing?',
-                text: "Data realisasi penjualan ini akan dihapus permanen!",
+                text: "Data ini tidak dapat dikembalikan setelah dihapus.",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#e53935',
@@ -143,9 +145,7 @@
                 confirmButtonText: 'Ya, Hapus!',
                 cancelButtonText: 'Batal',
                 reverseButtons: true,
-                background: '#ffffff',
                 customClass: {
-                    title: 'text-dark',
                     popup: 'rounded-4'
                 }
             }).then((result) => {

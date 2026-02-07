@@ -86,7 +86,6 @@ class ActualSalesByLeasingController extends Controller
             $data[$m] = $request->input($m, 0);
             $data['total'] += $data[$m];
         }
-        $row->update($data);
         return redirect()->route('current.actual-sales-by-leasing.index')->with('success', 'Data berhasil diupdate!');
     }
 

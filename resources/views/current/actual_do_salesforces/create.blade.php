@@ -13,18 +13,16 @@
             <p style="color: #cbd5e0; font-size: 14px;">Input data aktual Delivery Order berdasarkan grading salesforce</p>
         </div>
 
-        <div
-            style="background: white; width: 100%; max-width: 700px; padding: 35px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.2);">
-            <form action="{{ route('current.actual-do-salesforces.store') }}" method="POST">
+        <div style="background: white; width: 100%; max-width: 700px; padding: 35px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.2);">
+            <form id="createForm" action="{{ route('current.actual-do-salesforces.store') }}" method="POST">
                 @csrf
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 10px;">
                     <div>
-                        <label
-                            style="display: block; font-weight: 700; color: #2d3748; margin-bottom: 8px; font-size: 13px; text-transform: uppercase;">
+                        <label style="display: block; font-weight: 700; color: #2d3748; margin-bottom: 8px; font-size: 13px; text-transform: uppercase;">
                             Grading Salesforce
                         </label>
-                        <select name="grading"
+                        <select name="grading" id="grading"
                             style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 14px; color: #4a5568; outline: none; transition: 0.3s; cursor: pointer;">
                             <option value="" disabled selected>Pilih Grading</option>
                             @foreach (['PLATINUM', 'GOLD', 'SILVER', 'TRAINEE', 'FREELANCE'] as $g)
@@ -33,19 +31,17 @@
                         </select>
                     </div>
                     <div>
-                        <label
-                            style="display: block; font-weight: 700; color: #2d3748; margin-bottom: 8px; font-size: 13px; text-transform: uppercase;">
+                        <label style="display: block; font-weight: 700; color: #2d3748; margin-bottom: 8px; font-size: 13px; text-transform: uppercase;">
                             Tahun
                         </label>
-                        <input type="number" name="tahun" value="{{ date('Y') }}"
+                        <input type="number" name="tahun" id="tahun" value="{{ date('Y') }}"
                             style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 14px; color: #4a5568; outline: none; transition: 0.3s;">
                     </div>
                 </div>
 
                 <div style="margin: 25px 0 15px 0; border-bottom: 2px dashed #edf2f7;"></div>
 
-                <label
-                    style="display: block; font-weight: 800; color: #3182ce; margin-bottom: 15px; font-size: 14px; text-transform: uppercase; text-align: center;">
+                <label style="display: block; font-weight: 800; color: #3182ce; margin-bottom: 15px; font-size: 14px; text-transform: uppercase; text-align: center;">
                     Data Aktual Per Bulan
                 </label>
 
@@ -54,11 +50,10 @@
                 <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;">
                     @foreach ($months as $m)
                         <div style="background: #f7fafc; padding: 10px; border-radius: 12px; border: 1px solid #edf2f7;">
-                            <label
-                                style="display: block; font-weight: 700; color: #718096; margin-bottom: 5px; font-size: 11px; text-align: center;">
+                            <label style="display: block; font-weight: 700; color: #718096; margin-bottom: 5px; font-size: 11px; text-align: center;">
                                 {{ strtoupper($m) }}
                             </label>
-                            <input type="number" name="{{ $m }}" value="0"
+                            <input type="number" name="{{ $m }}" value="0" min="0"
                                 style="width: 100%; padding: 8px; border: 1px solid #cbd5e0; border-radius: 8px; font-size: 14px; text-align: center; color: #2d3748; outline: none;">
                         </div>
                     @endforeach
@@ -70,7 +65,7 @@
                         onmouseover="this.style.background='#e2e8f0'" onmouseout="this.style.background='#edf2f7'">
                         Batal
                     </a>
-                    <button type="submit"
+                    <button type="button" onclick="confirmStore()"
                         style="flex: 2; padding: 14px; background: #1e88e5; color: white; border: none; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 12px rgba(30, 136, 229, 0.3);"
                         onmouseover="this.style.background='#1565c0'; this.style.transform='translateY(-2px)'"
                         onmouseout="this.style.background='#1e88e5'; this.style.transform='translateY(0)'">
@@ -80,6 +75,51 @@
             </form>
         </div>
     </div>
+
+    {{-- SweetAlert2 Library --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        function confirmStore() {
+            const grading = document.getElementById('grading').value;
+            const tahun = document.getElementById('tahun').value;
+
+            if (!grading || !tahun) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Data Belum Lengkap',
+                    text: 'Silakan pilih Grading dan isi Tahun terlebih dahulu.',
+                    confirmButtonColor: '#1e88e5',
+                    customClass: { popup: 'rounded-4' }
+                });
+                return;
+            }
+
+            Swal.fire({
+                title: 'Simpan Data?',
+                text: "Pastikan seluruh data bulanan sudah diisi dengan benar.",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#1e88e5',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, Simpan!',
+                cancelButtonText: 'Batal',
+                reverseButtons: true,
+                customClass: { popup: 'rounded-4' }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Menyimpan...',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                    document.getElementById('createForm').submit();
+                }
+            });
+        }
+    </script>
 
     <style>
         input:focus,

@@ -14,7 +14,7 @@
     </div>
 
     <div style="background: white; width: 100%; max-width: 700px; padding: 35px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.2);">
-        <form action="{{ route('current.actual-do-salesforces.update', $actualDoSalesforce->id) }}" method="POST">
+        <form id="editForm" action="{{ route('current.actual-do-salesforces.update', $actualDoSalesforce->id) }}" method="POST">
             @csrf
             @method('PUT')
 
@@ -68,7 +68,7 @@
                    onmouseover="this.style.background='#e2e8f0'" onmouseout="this.style.background='#edf2f7'">
                     Batal
                 </a>
-                <button type="submit"
+                <button type="button" onclick="confirmUpdate()"
                         style="flex: 2; padding: 14px; background: #1e88e5; color: white; border: none; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 12px rgba(30, 136, 229, 0.3);"
                         onmouseover="this.style.background='#1565c0'; this.style.transform='translateY(-2px)'"
                         onmouseout="this.style.background='#1e88e5'; this.style.transform='translateY(0)'">
@@ -78,6 +78,39 @@
         </form>
     </div>
 </div>
+
+{{-- SweetAlert2 Library --}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    function confirmUpdate() {
+        Swal.fire({
+            title: 'Simpan Perubahan?',
+            text: "Pastikan data aktual Delivery Order sudah sesuai.",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#1e88e5',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, Simpan!',
+            cancelButtonText: 'Batal',
+            reverseButtons: true,
+            customClass: {
+                popup: 'rounded-4'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Memproses...',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+                document.getElementById('editForm').submit();
+            }
+        });
+    }
+</script>
 
 <style>
     input:focus, select:focus {

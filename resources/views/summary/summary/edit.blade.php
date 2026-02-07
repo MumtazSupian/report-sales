@@ -1,139 +1,162 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <title>Edit Summary</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+@section('title', 'Edit Summary Operasional')
 
-    {{-- Bootstrap --}}
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    {{-- Icons --}}
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+@section('content')
+    <div style="padding: 40px 20px; display: flex; flex-direction: column; align-items: center; min-height: 100vh;">
 
-    <style>
-        body {
-            background-color: #f4f6f9;
-        }
-
-        .card {
-            border-radius: 14px;
-        }
-
-        .form-label {
-            font-weight: 600;
-        }
-
-        textarea {
-            resize: none;
-        }
-    </style>
-</head>
-
-<body>
-
-    {{-- NAVBAR --}}
-    <nav class="navbar navbar-dark bg-primary mb-4 shadow-sm">
-        <div class="container">
-            <span class="navbar-brand fw-bold">
-                📊 Summary Improvement
-            </span>
+        <div style="text-align: center; margin-bottom: 30px;">
+            <h2 style="font-weight:800; color:#fff; letter-spacing:1px; text-transform:uppercase; margin:0;">
+                ✏️ EDIT SUMMARY OPERASIONAL
+            </h2>
+            <div style="width: 50px; height: 4px; background: #3182ce; margin: 10px auto; border-radius: 10px;"></div>
+            <p style="color: #cbd5e0; font-size: 14px;">Perbarui data rencana dan aktual perbaikan operasional</p>
         </div>
-    </nav>
 
-    <div class="container py-4">
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
+        <div
+            style="background: white; width: 100%; max-width: 750px; padding: 35px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.2);">
 
-                <div class="card border-0 shadow-lg">
-                    <div class="card-header bg-primary text-white d-flex align-items-center">
-                        <h5 class="mb-0 fw-semibold">
-                            <i class="bi bi-pencil-square me-2"></i> Edit Summary Operasional
-                        </h5>
+            <form id="editForm" action="{{ route('summary.summary.update', $summary->id) }}" method="POST">
+                @csrf
+                @method('PUT')
+
+                @php
+                    $ops = [
+                        'Jumlah Sales Force by Grading',
+                        'Jumlah Inquiry by Type',
+                        'Jumlah Activity by Type',
+                        'Source Of Inquiry',
+                        'Issue',
+                        'Usulan',
+                    ];
+                @endphp
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
+                    {{-- Operasional --}}
+                    <div>
+                        <label
+                            style="display: block; font-weight: 700; color: #2d3748; margin-bottom: 8px; font-size: 13px; text-transform: uppercase;">
+                            Kategori Operasional
+                        </label>
+                        <select name="operasional"
+                            style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 14px; color: #4a5568; outline: none; transition: 0.3s; cursor: pointer;">
+                            @foreach ($ops as $op)
+                                <option value="{{ $op }}" {{ $summary->operasional == $op ? 'selected' : '' }}>
+                                    {{ $op }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
 
-                    <div class="card-body p-4">
-                        <form action="{{ route('summary.summary.update', $summary->id) }}" method="POST">
-                            @csrf
-                            @method('PUT')
-
-                            @php
-                                $ops = [
-                                    'Jumlah Sales Force by Grading',
-                                    'Jumlah Inquiry by Type',
-                                    'Jumlah Activity by Type',
-                                    'Source Of Inquiry',
-                                    'Issue',
-                                    'Usulan',
-                                ];
-                            @endphp
-
-                            {{-- Operasional --}}
-                            <div class="mb-4">
-                                <label class="form-label">Operasional</label>
-                                <select name="operasional" class="form-select form-select-lg" required>
-                                    @foreach ($ops as $op)
-                                        <option value="{{ $op }}"
-                                            {{ $summary->operasional == $op ? 'selected' : '' }}>
-                                            {{ $op }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            {{-- Plan --}}
-                            <div class="mb-4">
-                                <label class="form-label">📌 Plan Rencana Perbaikan</label>
-                                <textarea name="plan_perbaikan"
-                                    rows="4"
-                                    class="form-control"
-                                    placeholder="Tuliskan rencana perbaikan...">{{ $summary->plan_perbaikan }}</textarea>
-                            </div>
-
-                            {{-- Aktual --}}
-                            <div class="mb-4">
-                                <label class="form-label">✅ Aktual Pelaksanaan</label>
-                                <textarea name="aktual_perbaikan"
-                                    rows="4"
-                                    class="form-control"
-                                    placeholder="Tuliskan aktual pelaksanaan...">{{ $summary->aktual_perbaikan }}</textarea>
-                            </div>
-
-                            {{-- Do / Don't --}}
-                            <div class="mb-4">
-                                <label class="form-label">Do / Don't</label>
-                                <select name="do_dont" class="form-select">
-                                    <option value="">-- Pilih --</option>
-                                    <option value="V" {{ $summary->do_dont == 'V' ? 'selected' : '' }}>
-                                        ✔ Do
-                                    </option>
-                                    <option value="X" {{ $summary->do_dont == 'X' ? 'selected' : '' }}>
-                                        ✖ Don't
-                                    </option>
-                                </select>
-                            </div>
-
-                            {{-- BUTTON --}}
-                            <div class="d-flex justify-content-between mt-4">
-                                <a href="{{ route('summary.summary.index') }}"
-                                   class="btn btn-outline-secondary px-4">
-                                    ← Kembali
-                                </a>
-
-                                <button class="btn btn-primary px-4 fw-semibold shadow-sm">
-                                    <i class="bi bi-arrow-repeat me-1"></i> Update
-                                </button>
-                            </div>
-
-                        </form>
+                    {{-- Do / Don't --}}
+                    <div>
+                        <label
+                            style="display: block; font-weight: 700; color: #2d3748; margin-bottom: 8px; font-size: 13px; text-transform: uppercase;">
+                            Status (Do / Don't)
+                        </label>
+                        <select name="do_dont"
+                            style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 14px; color: #4a5568; outline: none; transition: 0.3s; cursor: pointer;">
+                            <option value="">-- Pilih Status --</option>
+                            <option value="V" {{ $summary->do_dont == 'V' ? 'selected' : '' }}>✔ Do</option>
+                            <option value="X" {{ $summary->do_dont == 'X' ? 'selected' : '' }}>✖ Don't</option>
+                        </select>
                     </div>
                 </div>
 
-            </div>
+                {{-- Plan Perbaikan --}}
+                <div style="margin-bottom: 20px;">
+                    <label
+                        style="display: block; font-weight: 700; color: #2d3748; margin-bottom: 8px; font-size: 13px; text-transform: uppercase;">
+                        📌 Plan Rencana Perbaikan
+                    </label>
+                    <textarea name="plan_perbaikan" rows="4"
+                        style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 14px; color: #4a5568; outline: none; transition: 0.3s; resize: none;"
+                        placeholder="Tuliskan rencana perbaikan...">{{ $summary->plan_perbaikan }}</textarea>
+                </div>
+
+                {{-- Aktual Pelaksanaan --}}
+                <div style="margin-bottom: 10px;">
+                    <label
+                        style="display: block; font-weight: 700; color: #2d3748; margin-bottom: 8px; font-size: 13px; text-transform: uppercase;">
+                        ✅ Aktual Pelaksanaan
+                    </label>
+                    <textarea name="aktual_perbaikan" rows="4"
+                        style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 14px; color: #4a5568; outline: none; transition: 0.3s; resize: none;"
+                        placeholder="Tuliskan aktual pelaksanaan...">{{ $summary->aktual_perbaikan }}</textarea>
+                </div>
+
+                {{-- Form Actions --}}
+                <div style="margin-top: 35px; display: flex; gap: 15px;">
+                    <a href="{{ route('summary.summary.index') }}"
+                        style="flex: 1; padding: 14px; background: #edf2f7; color: #4a5568; text-align: center; border-radius: 12px; text-decoration: none; font-weight: 700; font-size: 14px; transition: 0.3s;"
+                        onmouseover="this.style.background='#e2e8f0'" onmouseout="this.style.background='#edf2f7'">
+                        Batal
+                    </a>
+                    <button type="button" onclick="confirmUpdate()"
+                        style="flex: 2; padding: 14px; background: #1e88e5; color: white; border: none; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 12px rgba(30, 136, 229, 0.3);"
+                        onmouseover="this.style.background='#1565c0'; this.style.transform='translateY(-2px)'"
+                        onmouseout="this.style.background='#1e88e5'; this.style.transform='translateY(0)'">
+                        Simpan Perubahan
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    {{-- Memasukkan Library SweetAlert2 --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-</body>
-</html>
+    <script>
+        // 1. Alert Validasi Error
+        @if ($errors->any())
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal Menyimpan!',
+                text: 'Pastikan semua input data sudah benar.',
+                confirmButtonColor: '#1e88e5',
+                customClass: {
+                    popup: 'rounded-4'
+                }
+            });
+        @endif
+
+        // 2. Fungsi Konfirmasi Sebelum Update
+        function confirmUpdate() {
+            Swal.fire({
+                title: 'Simpan Perubahan?',
+                text: "Data summary ini akan diperbarui.",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#1e88e5',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, Simpan!',
+                cancelButtonText: 'Batal',
+                reverseButtons: true,
+                customClass: {
+                    popup: 'rounded-4',
+                    title: 'text-dark'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Memproses...',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                    document.getElementById('editForm').submit();
+                }
+            });
+        }
+    </script>
+
+    <style>
+        textarea:focus,
+        select:focus {
+            border-color: #3182ce !important;
+            box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+        }
+    </style>
+@endsection
+
