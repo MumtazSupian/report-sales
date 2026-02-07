@@ -106,7 +106,7 @@
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#1a202c',
-                cancelButtonColor: '#cbd5e0',
+                cancelButtonColor: '#e53e3e',
                 confirmButtonText: 'Ya, Simpan!',
                 cancelButtonText: 'Cek Kembali'
             }).then((result) => {

@@ -44,7 +44,6 @@
                             <th style="border:1px solid #999; width: 45px;">{{ strtoupper($m) }}</th>
                         @endforeach
                         <th style="border:1px solid #999; background:#bbdefb; width: 65px;">TOTAL</th>
-                        {{-- Lebar kolom AKSI dipersempit di sini --}}
                         <th style="border:1px solid #999; width: 110px;">AKSI</th>
                     </tr>
                 </thead>
@@ -63,19 +62,23 @@
                                        style="padding: 4px 8px; background: #3182ce; color: #fff; text-decoration: none; border-radius: 4px; font-weight: 700; font-size: 10px;">
                                        EDIT
                                     </a>
-                                    <form action="{{ route('leasing.aktual-po.destroy', $row->id) }}" method="POST" onsubmit="return confirm('Hapus data?')">
+                                    <form action="{{ route('leasing.aktual-po.destroy', $row->id) }}" 
+                                          method="POST" 
+                                          id="delete-form-{{ $row->id }}" 
+                                          style="display:none;">
                                         @csrf @method('DELETE')
-                                        <button type="submit" 
-                                                style="padding: 4px 8px; background: #fff5f5; color: #e53e3e; border: 1px solid #fed7d7; border-radius: 4px; font-weight: 700; font-size: 10px; cursor: pointer;">
-                                            HAPUS
-                                        </button>
                                     </form>
+
+                                    <button type="button" onclick="confirmDelete('{{ $row->id }}')"
+                                            style="padding: 4px 8px; background: #fff5f5; color: #e53e3e; border: 1px solid #fed7d7; border-radius: 4px; font-weight: 700; font-size: 10px; cursor: pointer;">
+                                        HAPUS
+                                    </button>
                                 </div>
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
-                <tfoot style="background:#1565c0; color:white; font-weight:bold;">
+                <tfoot style="background:#0d47a1; color:white; font-weight:bold;">
                     <tr>
                         <td colspan="2" style="border:1px solid #999; padding: 10px; text-align: center;">GRAND TOTAL</td>
                         @foreach ($months as $m)
@@ -88,4 +91,25 @@
             </table>
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function confirmDelete(id) {
+            Swal.fire({
+                title: 'Hapus Data?',
+                text: "Data leasing ini akan dihapus secara permanen!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'YA, HAPUS',
+                confirmButtonColor: '#3182ce',
+                cancelButtonText: 'Batal',
+                cancelButtonColor: '#e53e3e',
+                reverseButtons: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            })
+        }
+    </script>
 @endsection

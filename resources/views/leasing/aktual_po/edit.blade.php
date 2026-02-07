@@ -4,8 +4,6 @@
 
 @section('content')
     <div style="padding: 40px 20px; display: flex; flex-direction: column; align-items: center; min-height: 100vh;">
-
-        {{-- Header Section --}}
         <div style="text-align: center; margin-bottom: 30px;">
             <h2 style="font-weight:800; color:#fff; letter-spacing:1px; text-transform:uppercase; margin:0;">
                 EDIT AKTUAL PO
@@ -14,7 +12,6 @@
             <p style="color: #cbd5e0; font-size: 14px;">Perbarui data realisasi PO untuk {{ $data->leasing }}</p>
         </div>
 
-        {{-- Form Card --}}
         <div style="background: white; width: 100%; max-width: 700px; padding: 35px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.2);">
             
             <form id="editPoForm" action="{{ route('leasing.aktual-po.update', $data->id) }}" method="POST">
@@ -86,7 +83,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        // Alert Validasi jika ada error dari Laravel
         @if ($errors->any())
             Swal.fire({
                 icon: 'error',
@@ -97,7 +93,6 @@
             });
         @endif
 
-        // Fungsi Konfirmasi Sebelum Update
         function confirmUpdate() {
             Swal.fire({
                 title: 'Simpan Perubahan?',
@@ -105,7 +100,7 @@
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#2d3748',
-                cancelButtonColor: '#6c757d',
+                cancelButtonColor: '#e53e3e',
                 confirmButtonText: 'Ya, Simpan!',
                 cancelButtonText: 'Batal',
                 reverseButtons: true,

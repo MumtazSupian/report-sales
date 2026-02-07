@@ -3,15 +3,12 @@
 @section('title', 'Aktual Reject')
 
 @section('content')
-    {{-- Container Utama dipersempit ke max-width 1200px agar tidak terlalu lebar --}}
     <div style="padding: 20px; max-width: 1250px; margin: 0 auto;">
         
         <h2 style="text-align:center; font-weight:800; color:#fff; letter-spacing:0.5px; text-transform:uppercase; margin-bottom:5px;">
             📉 AKTUAL REJECT
         </h2>
         <p style="text-align:center; color: #8fb3d9; margin-bottom:20px; font-size: 14px;">Monitoring data aktual penolakan (reject) aplikasi berdasarkan leasing</p>
-
-        {{-- Baris Tombol Atas --}}
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
             <div style="display:flex; gap:10px; align-items:center;">
                 <a href="{{ url('/leasing/dashboard') }}"
@@ -31,8 +28,6 @@
             </a>
         </div>
 
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
         <div style="background:#fff; padding:15px; border-radius:14px; box-shadow:0 6px 20px rgba(0,0,0,0.15); overflow-x:auto;">
             @php
                 $months = ['jan', 'feb', 'mar', 'apr', 'mei', 'jun', 'jul', 'agu', 'sep', 'okt', 'nov', 'des'];
@@ -41,7 +36,6 @@
                 $grandTotalAll = $data->sum('total');
             @endphp
 
-            {{-- Tabel paman tetap dengan border-1px --}}
             <table width="100%" cellpadding="6" cellspacing="0"
                 style="width:100%; border-collapse:collapse; font-family:'Segoe UI',sans-serif; font-size:11px; text-align:center; border:1px solid #bbb;">
                 <thead style="background:#fce4ec; color:#880e4f;">
@@ -71,13 +65,16 @@
                                        style="padding: 4px 8px; background: #3182ce; color: #fff; text-decoration: none; border-radius: 4px; font-weight: 700; font-size: 10px;">
                                        EDIT
                                     </a>
-                                    <form action="{{ route('leasing.aktual-reject.destroy', $row->id) }}" method="POST" id="delete-form-{{ $row->id }}">
+                                    <form action="{{ route('leasing.aktual-reject.destroy', $row->id) }}" 
+                                          method="POST" 
+                                          id="delete-form-{{ $row->id }}" 
+                                          style="display:none;">
                                         @csrf @method('DELETE')
-                                        <button type="button" onclick="confirmDelete('{{ $row->id }}', '{{ $row->leasing }}')"
-                                                style="padding: 4px 10px; background: #fff5f5; color: #e53e3e; border: 1px solid #fed7d7; border-radius: 4px; font-weight: 700; font-size: 10px; cursor: pointer;">
-                                            HAPUS
-                                        </button>
                                     </form>
+                                    <button type="button" onclick="confirmDelete('{{ $row->id }}', '{{ $row->leasing }}')"
+                                            style="padding: 4px 10px; background: #fff5f5; color: #e53e3e; border: 1px solid #fed7d7; border-radius: 4px; font-weight: 700; font-size: 10px; cursor: pointer;">
+                                        HAPUS
+                                    </button>
                                 </div>
                             </td>
                         </tr>
@@ -97,6 +94,7 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         function confirmDelete(id, name) {
             Swal.fire({
@@ -104,11 +102,10 @@
                 text: "Data yang dihapus tidak dapat dikembalikan!",
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#e53935',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Ya, Hapus!',
+                confirmButtonText: 'YA, HAPUS',
+                confirmButtonColor: '#3182ce',
                 cancelButtonText: 'Batal',
-                reverseButtons: true,
+                cancelButtonColor: '#e53e3e',
                 customClass: { popup: 'rounded-4' }
             }).then((result) => {
                 if (result.isConfirmed) {

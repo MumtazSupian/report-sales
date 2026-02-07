@@ -87,7 +87,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        // 1. Alert Validasi jika ada error dari Laravel
         @if ($errors->any())
             Swal.fire({
                 icon: 'error',
@@ -98,7 +97,6 @@
             });
         @endif
 
-        // 2. Fungsi Konfirmasi Sebelum Update
         function confirmUpdate() {
             Swal.fire({
                 title: 'Simpan Perubahan?',
@@ -106,7 +104,7 @@
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#2d3748',
-                cancelButtonColor: '#6c757d',
+                cancelButtonColor: '#e53e3e',
                 confirmButtonText: 'Ya, Simpan!',
                 cancelButtonText: 'Batal',
                 reverseButtons: true,

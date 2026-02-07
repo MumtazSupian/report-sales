@@ -8,128 +8,134 @@
         ACTUAL MARKETING ACTIVITY
     </h2>
 
-    <div style="display:flex; justify-content:flex-end; align-items:center; gap:8px; margin:0 auto 15px auto; width:98%;">
+    <div style="display:flex; justify-content:flex-end; align-items:center; gap:8px; margin-bottom:15px;">
+        <a href="{{ route('activity.index') }}"
+            style="padding: 8px 15px; background: rgba(255,255,255,0.1); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 12px; border: 1px solid rgba(255,255,255,0.1);">
+            🔄 Refresh
+        </a>
         <a href="{{ route('activity.create') }}"
-            style="padding:8px 16px; background:#1e88e5; color:#fff; border-radius:6px; font-size:13px; font-weight:600; text-decoration:none; box-shadow:0 2px 5px rgba(0,0,0,0.1); transition:0.3s;"
-            onmouseover="this.style.background='#1565c0'" onmouseout="this.style.background='#1e88e5'">
-            + Tambah Data
+            style="padding:8px 16px; background:#1e88e5; color:#fff; border-radius:6px; font-size:13px; font-weight:600; text-decoration:none;">
+            + TAMBAH DATA
         </a>
     </div>
-     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <div style="background:#fff; padding:20px; border-radius:14px; box-shadow:0 6px 20px rgba(0,0,0,0.08); overflow-x:auto;">
-        <table width="100%" cellpadding="8" cellspacing="0" style="width:100%; border-collapse:collapse; font-family:'Segoe UI',sans-serif; font-size:12px; text-align:center; border:1px solid #bbb;">
-            <thead style="background:#e3f2fd; color:#0d47a1;">
-                <tr style="border-bottom:2px solid #90caf9;">
-                    <th rowspan="2" style="border:1px solid #999;">NO</th>
-                    <th rowspan="2" style="border:1px solid #999;">JENIS ACTIVITY</th>
-                    <th rowspan="2" style="border:1px solid #999;">ACTIVITY</th>
-                    <th rowspan="2" style="border:1px solid #999;">PLATFORM/LOKASI</th>
-                    <th colspan="2" style="border:1px solid #999;">UPLOAD KONTEN DISPLAY</th>
-                    <th colspan="2" style="border:1px solid #999;">WAKTU PELAKSANAAN</th>
-                    <th rowspan="2" style="border:1px solid #999;">PIC</th>
-                    <th rowspan="2" style="border:1px solid #999;">JML SALES</th>
-                    <th colspan="3" style="border:1px solid #999;">TARGET</th>
-                    <th colspan="4" style="border:1px solid #999;">ACTUAL SD AKHIR BULAN</th>
-                    <th rowspan="2" style="border:1px solid #999;">TOTAL COST</th>
-                    <th rowspan="2" style="border:1px solid #999;">COST/P</th>
-                    <th rowspan="2" style="border:1px solid #999;">COST/SPK</th>
-                    <th rowspan="2" style="border:1px solid #999;">COST/DO</th>
-                    <th rowspan="2" style="border:1px solid #999;">AKSI</th>
+    <div style="background:#fff; padding:15px; border-radius:14px; box-shadow:0 6px 20px rgba(0,0,0,0.15);">
+        <table style="width:100%; border-collapse:collapse; font-family:'Segoe UI',sans-serif; font-size:10px; text-align:center; border: 1px solid #000;">
+            <thead style="background:#e3f2fd; color:#0d47a1; font-weight: bold;">
+                <tr style="border-bottom: 2px solid #000;">
+                    <th rowspan="2" style="border: 1px solid #000; padding: 10px 2px; width: 30px;">NO</th>
+                    <th rowspan="2" style="border: 1px solid #000; width: 110px;">JENIS ACTIVITY</th>
+                    <th rowspan="2" style="border: 1px solid #000; width: 150px;">ACTIVITY</th>
+                    <th rowspan="2" style="border: 1px solid #000; width: 140px;">PLATFORM/LOKASI</th>
+                    <th colspan="2" style="border: 1px solid #000;">UPLOAD KONTEN/DISPLAY</th>
+                    <th colspan="2" style="border: 1px solid #000;">WAKTU PELAKSANAAN</th>
+                    <th rowspan="2" style="border: 1px solid #000; width: 90px;">PIC</th>
+                    <th rowspan="2" style="border: 1px solid #000; width: 60px;">JML SALES/PER SHIFT</th>
+                    <th colspan="3" style="border: 1px solid #000;">TARGET</th>
+                    <th colspan="4" style="border: 1px solid #000;">ACTUAL</th>
+                    <th rowspan="2" style="border: 1px solid #000; width: 90px;">TOTAL COST</th>
+                    <th rowspan="2" style="border: 1px solid #000; width: 80px;">COST/P</th>
+                    <th rowspan="2" style="border: 1px solid #000; width: 80px;">COST/SPK</th>
+                    <th rowspan="2" style="border: 1px solid #000; width: 130px;">KETERANGAN</th>
+                    <th rowspan="2" style="border: 1px solid #000; width: 100px;">AKSI</th>
                 </tr>
-                <tr style="background:#bbdefb;">
-                    <th style="border:1px solid #999;">Jenis</th>
-                    <th style="border:1px solid #999;">Type</th>
-                    <th style="border:1px solid #999;">Tanggal</th>
-                    <th style="border:1px solid #999;">Jam</th>
-                    <th style="border:1px solid #999;">P</th>
-                    <th style="border:1px solid #999;">HP</th>
-                    <th style="border:1px solid #999;">SPK</th>
-                    <th style="border:1px solid #999;">P</th>
-                    <th style="border:1px solid #999;">HP</th>
-                    <th style="border:1px solid #999;">SPK</th>
-                    <th style="border:1px solid #999;">DO</th>
+                <tr style="border-bottom: 2px solid #000;">
+                    <th style="border: 1px solid #000; width: 70px;">Jenis Unit</th>
+                    <th style="border: 1px solid #000; width: 70px;">Type Unit</th>
+                    <th style="border: 1px solid #000; width: 65px;">Tanggal</th>
+                    <th style="border: 1px solid #000; width: 45px;">Jam</th>
+                    <th style="border: 1px solid #000; width: 30px;">P</th>
+                    <th style="border: 1px solid #000; width: 30px;">HP</th>
+                    <th style="border: 1px solid #000; width: 30px;">SPK</th>
+                    <th style="border: 1px solid #000; width: 30px;">P</th>
+                    <th style="border: 1px solid #000; width: 30px;">HP</th>
+                    <th style="border: 1px solid #000; width: 30px;">SPK</th>
+                    <th style="border: 1px solid #000; width: 30px;">DO</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($data as $item)
-                <tr style="background:{{ $loop->iteration % 2 == 0 ? '#f7f9fb' : '#ffffff' }}; border-bottom:1px solid #ccc;">
-                    <td style="border:1px solid #bbb;">{{ $loop->iteration }}</td>
-                    <td style="border:1px solid #bbb;">{{ ucfirst($item->jenis_activity) }}</td>
-                    <td style="border:1px solid #bbb;">{{ str_replace('_', ' ', $item->activity) }}</td>
-                    <td style="border:1px solid #bbb;">{{ $item->platform_lokasi }}</td>
-                    <td style="border:1px solid #bbb;">{{ $item->jenis_unit }}</td>
-                    <td style="border:1px solid #bbb;">{{ $item->type_unit }}</td>
-                    <td style="border:1px solid #bbb;">{{ \Carbon\Carbon::parse($item->tanggal)->format('d/m/y') }}</td>
-                    <td style="border:1px solid #bbb;">{{ \Carbon\Carbon::parse($item->jam)->format('H:i') }}</td>
-                    <td style="border:1px solid #bbb;">{{ $item->pic }}</td>
-                    <td style="border:1px solid #bbb;">{{ $item->jml_sales_shift }}</td>
-                    <td style="border:1px solid #bbb;">{{ $item->target_p }}</td>
-                    <td style="border:1px solid #bbb;">{{ $item->target_hp }}</td>
-                    <td style="border:1px solid #bbb;">{{ $item->target_spk }}</td>
-                    <td style="border:1px solid #bbb;">{{ $item->actual_p }}</td>
-                    <td style="border:1px solid #bbb;">{{ $item->actual_hp }}</td>
-                    <td style="border:1px solid #bbb;">{{ $item->actual_spk }}</td>
-                    <td style="border:1px solid #bbb;">{{ $item->actual_do }}</td>
-                    <td style="border:1px solid #bbb; font-weight:600;">Rp {{ number_format($item->total_cost, 0, ',', '.') }}</td>
-                    <td style="border:1px solid #bbb;">{{ $item->cost_p > 0 ? 'Rp '.number_format($item->cost_p, 0, ',', '.') : '-' }}</td>
-                    <td style="border:1px solid #bbb;">{{ $item->cost_spk > 0 ? 'Rp '.number_format($item->cost_spk, 0, ',', '.') : '-' }}</td>
-                    <td style="border:1px solid #bbb;">{{ $item->cost_do > 0 ? 'Rp '.number_format($item->cost_do, 0, ',', '.') : '-' }}</td>
-                    <td style="border:1px solid #bbb; white-space:nowrap;">
-                        <a href="{{ route('activity.edit', $item->id) }}" style="color:#1976d2; font-weight:600; text-decoration:none; margin-right:5px;">Edit</a>
-                        <form action="{{ route('activity.destroy', $item->id) }}" method="POST"
-                                    style="display:inline;" id="delete-form-{{ $item->id }}">
-                                    @csrf @method('DELETE')
-                                    <button type="button" onclick="confirmDelete('{{ $item->id }}')"
-                                        style="background:#e53935; color:white; border:none; padding:3px 7px; border-radius:4px; font-size:11px; cursor:pointer;">
-                                        Hapus
-                                    </button>
-                                </form>
+                <tr style="background:#fff; border-bottom: 1px solid #000;">
+                    <td style="border: 1px solid #000; padding: 8px 2px;">{{ $loop->iteration }}</td>
+                    <td style="border: 1px solid #000;">{{ $item->jenis_activity }}</td>
+                    <td style="border: 1px solid #000; text-align: left; padding: 5px;">{{ $item->activity }}</td>
+                    <td style="border: 1px solid #000;">{{ $item->platform_lokasi }}</td>
+                    <td style="border: 1px solid #000;">{{ $item->jenis_unit }}</td>
+                    <td style="border: 1px solid #000;">{{ $item->type_unit }}</td>
+                    <td style="border: 1px solid #000;">{{ \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') }}</td>
+                    <td style="border: 1px solid #000;">{{ \Carbon\Carbon::parse($item->jam)->format('H:i') }}</td>
+                    <td style="border: 1px solid #000;">{{ $item->pic }}</td>
+                    <td style="border: 1px solid #000; font-weight: bold;">{{ $item->jml_sales_shift }}</td>
+                    <td style="border: 1px solid #000;">{{ $item->target_p }}</td>
+                    <td style="border: 1px solid #000;">{{ $item->target_hp }}</td>
+                    <td style="border: 1px solid #000;">{{ $item->target_spk }}</td>
+                    <td style="border: 1px solid #000;">{{ $item->actual_p }}</td>
+                    <td style="border: 1px solid #000;">{{ $item->actual_hp }}</td>
+                    <td style="border: 1px solid #000;">{{ $item->actual_spk }}</td>
+                    <td style="border: 1px solid #000;">{{ $item->actual_do }}</td>
+                    <td style="border: 1px solid #000;">Rp{{ number_format($item->total_cost, 0, ',', '.') }}</td>
+                    <td style="border: 1px solid #000;">Rp{{ number_format($item->cost_p, 0, ',', '.') }}</td>
+                    <td style="border: 1px solid #000;">Rp{{ number_format($item->cost_spk, 0, ',', '.') }}</td>
+                    <td style="border: 1px solid #000; text-align: left; padding: 5px;">{{ $item->keterangan }}</td>
+                    <td style="border: 1px solid #000; white-space:nowrap; padding: 5px;">
+                        <a href="{{ route('activity.edit', $item->id) }}" 
+                           style="background: #3182ce; color:white; padding: 4px 10px; border-radius: 4px; font-size: 10px; text-decoration:none; font-weight:800; margin-right:2px; text-transform: uppercase;">EDIT</a>
+                        
+                        <form action="{{ route('activity.destroy', $item->id) }}" method="POST" style="display:inline;" id="delete-form-{{ $item->id }}">
+                            @csrf @method('DELETE')
+                            <button type="button" onclick="confirmDelete('{{ $item->id }}')"
+                                style="background:#fff5f5; color:#e53e3e; border:1px solid #feb2b2; padding:3px 8px; border-radius:4px; font-size: 10px; cursor:pointer; font-weight:800; text-transform: uppercase;">
+                                HAPUS
+                            </button>
+                        </form>
                     </td>
                 </tr>
                 @endforeach
             </tbody>
             <tfoot style="background:#0d47a1; color:white; font-weight:bold;">
-                <tr>
-                    <td colspan="10" style="border:1px solid #999;">GRAND TOTAL</td>
-                    <td style="border:1px solid #999;">{{ $data->sum('target_p') }}</td>
-                    <td style="border:1px solid #999;">{{ $data->sum('target_hp') }}</td>
-                    <td style="border:1px solid #999;">{{ $data->sum('target_spk') }}</td>
-                    <td style="border:1px solid #999;">{{ $data->sum('actual_p') }}</td>
-                    <td style="border:1px solid #999;">{{ $data->sum('actual_hp') }}</td>
-                    <td style="border:1px solid #999;">{{ $data->sum('actual_spk') }}</td>
-                    <td style="border:1px solid #999;">{{ $data->sum('actual_do') }}</td>
-                    <td style="border:1px solid #999;">Rp {{ number_format($data->sum('total_cost'), 0, ',', '.') }}</td>
-                    <td colspan="4" style="border:1px solid #999;">-</td>
+                <tr style="border-top: 2px solid #000;">
+                    <td colspan="9" style="border: 1px solid #000; padding: 10px;">GRAND TOTAL</td>
+                    <td style="border: 1px solid #000;">{{ $data->sum('jml_sales_shift') }}</td>
+                    <td style="border: 1px solid #000;">{{ $data->sum('target_p') }}</td>
+                    <td style="border: 1px solid #000;">{{ $data->sum('target_hp') }}</td>
+                    <td style="border: 1px solid #000;">{{ $data->sum('target_spk') }}</td>
+                    <td style="border: 1px solid #000;">{{ $data->sum('actual_p') }}</td>
+                    <td style="border: 1px solid #000;">{{ $data->sum('actual_hp') }}</td>
+                    <td style="border: 1px solid #000;">{{ $data->sum('actual_spk') }}</td>
+                    <td style="border: 1px solid #000;">{{ $data->sum('actual_do') }}</td>
+                    <td style="border: 1px solid #000;">Rp{{ number_format($data->sum('total_cost'), 0, ',', '.') }}</td>
+                    <td style="border: 1px solid #000;">
+                        @php $tp = $data->sum('actual_p'); @endphp
+                        Rp{{ $tp > 0 ? number_format($data->sum('total_cost') / $tp, 0, ',', '.') : '0' }}
+                    </td>
+                    <td style="border: 1px solid #000;">
+                        @php $ts = $data->sum('actual_spk'); @endphp
+                        Rp{{ $ts > 0 ? number_format($data->sum('total_cost') / $ts, 0, ',', '.') : '0' }}
+                    </td>
+                    <td style="border: 1px solid #000;">-</td>
+                    <td style="border: 1px solid #000;">-</td>
                 </tr>
             </tfoot>
         </table>
     </div>
 </div>
 
-{{-- Script Konfirmasi Hapus --}}
-    <script>
-        function confirmDelete(id) {
-            Swal.fire({
-                title: 'Apakah Anda yakin?',
-                text: "Data yang dihapus tidak dapat dikembalikan!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#e53935',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Ya, Hapus!',
-                cancelButtonText: 'Batal',
-                reverseButtons: true,
-                background: '#ffffff',
-                customClass: {
-                    title: 'text-dark',
-                    popup: 'rounded-4'
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('delete-form-' + id).submit();
-                }
-            })
-        }
-    </script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function confirmDelete(id) {
+        Swal.fire({
+            title: 'Hapus Data?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3182ce',
+            cancelButtonColor: '#e53e3e',
+            confirmButtonText: 'YA, HAPUS',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('delete-form-' + id).submit();
+            }
+        })
+    }
+</script>
 @endsection

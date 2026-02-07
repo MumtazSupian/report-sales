@@ -4,8 +4,6 @@
 
 @section('content')
     <div style="padding: 40px 20px; display: flex; flex-direction: column; align-items: center; min-height: 100vh;">
-
-        {{-- Header Section --}}
         <div style="text-align: center; margin-bottom: 30px;">
             <h2 style="font-weight:800; color:#fff; letter-spacing:1px; text-transform:uppercase; margin:0;">
                 TAMBAH AKTUAL PO
@@ -14,7 +12,6 @@
             <p style="color: #cbd5e0; font-size: 14px;">Input realisasi Purchase Order per leasing tahunan</p>
         </div>
 
-        {{-- Form Card --}}
         <div style="background: white; width: 100%; max-width: 700px; padding: 35px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.2);">
             <form id="aktualPoForm" action="{{ route('leasing.aktual-po.store') }}" method="POST">
                 @csrf
@@ -64,7 +61,6 @@
                     @endforeach
                 </div>
 
-                {{-- Action Buttons --}}
                 <div style="margin-top: 35px; display: flex; gap: 15px;">
                     <a href="{{ route('leasing.aktual-po.index') }}"
                         style="flex: 1; padding: 14px; background: #edf2f7; color: #4a5568; text-align: center; border-radius: 12px; text-decoration: none; font-weight: 700; font-size: 14px; transition: 0.3s;"
@@ -82,7 +78,6 @@
         </div>
     </div>
 
-    {{-- SweetAlert2 & Script --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         function confirmSubmit() {
@@ -105,7 +100,7 @@
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#1a202c',
-                cancelButtonColor: '#cbd5e0',
+                cancelButtonColor: '#e53e3e',
                 confirmButtonText: 'Ya, Simpan!',
                 cancelButtonText: 'Cek Kembali'
             }).then((result) => {
