@@ -31,7 +31,7 @@
 
             <div class="activity-card">
                 <div class="icon-box">⚡</div>
-                <h3>Action Summary</h3>
+                <h3>Action Plan</h3>
                 <p>Kelola action plan dan tindak lanjut dari summary activity.</p>
                 <a href="{{ route('summary.summaryaction.index') }}" class="activity-btn">Masuk</a>
             </div>

@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Summary Action Improvement')
+@section('title', 'Action Plan Improvement')
 
 @section('content')
     <div style="padding: 20px;">
         <h2 style="text-align:center; font-weight:800; color:#fff; letter-spacing:0.5px; text-transform:uppercase; margin-bottom:5px;">
-            🛠️ SUMMARY ACTION IMPROVEMENT
+            🛠️ ACTION PLAN IMPROVEMENT
         </h2>
         <p style="text-align:center; color: #8fb3d9; margin-bottom:20px;">
             Kelola data operasional, kondisi saat ini, dan rencana tindakan perbaikan

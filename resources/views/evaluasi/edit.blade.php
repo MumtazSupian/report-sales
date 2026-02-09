@@ -51,22 +51,16 @@
                             style="width:100%; padding:10px; border:1px solid #ccc; border-radius:6px; outline:none;">
                     </div>
 
-                    {{-- BAGIAN GRADING BARU --}}
+                    {{-- BAGIAN GRADING OTOMATIS --}}
                     <div style="grid-column: span 2;">
-                        <label
-                            style="display:block; font-weight:700; color:#333; margin-bottom:8px; font-size:13px;">GRADING
-                            PERFORMA</label>
-                        <select name="grading" required
-                            style="width:100%; padding:10px; border:1px solid #ccc; border-radius:6px; outline:none; background-color: #f9f9f9; font-weight: 600;">
-                            <option value="A" {{ $row->grading == 'A' ? 'selected' : '' }} style="color: #2e7d32;">
-                                Grade A (Excellent)</option>
-                            <option value="B" {{ $row->grading == 'B' ? 'selected' : '' }} style="color: #1565c0;">
-                                Grade B (Good)</option>
-                            <option value="C" {{ $row->grading == 'C' ? 'selected' : '' }} style="color: #f9a825;">
-                                Grade C (Fair)</option>
-                            <option value="D" {{ $row->grading == 'D' ? 'selected' : '' }} style="color: #c62828;">
-                                Grade D (Poor)</option>
-                        </select>
+                        <label style="display:block; font-weight:700; color:#333; margin-bottom:8px; font-size:13px;">
+                            GRADING PERFORMA (Otomatis)
+                        </label>
+                        <input type="text" id="grading_display" name="grading" readonly
+                            style="width:100%; padding:10px; border:1px solid #ccc; border-radius:6px; background-color: #f1f1f1; font-weight: 800; text-align: center; text-transform: uppercase;"
+                            value="{{ $row->grading }}">
+                        <small style="color: #666; font-style: italic;">*Peringkat diperbarui otomatis berdasarkan rata-rata
+                            penjualan Jan-Mar</small>
                     </div>
                 </div>
 
@@ -83,6 +77,7 @@
                             <label
                                 style="display:block; font-weight:700; color:#555; margin-bottom:5px; font-size:11px;">{{ strtoupper($m) }}</label>
                             <input type="number" name="{{ $m }}" value="{{ $row->$m }}" min="0"
+                                class="input-bulan"
                                 style="width:100%; padding:8px; border:1px solid #ddd; border-radius:6px; text-align:center; font-weight:600; color:#0d47a1;">
                         </div>
                     @endforeach
@@ -118,4 +113,53 @@
             </form>
         </div>
     </div>
+
+    {{-- SCRIPT PERHITUNGAN OTOMATIS --}}
+    <script>
+        document.querySelectorAll('.input-bulan').forEach(input => {
+            input.addEventListener('input', function() {
+                updateGrading();
+            });
+        });
+
+        function updateGrading() {
+            // Mengambil nilai Jan, Feb, Mar sesuai permintaan (rata-rata 3 bulan awal)
+            let jan = parseFloat(document.querySelector('input[name="jan"]').value) || 0;
+            let feb = parseFloat(document.querySelector('input[name="feb"]').value) || 0;
+            let mar = parseFloat(document.querySelector('input[name="mar"]').value) || 0;
+
+            let rataRata = (jan + feb + mar) / 3;
+            let totalTigaBulan = jan + feb + mar;
+
+            let grade = "FREELANCE";
+            let bgColor = "#f1f1f1";
+            let textColor = "#333";
+
+            if (rataRata >= 3) {
+                grade = "PLATINUM";
+                bgColor = "#1a237e";
+                textColor = "#ffffff";
+            } else if (rataRata >= 2) {
+                grade = "GOLD";
+                bgColor = "#ff9800";
+                textColor = "#ffffff";
+            } else if (rataRata >= 1) {
+                grade = "SILVER";
+                bgColor = "#9e9e9e";
+                textColor = "#ffffff";
+            } else if (totalTigaBulan > 0) {
+                grade = "TRAINEE";
+                bgColor = "#4caf50";
+                textColor = "#ffffff";
+            }
+
+            let display = document.getElementById('grading_display');
+            display.value = grade;
+            display.style.backgroundColor = bgColor;
+            display.style.color = textColor;
+        }
+
+        // Jalankan fungsi saat halaman pertama kali dimuat agar warna muncul
+        window.onload = updateGrading;
+    </script>
 @endsection

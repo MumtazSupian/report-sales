@@ -22,66 +22,54 @@ class EvaluasiWiraniagaController extends Controller
         return view('evaluasi.create');
     }
 
-    public function store(Request $request)
-    {
-        $months = ['jan', 'feb', 'mar', 'apr', 'mei', 'jun'];
+    // Cari bagian public function store dan ganti isinya dengan ini:
+public function store(Request $request)
+{
+    $months = ['jan', 'feb', 'mar', 'apr', 'mei', 'jun'];
+    $data = $request->all();
 
-        $data = $request->only([
-            'nama_sales_head',
-            'nama_sales',
-            'tanggal_masuk',
-            'tanggal_evaluasi',
-            'grading',
-            'evaluasi',
-            'tanggal_keluar'
-        ]);
-
-        $data['total'] = 0;
-
-        foreach ($months as $m) {
-            $data[$m] = $request->input($m, 0);
-            $data['total'] += $data[$m];
-        }
-
-        EvaluasiWiraniaga::create($data);
-
-        return redirect()->route('evaluasi.index')
-            ->with('success', 'Data berhasil disimpan');
+    // Hitung Total
+    $total = 0;
+    foreach ($months as $m) {
+        $total += $request->input($m, 0);
     }
+    $data['total'] = $total;
 
-    public function edit($id)
-    {
-        $row = EvaluasiWiraniaga::findOrFail($id);
-        return view('evaluasi.edit', compact('row'));
+    // Hitung Grading Otomatis (berdasarkan rata-rata Jan-Mar sesuai permintaanmu)
+    $data['grading'] = EvaluasiWiraniaga::hitungPeringkat(
+        $request->input('jan', 0),
+        $request->input('feb', 0),
+        $request->input('mar', 0)
+    );
+
+    EvaluasiWiraniaga::create($data);
+
+    return redirect()->route('evaluasi.index')->with('success', 'Data berhasil disimpan dengan peringkat ' . $data['grading']);
+}
+
+// Lakukan hal yang sama untuk public function update:
+public function update(Request $request, $id)
+{
+    $row = EvaluasiWiraniaga::findOrFail($id);
+    $months = ['jan', 'feb', 'mar', 'apr', 'mei', 'jun'];
+    $data = $request->all();
+
+    $total = 0;
+    foreach ($months as $m) {
+        $total += $request->input($m, 0);
     }
+    $data['total'] = $total;
 
-    public function update(Request $request, $id)
-    {
-        $row = EvaluasiWiraniaga::findOrFail($id);
-        $months = ['jan', 'feb', 'mar', 'apr', 'mei', 'jun'];
+    $data['grading'] = EvaluasiWiraniaga::hitungPeringkat(
+        $request->input('jan', 0),
+        $request->input('feb', 0),
+        $request->input('mar', 0)
+    );
 
-        $data = $request->only([
-            'nama_sales_head',
-            'nama_sales',
-            'tanggal_masuk',
-            'tanggal_evaluasi',
-            'grading',
-            'evaluasi',
-            'tanggal_keluar'
-        ]);
+    $row->update($data);
 
-        $data['total'] = 0;
-
-        foreach ($months as $m) {
-            $data[$m] = $request->input($m, 0);
-            $data['total'] += $data[$m];
-        }
-
-        $row->update($data);
-
-        return redirect()->route('evaluasi.index')
-            ->with('success', 'Data berhasil diupdate');
-    }
+    return redirect()->route('evaluasi.index')->with('success', 'Data berhasil diperbarui');
+}
 
     public function destroy($id)
     {

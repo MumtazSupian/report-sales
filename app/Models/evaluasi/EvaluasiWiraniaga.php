@@ -24,4 +24,16 @@ class EvaluasiWiraniaga extends Model
         'evaluasi',
         'tanggal_keluar'
     ];
+
+    // Fungsi statis untuk menghitung grading agar bisa dipakai di Controller & View
+    public static function hitungPeringkat($jan, $feb, $mar)
+    {
+        $rataRata = ($jan + $feb + $mar) / 3;
+
+        if ($rataRata >= 3) return 'PLATINUM';
+        if ($rataRata >= 2) return 'GOLD';
+        if ($rataRata >= 1) return 'SILVER';
+        if (($jan + $feb + $mar) > 0) return 'TRAINEE';
+        return 'FREELANCE';
+    }
 }

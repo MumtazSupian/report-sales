@@ -8,7 +8,7 @@
         {{-- HEADER --}}
         <div style="text-align: center; margin-bottom: 30px;">
             <h2 style="font-weight:800; color:#fff; letter-spacing:1px; text-transform:uppercase; margin:0;">
-                ✏️ EDIT ACTION PERBAIKAN
+                ✏️ EDIT ACTION PLAN
             </h2>
             <div style="width: 50px; height: 4px; background: #3182ce; margin: 10px auto; border-radius: 10px;"></div>
             <p style="color: #cbd5e0; font-size: 14px;">Perbarui data kondisi dan rencana tindakan perbaikan operasional</p>

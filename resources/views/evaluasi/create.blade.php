@@ -50,19 +50,21 @@
                             style="width:100%; padding:10px; border:1px solid #ccc; border-radius:6px; outline:none;">
                     </div>
 
-                    {{-- TAMBAHAN INPUT GRADING --}}
+                    {{-- TAMBAHAN INPUT GRADING PERLU PERBAIKAN --}}
                     <div style="grid-column: span 2;">
                         <label
                             style="display:block; font-weight:700; color:#333; margin-bottom:8px; font-size:13px;">GRADING
                             PERFORMA</label>
-                        <select name="grading" required
-                            style="width:100%; padding:10px; border:1px solid #ccc; border-radius:6px; outline:none; background-color: #f9f9f9; font-weight: 600; cursor: pointer;">
-                            <option value="" disabled selected>Pilih Grade</option>
-                            <option value="A" style="color: #2e7d32;">Grade A (Excellent)</option>
-                            <option value="B" style="color: #1565c0;">Grade B (Good)</option>
-                            <option value="C" style="color: #f9a825;">Grade C (Fair)</option>
-                            <option value="D" style="color: #c62828;">Grade D (Poor)</option>
-                        </select>
+                        {{-- perbaikan --}}
+                        <div style="grid-column: span 2;">
+                            <label
+                                style="display:block; font-weight:700; color:#333; margin-bottom:8px; font-size:13px;">GRADING
+                                PERFORMA (Otomatis)</label>
+                            <input type="text" id="grading_display" name="grading" readonly
+                                style="width:100%; padding:10px; border:1px solid #ccc; border-radius:6px; background-color: #f1f1f1; font-weight: 800; color: #333;"
+                                value="FREELANCE">
+                            <small style="color: #666;">*Terhitung otomatis berdasarkan rata-rata Jan, Feb, Mar</small>
+                        </div>
                     </div>
                 </div>
 
@@ -114,4 +116,42 @@
             </form>
         </div>
     </div>
+
+    <script>
+        const inputs = ['jan', 'feb', 'mar'];
+        inputs.forEach(id => {
+            document.getElementsByName(id)[0].addEventListener('input', calculateGrade);
+        });
+
+        function calculateGrade() {
+            let jan = parseInt(document.getElementsByName('jan')[0].value) || 0;
+            let feb = parseInt(document.getElementsByName('feb')[0].value) || 0;
+            let mar = parseInt(document.getElementsByName('mar')[0].value) || 0;
+
+            let rataRata = (jan + feb + mar) / 3;
+            let total = jan + feb + mar;
+            let grade = "FREELANCE";
+            let color = "#9e9e9e";
+
+            if (rataRata >= 3) {
+                grade = "PLATINUM";
+                color = "#1a237e";
+            } else if (rataRata >= 2) {
+                grade = "GOLD";
+                color = "#ff9800";
+            } else if (rataRata >= 1) {
+                grade = "SILVER";
+                color = "#757575";
+            } else if (total > 0) {
+                grade = "TRAINEE";
+                color = "#4caf50";
+            }
+
+            const display = document.getElementById('grading_display');
+            display.value = grade;
+            display.style.color = (grade === "PLATINUM" || grade === "GOLD") ? "#fff" : "#333";
+            display.style.backgroundColor = color;
+        }
+    </script>
+
 @endsection

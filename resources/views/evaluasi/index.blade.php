@@ -19,10 +19,10 @@
             </a>
         </div>
 
-        {{-- SweetAlert2 Library --}}
+        {{-- alert --}}
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-        {{-- Notifikasi Sukses --}}
+        {{-- Notifikasi sukses nya --}}
         @if (session('success'))
             <script>
                 Swal.fire({
@@ -63,6 +63,7 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {{-- perbaiki logika --}}
                     @foreach ($data as $i => $d)
                         <tr
                             style="background:{{ $loop->iteration % 2 == 0 ? '#f7f9fb' : '#ffffff' }}; border-bottom:1px solid #ccc;">
@@ -72,18 +73,29 @@
                             <td style="border:1px solid #bbb;">{{ $d->tanggal_masuk }}</td>
                             <td style="border:1px solid #bbb;">{{ $d->tanggal_evaluasi }}</td>
 
+                            {{-- Baris Grading Baru PERLU PERBAIKAN --}}
                             {{-- Baris Grading Baru --}}
                             <td style="border:1px solid #bbb;">
+                                @php
+                                    // Menentukan warna berdasarkan peringkat
+                                    $color = '#607d8b'; // Default Freelance (Abu-abu gelap)
+
+                                    if ($d->grading == 'PLATINUM') {
+                                        $color = '#1a237e'; // Biru Tua
+                                    } elseif ($d->grading == 'GOLD') {
+                                        $color = '#ff9800'; // Emas/Orange
+                                    } elseif ($d->grading == 'SILVER') {
+                                        $color = '#9e9e9e'; // Silver/Abu-abu
+                                    } elseif ($d->grading == 'TRAINEE') {
+                                        $color = '#4caf50'; // Hijau
+                                    }
+                                @endphp
+
                                 <span
-                                    style="padding: 2px 8px; border-radius: 4px; color: #fff; font-weight: bold; font-size: 10px; background:
-                                    @if ($d->grading == 'A') #2e7d32
-                                    @elseif($d->grading == 'B') #1565c0
-                                    @elseif($d->grading == 'C') #f9a825
-                                    @else #c62828 @endif;">
-                                    {{ $d->grading }}
+                                    style="padding: 4px 10px; border-radius: 4px; color: #fff; font-weight: bold; font-size: 10px; background: {{ $color }}; display: inline-block; min-width: 80px; text-align: center;">
+                                    {{ $d->grading ?? 'FREELANCE' }}
                                 </span>
                             </td>
-
                             <td style="border:1px solid #bbb;">{{ $d->jan }}</td>
                             <td style="border:1px solid #bbb;">{{ $d->feb }}</td>
                             <td style="border:1px solid #bbb;">{{ $d->mar }}</td>
