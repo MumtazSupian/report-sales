@@ -60,7 +60,7 @@
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#2d3748',
-                confirmButtonText: 'Ya, Update!'
+                confirmButtonText: 'Ya, Update!',
                 cancelButtonColor: '#e53e3e',
                 cancelButtonText: 'Batal'
             }).then((result) => { if (result.isConfirmed) document.getElementById('editAppInForm').submit(); });

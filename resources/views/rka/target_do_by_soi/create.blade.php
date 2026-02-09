@@ -61,7 +61,7 @@
                 showCancelButton: true,
                 confirmButtonColor: '#3182ce',
                 cancelButtonColor: '#e53e3e',
-                confirmButtonText: 'Ya, Simpan!'
+                confirmButtonText: 'Ya, Simpan!',
                 cancelButtonText: 'Cek Kembali'
             }).then((result) => { if (result.isConfirmed) document.getElementById('targetSoiForm').submit(); });
         }

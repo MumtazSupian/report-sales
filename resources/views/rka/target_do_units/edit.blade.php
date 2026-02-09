@@ -18,7 +18,7 @@
                     <div>
                         <label style="display: block; font-weight: 700; color: #2d3748; margin-bottom: 8px; font-size: 13px; text-transform: uppercase;">Mobil Type</label>
                         <select name="mobil_type" required style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 14px; color: #4a5568;">
-                            @foreach(['NEW CARRY','APV','ERTIGA','XL7','SPRESO','BALENO','GRAND VITARA','JIMNY 3D','JIMNY 5D','FRONX'] as $type)
+                            @foreach(['NEW CARRY','APV','ERTIGA','XL7','SPRESO','e-Vitara','GRAND VITARA','JIMNY 3D','JIMNY 5D','FRONX'] as $type)
                                 <option value="{{ $type }}" {{ $data->mobil_type == $type ? 'selected' : '' }}>{{ $type }}</option>
                             @endforeach
                         </select>
@@ -59,7 +59,7 @@
                 showCancelButton: true,
                 confirmButtonColor: '#2d3748',
                 cancelButtonColor: '#e53e3e',
-                confirmButtonText: 'Ya, Update!'
+                confirmButtonText: 'Ya, Update!',
                 cancelButtonText: 'Batal'
             }).then((result) => { if (result.isConfirmed) document.getElementById('editUnitForm').submit(); });
         }

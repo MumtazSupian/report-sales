@@ -47,7 +47,7 @@
                 <a href="{{ url('rka/dashboard') }}" class="action-btn">
                     <span class="action-btn-icon">📊</span> <span>Open RKA Module</span>
                 </a>
-                <a href="{{ route('activity.index') }}" class="action-btn">
+                <a href="{{ url('activity/dashboard') }}" class="action-btn">
                     <span class="action-btn-icon">📅</span> <span>Activity Plan</span>
                 </a>
             </div>

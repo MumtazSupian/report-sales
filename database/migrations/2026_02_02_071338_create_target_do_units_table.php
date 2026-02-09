@@ -17,7 +17,7 @@ return new class extends Migration
                 'ERTIGA',
                 'XL7',
                 'SPRESO',
-                'BALENO',
+                'e-Vitara',
                 'GRAND VITARA',
                 'JIMNY 3D',
                 'JIMNY 5D',

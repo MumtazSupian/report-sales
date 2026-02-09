@@ -62,7 +62,7 @@
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#3182ce',
-                confirmButtonText: 'Ya, Simpan!'
+                confirmButtonText: 'Ya, Simpan!',
                 cancelButtonColor: '#e53e3e',
                 cancelButtonText: 'Cek Kembali'
             }).then((result) => { if (result.isConfirmed) document.getElementById('aktualAppInForm').submit(); });

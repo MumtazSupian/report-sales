@@ -1,47 +1,45 @@
 <?php
 
-namespace App\Http\Controllers\activity;
+namespace App\Http\Controllers\Activity;
 
 use App\Http\Controllers\Controller;
-use App\Models\activity\ActivityPlan;
+use App\Models\Activity\PlanActivity; 
 use Illuminate\Http\Request;
 
-class ActivityPlanController extends Controller
+class PlanActivityController extends Controller
 {
     public function index()
     {
-        // Mengambil semua data untuk ditampilkan di tabel dashboard
-        $data = ActivityPlan::all();
-        return view('activity.index', compact('data'));
+        $data = PlanActivity::all();
+        return view('activity.plan.index', compact('data'));
     }
 
     public function create()
     {
-        return view('activity.create');
+        return view('activity.plan.create');
     }
 
     public function store(Request $request)
     {
         $data = $request->all();
         $total = $request->total_cost ?? 0;
-
         $data['cost_p'] = ($request->actual_p > 0) ? $total / $request->actual_p : 0;
         $data['cost_spk'] = ($request->actual_spk > 0) ? $total / $request->actual_spk : 0;
         $data['cost_do'] = ($request->actual_do > 0) ? $total / $request->actual_do : 0;
 
-        ActivityPlan::create($data);
-        return redirect()->route('activity.index')->with('success', 'Data berhasil ditambahkan');
+        PlanActivity::create($data);
+        return redirect()->route('activity.plan.index')->with('success', 'Data Plan berhasil ditambahkan');
     }
 
     public function edit($id)
     {
-        $activity = ActivityPlan::findOrFail($id);
-        return view('activity.edit', compact('activity'));
+        $activity = PlanActivity::findOrFail($id);
+        return view('activity.plan.edit', compact('activity'));
     }
 
     public function update(Request $request, $id)
     {
-        $activity = ActivityPlan::findOrFail($id);
+        $activity = PlanActivity::findOrFail($id);
         $data = $request->all();
         $total = $request->total_cost ?? 0;
 
@@ -50,13 +48,13 @@ class ActivityPlanController extends Controller
         $data['cost_do'] = ($request->actual_do > 0) ? $total / $request->actual_do : 0;
 
         $activity->update($data);
-        return redirect()->route('activity.index')->with('success', 'Data berhasil diupdate');
+        return redirect()->route('activity.plan.index')->with('success', 'Data Plan berhasil diupdate');
     }
 
     public function destroy($id)
     {
-        $activity = ActivityPlan::findOrFail($id);
+        $activity = PlanActivity::findOrFail($id);
         $activity->delete();
-        return redirect()->route('activity.index')->with('success', 'Data berhasil dihapus');
+        return redirect()->route('activity.plan.index')->with('success', 'Data Plan berhasil dihapus');
     }
 }

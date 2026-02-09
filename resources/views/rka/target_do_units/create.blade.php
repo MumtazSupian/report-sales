@@ -18,7 +18,7 @@
                         <label style="display: block; font-weight: 700; color: #2d3748; margin-bottom: 8px; font-size: 13px; text-transform: uppercase;">Mobil Type</label>
                         <select name="mobil_type" id="mobil_type" required style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 14px; color: #4a5568;">
                             <option value="" disabled selected>Pilih Tipe Mobil</option>
-                            @foreach(['NEW CARRY','APV','ERTIGA','XL7','SPRESO','BALENO','GRAND VITARA','JIMNY 3D','JIMNY 5D','FRONX'] as $type)
+                            @foreach(['NEW CARRY','APV','ERTIGA','XL7','SPRESO','e-Vitara','GRAND VITARA','JIMNY 3D','JIMNY 5D','FRONX'] as $type)
                                 <option value="{{ $type }}">{{ $type }}</option>
                             @endforeach
                         </select>
@@ -61,7 +61,7 @@
                 showCancelButton: true,
                 confirmButtonColor: '#3182ce',
                 cancelButtonColor: '#e53e3e',
-                confirmButtonText: 'Ya, Simpan!'
+                confirmButtonText: 'Ya, Simpan!',
                 cancelButtonText: 'Cek Kembali'
             }).then((result) => { if (result.isConfirmed) document.getElementById('targetUnitForm').submit(); });
         }

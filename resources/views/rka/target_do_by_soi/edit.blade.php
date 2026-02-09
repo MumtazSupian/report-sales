@@ -59,7 +59,7 @@
                 showCancelButton: true,
                 confirmButtonColor: '#2d3748',
                 cancelButtonColor: '#e53e3e',
-                confirmButtonText: 'Ya, Update!'
+                confirmButtonText: 'Ya, Update!',
                 cancelButtonText: 'Batal'
             }).then((result) => { if (result.isConfirmed) document.getElementById('editSoiForm').submit(); });
         }

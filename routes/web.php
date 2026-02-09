@@ -10,7 +10,8 @@ use App\Http\Controllers\leasing\AktualAplikasiInController;
 use App\Http\Controllers\leasing\AktualPoController;
 use App\Http\Controllers\leasing\AktualRejectController;
 
-use App\Http\Controllers\activity\ActivityPlanController;
+use App\Http\Controllers\activity\PlanActivityController;
+use App\Http\Controllers\activity\ActualActivityController;
 
 use App\Http\Controllers\current\ActualDoByTypeController;
 use App\Http\Controllers\current\ActualDoSalesForceController;
@@ -26,67 +27,78 @@ use App\Http\Controllers\evaluasi\EvaluasiWiraniagaController;
 use App\Http\Controllers\summary\SummaryController;
 use App\Http\Controllers\summary\SummaryActionController;
 
+use App\Http\Controllers\LoginController;
 
-Route::get('/', function () {
-    return view('dashboard');
-});
+Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-
-Route::prefix('rka')->name('rka.')->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', function () {
-        return view('rka.dashboard_rka');
+        return view('dashboard');
+    })->name('dashboard');
+
+    Route::prefix('rka')->name('rka.')->group(function () {
+        Route::get('/dashboard', function () {
+            return view('rka.dashboard_rka');
+        });
+        Route::resource('target-do-units', TargetDoUnitController::class);
+        Route::resource('target-salesforces', TargetSalesforceController::class);
+        Route::resource('target-inquiries', TargetInquiryController::class);
+        Route::resource('target-do-by-soi', TargetDoBySoiController::class);
     });
-    Route::resource('target-do-units', TargetDoUnitController::class);
-    Route::resource('target-salesforces', TargetSalesforceController::class);
-    Route::resource('target-inquiries', TargetInquiryController::class);
-    Route::resource('target-do-by-soi', TargetDoBySoiController::class);
-});
 
-Route::prefix('leasing')->name('leasing.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('leasing.dashboard_leasing');
+    Route::prefix('leasing')->name('leasing.')->group(function () {
+        Route::get('/dashboard', function () {
+            return view('leasing.dashboard_leasing');
+        });
+        Route::resource('aktual-aplikasi-in', AktualAplikasiInController::class);
+        Route::resource('aktual-po', AktualPoController::class);
+        Route::resource('aktual-reject', AktualRejectController::class);
     });
-    Route::resource('aktual-aplikasi-in', AktualAplikasiInController::class);
-    Route::resource('aktual-po', AktualPoController::class);
-    Route::resource('aktual-reject', AktualRejectController::class);
+
+
+    Route::prefix('activity')->name('activity.')->group(function () {
+        Route::get('/dashboard', function () {
+            return view('activity.dashboard_activity');
+        });
+        Route::resource('plan', PlanActivityController::class);
+        Route::resource('actual', ActualActivityController::class);
+    });
+
+
+    Route::prefix('current')->name('current.')->group(function () {
+        Route::get('/dashboard', function () {
+            return view('current.dashboard_current');
+        });
+        Route::resource('actual-do-by-type', ActualDoByTypeController::class);
+        Route::resource('actual-do-salesforces', ActualDoSalesForceController::class);
+        Route::resource('actual-inquary-by-type', ActualInquaryByTypeController::class);
+        Route::resource('actual-sales-by-leasing', ActualSalesByLeasingController::class);
+        Route::resource('actual-salesforces', ActualSalesForceController::class);
+        Route::resource('actual-source-do-inquary', ActualSourceDoInquaryController::class);
+        Route::resource('actual-source-inquary', ActualSourceInquaryController::class);
+        Route::resource('actual-spk-by-type', ActualSpkByTypeController::class);
+    });
+
+
+    Route::prefix('evaluasi')->group(function () {
+        Route::get('/dashboard', function () {
+            return redirect()->route('evaluasi.index');
+        });
+        Route::resource('evaluasi', EvaluasiWiraniagaController::class);
+    });
+
+
+    Route::prefix('summary')->name('summary.')->group(function () {
+        Route::get('/dashboard', function () {
+            return view('summary.dashboard_summary');
+        });
+        Route::resource('summary', SummaryController::class);
+        Route::resource('summaryaction', SummaryActionController::class);
+    });
 });
 
-
-Route::prefix('activity')->group(function () {
-    Route::get('/', function () { return redirect()->route('activity.index'); });
-    Route::resource('plans', ActivityPlanController::class)->names([
-        'index' => 'activity.index',
-        'create' => 'activity.create',
-        'store' => 'activity.store',
-        'edit' => 'activity.edit',
-        'update' => 'activity.update',
-        'destroy' => 'activity.destroy',
-    ]);
-});
-
-
-Route::prefix('current')->name('current.')->group(function () {
-    Route::get('/dashboard', function () {return view('current.dashboard_current');});
-    Route::resource('actual-do-by-type',ActualDoByTypeController::class);
-    Route::resource('actual-do-salesforces',ActualDoSalesForceController::class);
-    Route::resource('actual-inquary-by-type', ActualInquaryByTypeController::class);
-    Route::resource('actual-sales-by-leasing', ActualSalesByLeasingController::class);
-    Route::resource('actual-salesforces', ActualSalesForceController::class);
-    Route::resource('actual-source-do-inquary', ActualSourceDoInquaryController::class);
-    Route::resource('actual-source-inquary', ActualSourceInquaryController::class);
-    Route::resource('actual-spk-by-type', ActualSpkByTypeController::class);
-});
-
-
-Route::prefix('evaluasi')->group(function () {
-    Route::get('/dashboard', function () {return redirect()->route('evaluasi.index');});
-    Route::resource('evaluasi', EvaluasiWiraniagaController::class);
-});
-
-
-Route::prefix('summary')->name('summary.')->group(function () {
-    Route::get('/dashboard', function () {return view('summary.dashboard_summary');});
-    Route::resource('summary', SummaryController::class);
-    Route::resource('summaryaction', SummaryActionController::class);
-});
-
+// Route::get('/', function () {
+//     return view('dashboard');
+// });

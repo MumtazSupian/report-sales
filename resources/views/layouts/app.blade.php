@@ -218,10 +218,10 @@
         .header-badge {
             background: linear-gradient(135deg, #0066cc 0%, #0052a3 100%);
             color: white;
-            padding: 8px 20px;
-            border-radius: 20px;
+            padding: 0 5px;
+            border-radius: 10px;
             font-size: 13px;
-            font-weight: 600;
+            font-weight: bold;
             box-shadow: 0 4px 12px rgba(0, 102, 204, 0.4);
         }
 
@@ -528,80 +528,76 @@
                 padding: 30px;
             }
 
-            /* ===============================
-   ACTIVITY PAGE (ADD-ON STYLE)
-================================ */
-
             .activity-page {
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(12px);
-        border-radius: 20px;
-        padding: 25px; /* Kurangi dikit biar gak terlalu lebar */
-        border: 1px solid rgba(0, 168, 255, 0.25);
-        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
-        margin-top: 20px;
-    }
+                background: rgba(255, 255, 255, 0.05);
+                backdrop-filter: blur(12px);
+                border-radius: 20px;
+                padding: 25px;
+                border: 1px solid rgba(0, 168, 255, 0.25);
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+                margin-top: 20px;
+            }
 
-    /* WADAH PUTIH (Seperti yang kamu mau) */
-    .table-container {
-        background-color: white;
-        border-radius: 15px;
-        padding: 10px;
-        margin-top: 15px;
-        overflow: hidden;
-    }
+            /* WADAH PUTIH (Seperti yang kamu mau) */
+            .table-container {
+                background-color: white;
+                border-radius: 15px;
+                padding: 10px;
+                margin-top: 15px;
+                overflow: hidden;
+            }
 
-    .table-responsive {
-        width: 100%;
-        overflow-x: auto;
-        border-radius: 10px;
-    }
+            .table-responsive {
+                width: 100%;
+                overflow-x: auto;
+                border-radius: 10px;
+            }
 
-    /* STYLE TABEL IDENTIK ACTIVITY */
-    .custom-table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 12px;
-        color: #003366;
-        background-color: white;
-    }
+            /* STYLE TABEL IDENTIK ACTIVITY */
+            .custom-table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 12px;
+                color: #003366;
+                background-color: white;
+            }
 
-    .custom-table thead th {
-        background-color: #f8faff;
-        color: #0056b3;
-        text-align: center;
-        font-weight: bold;
-        padding: 12px 8px;
-        border: 1px solid #dee2e6;
-        white-space: nowrap;
-    }
+            .custom-table thead th {
+                background-color: #f8faff;
+                color: #0056b3;
+                text-align: center;
+                font-weight: bold;
+                padding: 12px 8px;
+                border: 1px solid #dee2e6;
+                white-space: nowrap;
+            }
 
-    .custom-table tbody td {
-        padding: 10px 8px;
-        border: 1px solid #eef2f7;
-        color: #333;
-        vertical-align: middle;
-    }
+            .custom-table tbody td {
+                padding: 10px 8px;
+                border: 1px solid #eef2f7;
+                color: #333;
+                vertical-align: middle;
+            }
 
-    /* FOOTER BIRU TUA */
-    .grand-total {
-        background-color: #003366 !important;
-        color: white !important;
-    }
+            /* FOOTER BIRU TUA */
+            .grand-total {
+                background-color: #003366 !important;
+                color: white !important;
+            }
 
-    .grand-total td {
-        color: white !important;
-        font-weight: bold;
-        text-transform: uppercase;
-    }
+            .grand-total td {
+                color: white !important;
+                font-weight: bold;
+                text-transform: uppercase;
+            }
 
-    /* TOMBOL AKSI MINIMALIS */
-    .btn-action {
-        text-decoration: none;
-        font-weight: bold;
-        font-size: 11px;
-        padding: 2px 5px;
-    }
+            /* TOMBOL AKSI MINIMALIS */
+            .btn-action {
+                text-decoration: none;
+                font-weight: bold;
+                font-size: 11px;
+                padding: 2px 5px;
+            }
         }
     </style>
 </head>
@@ -616,23 +612,23 @@
             </div>
             <div class="menu-section">
                 <div class="menu-label">Main Menu</div>
-                <a href="{{ url('/') }}" class="{{ Request::is('/') ? 'active' : '' }}">
-                    <span class="menu-icon">🏠</span> <span>Home</span>
+                <a href="{{ url('dashboard') }}">
+                    <span class="menu-icon">🏠</span> <span>Dashboard</span>
                 </a>
                 <a href="{{ url('rka/dashboard') }}">
                     <span class="menu-icon">📊</span> <span>RKA</span>
                 </a>
-                <a href="{{ url('current/dashboard')}}">
+                <a href="{{ url('current/dashboard') }}">
                     <span class="menu-icon">📊</span> <span>Current</span>
                 </a>
-                <a href="{{ url('leasing/dashboard')}}">
+                <a href="{{ url('leasing/dashboard') }}">
                     <span class="menu-icon">📊</span> <span>Leasing</span>
                 </a>
                 <div class="menu-label">Performance</div>
-                <a href="{{ route('evaluasi.index')}}">
+                <a href="{{ route('evaluasi.index') }}">
                     <span class="menu-icon">⭐</span> <span>Evaluasi Wiraniaga</span>
                 </a>
-                <a href="{{ route('activity.index') }}" class="{{ Request::routeIs('activity.*') ? 'active' : '' }}">
+                <a href="{{ url('activity/dashboard') }}">
                     <span class="menu-icon">📅</span> <span>Activity</span>
                 </a>
                 <a href="{{ url('summary/dashboard') }}">
@@ -648,7 +644,16 @@
                         <h1>Suzuki Authorized</h1>
                         <p>Sistem Manajemen Dealer</p>
                     </div>
-                    <div class="header-badge">Suzuki Authorized</div>
+                    <div class="header-badge">
+                        <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+                            @csrf
+                            <button type="submit"
+                                style="background: none; border: none; color: white; font-weight: bold; cursor: pointer; padding: 10px;">
+                                LOGOUT {{-- ({{ Auth::user()->name }}) --}}
+                            </button>
+                        </form>
+                    </div>
+
                 </div>
             </div>
 
