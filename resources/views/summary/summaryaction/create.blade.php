@@ -13,8 +13,10 @@
             <div style="width: 50px; height: 4px; background: #3182ce; margin: 10px auto; border-radius: 10px;"></div>
             <p style="color: #cbd5e0; font-size: 14px;">Input data kondisi saat ini dan rencana tindakan perbaikan
                 operasional</p>
+            <p style="text-align:center; color: #718096; font-size: 12px; margin-bottom: 15px;">
+                Menginput data untuk Cabang: <strong style="color: #2d3748;">{{ Auth::user()->cabang }}</strong>
+            </p>
         </div>
-
         {{-- CARD FORM --}}
         <div
             style="background: white; width: 100%; max-width: 750px; padding: 35px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.2);">
@@ -25,6 +27,7 @@
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
                     {{-- Operasional --}}
                     <div>
+
                         <label
                             style="display: block; font-weight: 700; color: #2d3748; margin-bottom: 8px; font-size: 13px; text-transform: uppercase;">
                             Kategori Operasional

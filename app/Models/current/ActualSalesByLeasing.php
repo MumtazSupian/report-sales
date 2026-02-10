@@ -23,6 +23,7 @@ class ActualSalesByLeasing extends Model
         'okt',
         'nov',
         'des',
-        'total'
+        'total',
+        'cabang'
     ];
 }

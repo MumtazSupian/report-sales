@@ -43,6 +43,10 @@
 
                 <div style="margin: 25px 0 15px 0; border-bottom: 2px dashed #edf2f7;"></div>
 
+                <p style="text-align:center; color: #718096; font-size: 12px; margin-bottom: 15px;">
+                    Menginput data untuk Cabang: <strong style="color: #2d3748;">{{ Auth::user()->cabang }}</strong>
+                </p>
+
                 <label style="display: block; font-weight: 800; color: #3182ce; margin-bottom: 15px; font-size: 14px; text-transform: uppercase; text-align: center;">
                     Data Aktual Per Bulan
                 </label>

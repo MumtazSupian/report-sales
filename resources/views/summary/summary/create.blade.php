@@ -11,6 +11,9 @@
             </h2>
             <div style="width: 50px; height: 4px; background: #3182ce; margin: 10px auto; border-radius: 10px;"></div>
             <p style="color: #cbd5e0; font-size: 14px;">Input rencana dan aktual perbaikan operasional baru</p>
+            <p style="text-align:center; color: #718096; font-size: 12px; margin-bottom: 15px;">
+                Menginput data untuk Cabang: <strong style="color: #2d3748;">{{ Auth::user()->cabang }}</strong>
+            </p>
         </div>
 
         <div
@@ -57,7 +60,7 @@
                 <div style="margin-bottom: 20px;">
                     <label
                         style="display: block; font-weight: 700; color: #2d3748; margin-bottom: 8px; font-size: 13px; text-transform: uppercase;">
-                         Plan Rencana Perbaikan
+                        Plan Rencana Perbaikan
                     </label>
                     <textarea name="plan_perbaikan" id="plan_perbaikan" rows="4"
                         style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 14px; color: #4a5568; outline: none; transition: 0.3s; resize: none;"
@@ -68,7 +71,7 @@
                 <div style="margin-bottom: 10px;">
                     <label
                         style="display: block; font-weight: 700; color: #2d3748; margin-bottom: 8px; font-size: 13px; text-transform: uppercase;">
-                         Aktual Pelaksanaan
+                        Aktual Pelaksanaan
                     </label>
                     <textarea name="aktual_perbaikan" id="aktual_perbaikan" rows="4"
                         style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 14px; color: #4a5568; outline: none; transition: 0.3s; resize: none;"

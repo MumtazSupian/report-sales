@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
 
             // enum mobil_type
-           $table->enum('mobil_type', [
+            $table->enum('mobil_type', [
                 'NEW CARRY',
                 'APV',
                 'ERTIGA',
@@ -32,8 +32,18 @@ return new class extends Migration
 
             // loop bulan
             $months = [
-                'jan', 'feb', 'mar', 'apr', 'mei', 'jun',
-                'jul', 'agu', 'sep', 'okt', 'nov', 'des'
+                'jan',
+                'feb',
+                'mar',
+                'apr',
+                'mei',
+                'jun',
+                'jul',
+                'agu',
+                'sep',
+                'okt',
+                'nov',
+                'des'
             ];
 
             foreach ($months as $month) {
@@ -41,6 +51,8 @@ return new class extends Migration
             }
 
             $table->integer('total')->default(0);
+
+            $table->string('cabang');
 
             $table->timestamps();
         });

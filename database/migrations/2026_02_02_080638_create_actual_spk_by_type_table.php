@@ -51,6 +51,7 @@ return new class extends Migration
             }
 
             $table->integer('total')->default(0);
+            $table->string('cabang');
 
             $table->timestamps();
         });

@@ -35,8 +35,18 @@ return new class extends Migration
 
             // bulan (loop)
             $months = [
-                'jan', 'feb', 'mar', 'apr', 'mei', 'jun',
-                'jul', 'agu', 'sep', 'okt', 'nov', 'des'
+                'jan',
+                'feb',
+                'mar',
+                'apr',
+                'mei',
+                'jun',
+                'jul',
+                'agu',
+                'sep',
+                'okt',
+                'nov',
+                'des'
             ];
 
             foreach ($months as $month) {
@@ -44,6 +54,8 @@ return new class extends Migration
             }
 
             $table->integer('total')->default(0);
+
+            $table->string('cabang');
 
             $table->timestamps();
         });

@@ -52,6 +52,7 @@
                 <thead style="background:#e3f2fd; color:#0d47a1;">
                     <tr style="border-bottom:2px solid #90caf9;">
                         <th style="border:1px solid #999; width: 20%;">OPERASIONAL</th>
+                        <th style="border:1px solid #999; padding:8px;">CABANG</th>
                         <th style="border:1px solid #999;">KONDISI YANG ADA</th>
                         <th style="border:1px solid #999;">ACTION PERBAIKAN</th>
                         <th style="border:1px solid #999; width: 10%;">DO / DON'T</th>
@@ -64,6 +65,7 @@
                             <td style="border:1px solid #bbb; font-weight:600; text-align:left; padding-left:15px;">
                                 {{ $s->operasional }}
                             </td>
+                            <td style="border:1px solid #bbb; font-weight:bold; color:#2c5282;">{{ $s->cabang }}</td>
                             <td style="border:1px solid #bbb; text-align:left;">{{ $s->kondisi_yang_ada }}</td>
                             <td style="border:1px solid #bbb; text-align:left;">{{ $s->action_perbaikan }}</td>
                             <td style="border:1px solid #bbb;">

@@ -30,6 +30,7 @@ return new class extends Migration
         $table->text('evaluasi')->nullable();
         $table->date('tanggal_keluar')->nullable();
 
+        $table->string('cabang');
         $table->timestamps();
     });
     }
