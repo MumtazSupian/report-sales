@@ -14,6 +14,7 @@ class TargetDoUnit extends Model
         'tahun',
         'jan','feb','mar','apr','mei','jun',
         'jul','agu','sep','okt','nov','des',
-        'total'
+        'total',
+        'cabang'
     ];
 }

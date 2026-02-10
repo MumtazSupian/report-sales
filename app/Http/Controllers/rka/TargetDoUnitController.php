@@ -5,15 +5,21 @@ namespace App\Http\Controllers\rka;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\rka\TargetDoUnit;
+use Illuminate\Support\Facades\Auth;
 
 class TargetDoUnitController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $data = TargetDoUnit::all();
+        $user = Auth::user();
+        $pusatRoles = ['Admin', 'OM', 'Admin DCA', 'OM DCA'];
+
+        if (in_array($user->role, $pusatRoles)) {
+            $data = TargetDoUnit::all();
+        } else {
+            $data = TargetDoUnit::where('cabang', $user->cabang)->get();
+        }
+
         return view('rka.target_do_units.index', compact('data'));
     }
 
@@ -30,13 +36,12 @@ class TargetDoUnitController extends Controller
      */
     public function store(Request $request)
     {
-        $total =
-            $request->jan + $request->feb + $request->mar +
-            $request->apr + $request->mei + $request->jun +
-            $request->jul + $request->agu + $request->sep +
-            $request->okt + $request->nov + $request->des;
+        $user = Auth::user();
 
-        \App\Models\rka\TargetDoUnit::create([
+        $total = $request->jan + $request->feb + $request->mar + $request->apr + $request->mei + $request->jun +
+            $request->jul + $request->agu + $request->sep + $request->okt + $request->nov + $request->des;
+
+        TargetDoUnit::create([
             'mobil_type' => $request->mobil_type,
             'tahun'      => $request->tahun,
             'jan'        => $request->jan,
@@ -52,6 +57,7 @@ class TargetDoUnitController extends Controller
             'nov'        => $request->nov,
             'des'        => $request->des,
             'total'      => $total,
+            'cabang'     => $user->cabang,
         ]);
 
         return redirect()->route('rka.target-do-units.index');
@@ -71,6 +77,12 @@ class TargetDoUnitController extends Controller
     public function edit(string $id)
     {
         $data = TargetDoUnit::findOrFail($id);
+        $user = Auth::user();
+
+        if ($user->role == 'BM' && $data->cabang != $user->cabang) {
+            return redirect()->route('rka.target-do-units.index')->with('error', 'Akses dilarang!');
+        }
+
         return view('rka.target_do_units.edit', compact('data'));
     }
 
@@ -115,6 +127,12 @@ class TargetDoUnitController extends Controller
     public function destroy(string $id)
     {
         $data = TargetDoUnit::findOrFail($id);
+        $user = Auth::user();
+        if ($user->role == 'BM' && $data->cabang != $user->cabang) {
+            return redirect()->route('rka.target-do-units.index')
+                ->with('error', 'Waduh, mau hapus punya siapa? Gak boleh ya!');
+        }
+
         $data->delete();
 
         return redirect()->route('rka.target-do-units.index')
