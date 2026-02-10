@@ -10,6 +10,7 @@ return new class extends Migration
     {
         Schema::create('actual_activities', function (Blueprint $table) {
             $table->id();
+            $table->string('cabang');
             $table->enum('jenis_activity', ['Offline', 'Online']);
             $table->enum('activity', ['D_MARKETING', 'EXHIBITION', 'MOVING_EXHIBITION', 'SHOWROOM_EVENT', 'GROUP_PRESENTATION', 'EVENT_TEST_DRIVE', 'OPEN_TABLE', 'CETAK_FLYER']);
             $table->string('platform_lokasi');

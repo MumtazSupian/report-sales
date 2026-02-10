@@ -41,6 +41,7 @@
                 <thead style="background:#fce4ec; color:#880e4f;">
                     <tr style="border-bottom:2px solid #f48fb1;">
                         <th style="border:1px solid #999; padding: 10px;">LEASING NAME</th>
+                        <th style="border:1px solid #999; padding:8px;">CABANG</th>
                         <th style="border:1px solid #999;">TAHUN</th>
                         @foreach ($months as $m)
                             <th style="border:1px solid #999; width: 50px;">{{ strtoupper($m) }}</th>
@@ -53,6 +54,7 @@
                     @foreach ($data as $row)
                         <tr style="background:{{ $loop->iteration % 2 == 0 ? '#fff9fb' : '#ffffff' }}; border-bottom:1px solid #ccc;">
                             <td style="border:1px solid #bbb; font-weight:600; text-align:left; padding-left:10px;">{{ $row->leasing }}</td>
+                            <td style="border:1px solid #bbb; font-weight:bold; color:#2c5282;">{{ $row->cabang }}</td>
                             <td style="border:1px solid #bbb;">{{ $row->tahun }}</td>
                             @foreach ($months as $m)
                                 <td style="border:1px solid #bbb;">{{ number_format($row->$m, 0, ',', '.') }}</td>
@@ -82,7 +84,7 @@
                 </tbody>
                 <tfoot style="background:#c2185b; color:white; font-weight:bold;">
                     <tr>
-                        <td colspan="2" style="border:1px solid #999; padding: 10px;">GRAND TOTAL</td>
+                        <td colspan="3" style="border:1px solid #999; padding: 10px;">GRAND TOTAL</td>
                         @foreach ($months as $m)
                             <td style="border:1px solid #999;">{{ number_format($grandTotals[$m], 0, ',', '.') }}</td>
                         @endforeach

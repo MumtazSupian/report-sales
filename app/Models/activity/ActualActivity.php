@@ -10,6 +10,7 @@ class ActualActivity extends Model
     use HasFactory;
     protected $table = 'actual_activities';
     protected $fillable = [
+        'cabang',
         'jenis_activity',
         'activity',
         'platform_lokasi',
