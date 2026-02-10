@@ -57,13 +57,10 @@
                             PERFORMA</label>
                         {{-- perbaikan --}}
                         <div style="grid-column: span 2;">
-                            <label
-                                style="display:block; font-weight:700; color:#333; margin-bottom:8px; font-size:13px;">GRADING
-                                PERFORMA (Otomatis)</label>
                             <input type="text" id="grading_display" name="grading" readonly
                                 style="width:100%; padding:10px; border:1px solid #ccc; border-radius:6px; background-color: #f1f1f1; font-weight: 800; color: #333;"
                                 value="FREELANCE">
-                            <small style="color: #666;">*Terhitung otomatis berdasarkan rata-rata Jan, Feb, Mar</small>
+                            <small style="color: #666;">*Terhitung otomatis</small>
                         </div>
                     </div>
                 </div>
@@ -123,34 +120,60 @@
             document.getElementsByName(id)[0].addEventListener('input', calculateGrade);
         });
 
-        function calculateGrade() {
-            let jan = parseInt(document.getElementsByName('jan')[0].value) || 0;
-            let feb = parseInt(document.getElementsByName('feb')[0].value) || 0;
-            let mar = parseInt(document.getElementsByName('mar')[0].value) || 0;
+        function updateGrading() {
+            // Ambil nilai unit bulanan
+            let jan = parseFloat(document.querySelector('input[name="jan"]').value) || 0;
+            let feb = parseFloat(document.querySelector('input[name="feb"]').value) || 0;
+            let mar = parseFloat(document.querySelector('input[name="mar"]').value) || 0;
+            let apr = parseFloat(document.querySelector('input[name="apr"]').value) || 0;
+            let mei = parseFloat(document.querySelector('input[name="mei"]').value) || 0;
+            let jun = parseFloat(document.querySelector('input[name="jun"]').value) || 0;
 
-            let rataRata = (jan + feb + mar) / 3;
-            let total = jan + feb + mar;
-            let grade = "FREELANCE";
-            let color = "#9e9e9e";
+            let total3Bulan = jan + feb + mar;
+            let total6Bulan = jan + feb + mar + apr + mei + jun;
+            let rataRata3Bulan = total3Bulan / 3;
+            let rataRata6Bulan = total6Bulan / 6;
 
-            if (rataRata >= 3) {
+            let grade = "TRAINEE";
+            let status = "";
+            let bgColor = "#4caf50"; // Default Trainee (Hijau)
+
+            // LOGIKA PERINGKAT
+
+            // 1. Cek dari yang tertinggi (PLATINUM)
+            if (rataRata6Bulan >= 5 && total6Bulan >= 31) {
                 grade = "PLATINUM";
-                color = "#1a237e";
-            } else if (rataRata >= 2) {
+                bgColor = "#1a237e";
+            }
+            // 2. GOLD ke PLATINUM
+            else if (rataRata6Bulan >= 4 && total6Bulan >= 25) {
                 grade = "GOLD";
-                color = "#ff9800";
-            } else if (rataRata >= 1) {
+                bgColor = "#ff9800";
+                status = (rataRata6Bulan >= 5 && total6Bulan >= 31) ? "" : " -> KADAR PLATINUM";
+            }
+            // 3. SILVER ke GOLD
+            else if (rataRata3Bulan >= 2 && total3Bulan >= 7) {
                 grade = "SILVER";
-                color = "#757575";
-            } else if (total > 0) {
+                bgColor = "#9e9e9e";
+                // Cek jika hampir naik ke Gold (Syarat Gold: 4 unit/bln & 25 total/6bln)
+                status = " -> KADAR GOLD";
+            }
+            // 4. TRAINEE ke SILVER atau EVALUASI
+            else {
                 grade = "TRAINEE";
-                color = "#4caf50";
+                bgColor = "#4caf50";
+                if (rataRata3Bulan >= 1) { // 1 unit per bulan (seperti kasus 1,1,1 kamu)
+                    status = " -> KADAR SILVER";
+                } else if (total3Bulan < 3) {
+                    status = " -> EVALUASI";
+                    bgColor = "#f44336"; // Merah jika evaluasi
+                }
             }
 
-            const display = document.getElementById('grading_display');
-            display.value = grade;
-            display.style.color = (grade === "PLATINUM" || grade === "GOLD") ? "#fff" : "#333";
-            display.style.backgroundColor = color;
+            let display = document.getElementById('grading_display');
+            display.value = grade + status;
+            display.style.backgroundColor = bgColor;
+            display.style.color = "#ffffff";
         }
     </script>
 

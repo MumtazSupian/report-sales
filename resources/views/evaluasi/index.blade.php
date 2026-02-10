@@ -22,7 +22,7 @@
         {{-- alert --}}
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-        {{-- Notifikasi sukses nya --}}
+        {{-- Notif --}}
         @if (session('success'))
             <script>
                 Swal.fire({
@@ -73,27 +73,45 @@
                             <td style="border:1px solid #bbb;">{{ $d->tanggal_masuk }}</td>
                             <td style="border:1px solid #bbb;">{{ $d->tanggal_evaluasi }}</td>
 
-                            {{-- Baris Grading Baru PERLU PERBAIKAN --}}
                             {{-- Baris Grading Baru --}}
-                            <td style="border:1px solid #bbb;">
+                            <td style="border:1px solid #bbb; text-align:center;">
                                 @php
-                                    // Menentukan warna berdasarkan peringkat
-                                    $color = '#607d8b'; // Default Freelance (Abu-abu gelap)
+                                    $jan = $d->jan ?? 0;
+                                    $feb = $d->feb ?? 0;
+                                    $mar = $d->mar ?? 0;
+                                    $apr = $d->apr ?? 0;
+                                    $mei = $d->mei ?? 0;
+                                    $jun = $d->jun ?? 0;
 
-                                    if ($d->grading == 'PLATINUM') {
-                                        $color = '#1a237e'; // Biru Tua
-                                    } elseif ($d->grading == 'GOLD') {
-                                        $color = '#ff9800'; // Emas/Orange
-                                    } elseif ($d->grading == 'SILVER') {
-                                        $color = '#9e9e9e'; // Silver/Abu-abu
-                                    } elseif ($d->grading == 'TRAINEE') {
-                                        $color = '#4caf50'; // Hijau
+                                    $total3 = $jan + $feb + $mar;
+                                    $total6 = $total3 + $apr + $mei + $jun;
+                                    $avg3 = $total3 / 3;
+                                    $avg6 = $total6 / 6;
+
+                                    $text = 'TRAINEE';
+                                    $color = '#4caf50';
+
+                                    if ($avg6 >= 5 && $total6 >= 31) {
+                                        $text = 'PLATINUM';
+                                        $color = '#1a237e';
+                                    } elseif ($avg6 >= 4 && $total6 >= 25) {
+                                        $text = 'GOLD -> KADAR PLATINUM';
+                                        $color = '#ff9800';
+                                    } elseif ($avg3 >= 2 && $total3 >= 7) {
+                                        $text = 'SILVER -> KADAR GOLD';
+                                        $color = '#9e9e9e';
+                                    } elseif ($avg3 >= 1) {
+                                        $text = 'TRAINEE -> KADAR SILVER';
+                                        $color = '#4caf50';
+                                    } else {
+                                        $text = 'TRAINEE -> EVALUASI';
+                                        $color = '#f44336';
                                     }
                                 @endphp
 
                                 <span
-                                    style="padding: 4px 10px; border-radius: 4px; color: #fff; font-weight: bold; font-size: 10px; background: {{ $color }}; display: inline-block; min-width: 80px; text-align: center;">
-                                    {{ $d->grading ?? 'FREELANCE' }}
+                                    style="padding: 4px 8px; border-radius: 4px; color: #fff; font-weight: bold; font-size: 9px; background: {{ $color }}; white-space: nowrap;">
+                                    {{ $text }}
                                 </span>
                             </td>
                             <td style="border:1px solid #bbb;">{{ $d->jan }}</td>

@@ -121,45 +121,60 @@
                 updateGrading();
             });
         });
-
         function updateGrading() {
-            // Mengambil nilai Jan, Feb, Mar sesuai permintaan (rata-rata 3 bulan awal)
+            // Ambil nilai unit bulanan
             let jan = parseFloat(document.querySelector('input[name="jan"]').value) || 0;
             let feb = parseFloat(document.querySelector('input[name="feb"]').value) || 0;
             let mar = parseFloat(document.querySelector('input[name="mar"]').value) || 0;
+            let apr = parseFloat(document.querySelector('input[name="apr"]').value) || 0;
+            let mei = parseFloat(document.querySelector('input[name="mei"]').value) || 0;
+            let jun = parseFloat(document.querySelector('input[name="jun"]').value) || 0;
 
-            let rataRata = (jan + feb + mar) / 3;
-            let totalTigaBulan = jan + feb + mar;
+            let total3Bulan = jan + feb + mar;
+            let total6Bulan = jan + feb + mar + apr + mei + jun;
+            let rataRata3Bulan = total3Bulan / 3;
+            let rataRata6Bulan = total6Bulan / 6;
 
-            let grade = "FREELANCE";
-            let bgColor = "#f1f1f1";
-            let textColor = "#333";
+            let grade = "TRAINEE";
+            let status = "";
+            let bgColor = "#4caf50"; // Default Trainee (Hijau)
 
-            if (rataRata >= 3) {
+            // LOGIKA PERINGKAT
+
+            // 1. Cek dari yang tertinggi (PLATINUM)
+            if (rataRata6Bulan >= 5 && total6Bulan >= 31) {
                 grade = "PLATINUM";
                 bgColor = "#1a237e";
-                textColor = "#ffffff";
-            } else if (rataRata >= 2) {
+            }
+            // 2. GOLD ke PLATINUM
+            else if (rataRata6Bulan >= 4 && total6Bulan >= 25) {
                 grade = "GOLD";
                 bgColor = "#ff9800";
-                textColor = "#ffffff";
-            } else if (rataRata >= 1) {
+                status = (rataRata6Bulan >= 5 && total6Bulan >= 31) ? "" : " -> KADAR PLATINUM";
+            }
+            // 3. SILVER ke GOLD
+            else if (rataRata3Bulan >= 2 && total3Bulan >= 7) {
                 grade = "SILVER";
                 bgColor = "#9e9e9e";
-                textColor = "#ffffff";
-            } else if (totalTigaBulan > 0) {
+                // Cek jika hampir naik ke Gold (Syarat Gold: 4 unit/bln & 25 total/6bln)
+                status = " -> KADAR GOLD";
+            }
+            // 4. TRAINEE ke SILVER atau EVALUASI
+            else {
                 grade = "TRAINEE";
                 bgColor = "#4caf50";
-                textColor = "#ffffff";
+                if (rataRata3Bulan >= 1) { // 1 unit per bulan (seperti kasus 1,1,1 kamu)
+                    status = " -> KADAR SILVER";
+                } else if (total3Bulan < 3) {
+                    status = " -> EVALUASI";
+                    bgColor = "#f44336"; // Merah jika evaluasi
+                }
             }
 
             let display = document.getElementById('grading_display');
-            display.value = grade;
+            display.value = grade + status;
             display.style.backgroundColor = bgColor;
-            display.style.color = textColor;
+            display.style.color = "#ffffff";
         }
-
-        // Jalankan fungsi saat halaman pertama kali dimuat agar warna muncul
-        window.onload = updateGrading;
     </script>
 @endsection

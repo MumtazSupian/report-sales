@@ -1,6 +1,6 @@
 <div style="background-color: #a3d2ff; min-height: 100vh; display: flex; justify-content: center; align-items: center; font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 0;">
     <div style="background: #ffffff; padding: 40px; border-radius: 4px; box-shadow: 15px 15px 0px rgba(0,0,0,0.1); width: 100%; max-width: 480px; border: 2px solid #000;">
-        
+
         <div style="margin-bottom: 30px; border-bottom: 3px solid #000080; padding-bottom: 15px;">
             <h1 style="color: #000080; font-size: 28px; font-weight: 900; margin: 0; letter-spacing: -1px;">DCA SYSTEM</h1>
             <p style="font-size: 14px; font-weight: bold; margin: 5px 0 0 0; color: #333;">VSV Report (Vehicle Sales Volume)</p>
@@ -9,7 +9,7 @@
 
         <form action="{{ url('/login') }}" method="POST">
             @csrf
-            
+
             @if($errors->any())
                 <div style="background: #fee2e2; color: #b91c1c; padding: 12px; margin-bottom: 20px; font-size: 13px; border: 1px solid #f87171; border-radius: 4px;">
                     <strong>Waduh!</strong> {{ $errors->first() }}
@@ -19,7 +19,7 @@
             <div style="margin-bottom: 18px;">
                 <label style="display: block; font-size: 13px; font-weight: 800; margin-bottom: 8px; color: #000;">DISIAPKAN OLEH:</label>
                 <select name="name" required style="width: 100%; padding: 10px; border: 2px solid #000; background: #fff; font-weight: bold; cursor: pointer;">
-                    <option value="" disabled selected>-- Pilih Personel --</option>
+                    <option value="" disabled selected>Pilih Personel</option>
                     <option value="Ade">Ade</option>
                     <option value="Afri">Afri</option>
                     <option value="Bagja">Bagja</option>
@@ -65,4 +65,4 @@
             </div>
         </form>
     </div>
-</div> 
+</div>

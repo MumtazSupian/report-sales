@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\evaluasi;
+
 use App\Http\Controllers\Controller;
 use App\Models\evaluasi\EvaluasiWiraniaga;
 use Illuminate\Http\Request;
@@ -10,8 +11,6 @@ class EvaluasiWiraniagaController extends Controller
     public function index()
     {
         $data = EvaluasiWiraniaga::orderBy('nama_sales')->get();
-
-        // total keseluruhan (seperti Excel bagian bawah)
         $grandTotal = $data->sum('total');
 
         return view('evaluasi.index', compact('data', 'grandTotal'));
@@ -22,60 +21,86 @@ class EvaluasiWiraniagaController extends Controller
         return view('evaluasi.create');
     }
 
-    // Cari bagian public function store dan ganti isinya dengan ini:
-public function store(Request $request)
-{
-    $months = ['jan', 'feb', 'mar', 'apr', 'mei', 'jun'];
-    $data = $request->all();
+    public function store(Request $request)
+    {
+        $data = $request->all();
 
-    // Hitung Total
-    $total = 0;
-    foreach ($months as $m) {
-        $total += $request->input($m, 0);
+        // Hitung Total & Grading secara otomatis di sisi Server
+        $calculated = $this->calculateTotalAndGrading($request);
+        $data['total'] = $calculated['total'];
+        $data['grading'] = $calculated['grading'];
+
+        EvaluasiWiraniaga::create($data);
+
+        return redirect()->route('evaluasi.index')->with('success', 'Data berhasil disimpan!');
     }
-    $data['total'] = $total;
 
-    // Hitung Grading Otomatis (berdasarkan rata-rata Jan-Mar sesuai permintaanmu)
-    $data['grading'] = EvaluasiWiraniaga::hitungPeringkat(
-        $request->input('jan', 0),
-        $request->input('feb', 0),
-        $request->input('mar', 0)
-    );
-
-    EvaluasiWiraniaga::create($data);
-
-    return redirect()->route('evaluasi.index')->with('success', 'Data berhasil disimpan dengan peringkat ' . $data['grading']);
-}
-
-// Lakukan hal yang sama untuk public function update:
-public function update(Request $request, $id)
-{
-    $row = EvaluasiWiraniaga::findOrFail($id);
-    $months = ['jan', 'feb', 'mar', 'apr', 'mei', 'jun'];
-    $data = $request->all();
-
-    $total = 0;
-    foreach ($months as $m) {
-        $total += $request->input($m, 0);
+    /**
+     * INI FUNGSI YANG TADI HILANG
+     * Menampilkan halaman formulir edit
+     */
+    public function edit($id)
+    {
+        $row = EvaluasiWiraniaga::findOrFail($id);
+        return view('evaluasi.edit', compact('row'));
     }
-    $data['total'] = $total;
 
-    $data['grading'] = EvaluasiWiraniaga::hitungPeringkat(
-        $request->input('jan', 0),
-        $request->input('feb', 0),
-        $request->input('mar', 0)
-    );
+    public function update(Request $request, $id)
+    {
+        $row = EvaluasiWiraniaga::findOrFail($id);
+        $data = $request->all();
 
-    $row->update($data);
+        // Hitung Total & Grading secara otomatis di sisi Server sebelum update
+        $calculated = $this->calculateTotalAndGrading($request);
+        $data['total'] = $calculated['total'];
+        $data['grading'] = $calculated['grading'];
 
-    return redirect()->route('evaluasi.index')->with('success', 'Data berhasil diperbarui');
-}
+        $row->update($data);
+
+        return redirect()->route('evaluasi.index')->with('success', 'Data berhasil diperbarui');
+    }
 
     public function destroy($id)
     {
         EvaluasiWiraniaga::findOrFail($id)->delete();
+        return redirect()->route('evaluasi.index')->with('success', 'Data berhasil dihapus');
+    }
 
-        return redirect()->route('evaluasi.index')
-            ->with('success', 'Data berhasil dihapus');
+    /**
+     * FUNGSI TAMBAHAN (Helper)
+     * Untuk menghitung Total dan Grading sesuai revisi terbaru kamu
+     */
+    private function calculateTotalAndGrading($request)
+    {
+        $jan = (int)$request->input('jan', 0);
+        $feb = (int)$request->input('feb', 0);
+        $mar = (int)$request->input('mar', 0);
+        $apr = (int)$request->input('apr', 0);
+        $mei = (int)$request->input('mei', 0);
+        $jun = (int)$request->input('jun', 0);
+
+        $total3Bulan = $jan + $feb + $mar;
+        $total6Bulan = $total3Bulan + $apr + $mei + $jun;
+
+        $avg3 = $total3Bulan / 3;
+        $avg6 = $total6Bulan / 6;
+
+        // Logika sesuai revisi permintaanmu
+        if ($avg6 >= 5 && $total6Bulan >= 31) {
+            $grading = "PLATINUM";
+        } elseif ($avg6 >= 4 && $total6Bulan >= 25) {
+            $grading = "GOLD -> KADAR PLATINUM";
+        } elseif ($avg3 >= 2 && $total3Bulan >= 7) {
+            $grading = "SILVER -> KADAR GOLD";
+        } elseif ($avg3 >= 1) {
+            $grading = "TRAINEE -> KADAR SILVER";
+        } else {
+            $grading = "TRAINEE -> EVALUASI";
+        }
+
+        return [
+            'total' => $total6Bulan,
+            'grading' => $grading
+        ];
     }
 }
