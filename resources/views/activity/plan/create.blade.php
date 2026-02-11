@@ -5,8 +5,11 @@
             <h2 style="color: white; margin: 0; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;">TAMBAH
                 ACTIVITY PLAN</h2>
             <div style="width: 50px; height: 4px; background: #3182ce; margin: 10px auto; border-radius: 10px;"></div>
-            <p style="color: #cbd5e0; margin: 5px 0 0 0; font-size: 14px;">Silakan isi formulir di bawah dengan lengkap dan
-                teliti</p>
+            <p style="color: #cbd5e0; margin: 5px 0 0 0; font-size: 14px;">Silakan isi formulir di bawah dengan lengkap dan teliti</p>
+            <br>
+            <p style="text-align:center; color: #e1e1e1; font-size: 13px; margin-bottom: 15px;">
+                Menginput data untuk Cabang: <strong style="color: #ffffff;">{{ Auth::user()->cabang }}</strong>
+            </p>
         </div>
         <div
             style="background: #ffffff; border-radius: 20px; padding: 40px; color: #333; box-shadow: 0 15px 35px rgba(0,0,0,0.3); width: 100%; max-width: 1000px;">

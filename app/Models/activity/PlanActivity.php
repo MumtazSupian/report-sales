@@ -10,6 +10,7 @@ class PlanActivity extends Model
     use HasFactory;
     protected $table = 'plan_activities';
     protected $fillable = [
+        'cabang',
         'jenis_activity',
         'activity',
         'platform_lokasi',

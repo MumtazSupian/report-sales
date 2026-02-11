@@ -40,7 +40,9 @@
                 </div>
 
                 <div style="margin: 25px 0 15px 0; border-bottom: 2px dashed #edf2f7;"></div>
-
+                <p style="text-align:center; color: #718096; font-size: 12px; margin-bottom: 15px;">
+                    Menginput data untuk Cabang: <strong style="color: #2d3748;">{{ Auth::user()->cabang }}</strong>
+                </p>
                 <label style="display: block; font-weight: 800; color: #3182ce; margin-bottom: 15px; font-size: 14px; text-transform: uppercase; text-align: center;">
                     Realisasi PO Bulanan
                 </label>
@@ -99,7 +101,7 @@
                 text: "Simpan data aktual PO untuk " + leasing + " tahun " + tahun + "?",
                 icon: 'question',
                 showCancelButton: true,
-                confirmButtonColor: '#1a202c',
+                confirmButtonColor: '#3182ce',
                 cancelButtonColor: '#e53e3e',
                 confirmButtonText: 'Ya, Simpan!',
                 cancelButtonText: 'Cek Kembali'

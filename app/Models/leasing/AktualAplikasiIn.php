@@ -17,5 +17,6 @@ class AktualAplikasiIn extends Model
         'jan','feb','mar','apr','mei','jun',
         'jul','agu','sep','okt','nov','des',
         'total',
+        'cabang'
     ];
 }
