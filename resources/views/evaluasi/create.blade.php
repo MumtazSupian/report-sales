@@ -9,6 +9,9 @@
                 📝 INPUT DATA EVALUASI
             </h2>
             <p style="color: #8fb3d9;">Lengkapi formulir di bawah untuk menambah data kinerja wiraniaga</p>
+            <p style="text-align:center; color: #718096; font-size: 12px; margin-bottom: 15px;">
+                Menginput data untuk Cabang: <strong style="color: #e2e2e2;">{{ Auth::user()->cabang }}</strong>
+            </p>
         </div>
 
         <div

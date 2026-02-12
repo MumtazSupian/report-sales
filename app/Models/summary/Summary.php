@@ -10,6 +10,7 @@ class Summary extends Model
         'operasional',
         'plan_perbaikan',
         'aktual_perbaikan',
-        'do_dont'
+        'do_dont',
+        'cabang'
     ];
 }

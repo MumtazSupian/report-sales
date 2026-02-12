@@ -11,6 +11,9 @@
             </h2>
             <div style="width: 50px; height: 4px; background: #3182ce; margin: 10px auto; border-radius: 10px;"></div>
             <p style="color: #cbd5e0; font-size: 14px;">Perbarui data rencana dan aktual perbaikan operasional</p>
+            <p style="text-align:center; color: #718096; font-size: 12px; margin-bottom: 15px;">
+                Menginput data untuk Cabang: <strong style="color: #2d3748;">{{ Auth::user()->cabang }}</strong>
+            </p>
         </div>
 
         <div
@@ -159,4 +162,3 @@
         }
     </style>
 @endsection
-

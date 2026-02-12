@@ -23,6 +23,7 @@ class ActualDoByType extends Model
         'okt',
         'nov',
         'des',
-        'total'
+        'total',
+        'cabang'
     ];
 }

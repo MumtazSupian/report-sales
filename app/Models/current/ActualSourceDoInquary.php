@@ -23,6 +23,7 @@ class ActualSourceDoInquary extends Model
         'okt',
         'nov',
         'des',
-        'total'
+        'total',
+        'cabang'
     ];
 }

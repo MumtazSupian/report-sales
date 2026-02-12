@@ -80,6 +80,9 @@
 
                 {{-- Action Perbaikan --}}
                 <div style="margin-bottom: 10px;">
+                    <p style="text-align:center; color: #718096; font-size: 12px; margin-bottom: 15px;">
+                        Menginput data untuk Cabang: <strong style="color: #2d3748;">{{ Auth::user()->cabang }}</strong>
+                    </p>
                     <label
                         style="display: block; font-weight: 700; color: #2d3748; margin-bottom: 8px; font-size: 13px; text-transform: uppercase;">
                         🛠️ Action Perbaikan

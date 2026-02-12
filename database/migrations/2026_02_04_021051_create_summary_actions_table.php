@@ -17,6 +17,8 @@ return new class extends Migration
         $table->text('kondisi_yang_ada')->nullable();
         $table->text('action_perbaikan')->nullable();
         $table->enum('do_dont', ['X', 'V'])->nullable();
+
+        $table->string('cabang');
         $table->timestamps();
     });
     }

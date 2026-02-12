@@ -9,6 +9,9 @@
                 ✏️ EDIT DATA EVALUASI
             </h2>
             <p style="color: #8fb3d9;">Perbarui informasi kinerja untuk <strong>{{ $row->nama_sales }}</strong></p>
+            <p style="text-align:center; color: #718096; font-size: 12px; margin-bottom: 15px;">
+                Menginput data untuk Cabang: <strong style="color: #2d3748;">{{ Auth::user()->cabang }}</strong>
+            </p>
         </div>
 
         <div
@@ -121,6 +124,7 @@
                 updateGrading();
             });
         });
+
         function updateGrading() {
             // Ambil nilai unit bulanan
             let jan = parseFloat(document.querySelector('input[name="jan"]').value) || 0;

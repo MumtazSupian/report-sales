@@ -4,12 +4,15 @@
 
 @section('content')
     <div style="padding: 20px;">
-        <h2 style="text-align:center; font-weight:800; color:#fff; letter-spacing:0.5px; text-transform:uppercase; margin-bottom:5px;">
+        <h2
+            style="text-align:center; font-weight:800; color:#fff; letter-spacing:0.5px; text-transform:uppercase; margin-bottom:5px;">
             👥 ACTUAL SALESFORCES
         </h2>
-        <p style="text-align:center; color: #8fb3d9; margin-bottom:20px;">Monitoring data aktual grading tenaga penjual per periode</p>
+        <p style="text-align:center; color: #8fb3d9; margin-bottom:20px;">Monitoring data aktual grading tenaga penjual per
+            periode</p>
 
-        <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin:0 auto 15px auto; width:98%;">
+        <div
+            style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin:0 auto 15px auto; width:98%;">
             <div style="display:flex; gap:10px; align-items:center;">
                 <a href="{{ url('/current/dashboard') }}"
                     style="padding:8px 16px; background:#6c757d; color:#fff; border-radius:6px; font-size:13px; font-weight:600; text-decoration:none; box-shadow:0 2px 5px rgba(0,0,0,0.1); transition:0.3s;"
@@ -42,12 +45,15 @@
                     text: "{{ session('success') }}",
                     showConfirmButton: false,
                     timer: 2000,
-                    customClass: { popup: 'rounded-4' }
+                    customClass: {
+                        popup: 'rounded-4'
+                    }
                 });
             </script>
         @endif
 
-        <div style="background:#fff; padding:20px; border-radius:14px; box-shadow:0 6px 20px rgba(0,0,0,0.08); overflow-x:auto;">
+        <div
+            style="background:#fff; padding:20px; border-radius:14px; box-shadow:0 6px 20px rgba(0,0,0,0.08); overflow-x:auto;">
             @php
                 $months = ['jan', 'feb', 'mar', 'apr', 'mei', 'jun', 'jul', 'agu', 'sep', 'okt', 'nov', 'des'];
                 $grandTotals = [];
@@ -62,6 +68,7 @@
                 <thead style="background:#e3f2fd; color:#0d47a1;">
                     <tr style="border-bottom:2px solid #90caf9;">
                         <th style="border:1px solid #999;">GRADING</th>
+                        <th style="border:1px solid #999; padding:8px;">CABANG</th>
                         <th style="border:1px solid #999;">TAHUN</th>
                         @foreach ($months as $m)
                             <th style="border:1px solid #999;">{{ strtoupper($m) }}</th>
@@ -72,10 +79,12 @@
                 </thead>
                 <tbody>
                     @foreach ($data as $row)
-                        <tr style="background:{{ $loop->iteration % 2 == 0 ? '#f7f9fb' : '#ffffff' }}; border-bottom:1px solid #ccc;">
+                        <tr
+                            style="background:{{ $loop->iteration % 2 == 0 ? '#f7f9fb' : '#ffffff' }}; border-bottom:1px solid #ccc;">
                             <td style="border:1px solid #bbb; font-weight:600; text-align:left; padding-left:15px;">
                                 {{ $row->grading }}
                             </td>
+                            <td style="border:1px solid #bbb; font-weight:bold; color:#2c5282;">{{ $row->cabang }}</td>
                             <td style="border:1px solid #bbb;">{{ $row->tahun }}</td>
 
                             @foreach ($months as $m)
@@ -106,7 +115,8 @@
                 </tbody>
                 <tfoot style="background:#0d47a1; color:white; font-weight:bold;">
                     <tr>
-                        <td colspan="2" style="border:1px solid #999; text-align: center; letter-spacing:1px;">GRAND TOTAL</td>
+                        <td colspan="3" style="border:1px solid #999; text-align: center; letter-spacing:1px;">GRAND
+                            TOTAL</td>
                         @foreach ($months as $m)
                             <td style="border:1px solid #999;">{{ number_format($grandTotals[$m], 0, ',', '.') }}</td>
                         @endforeach
@@ -132,7 +142,9 @@
                 confirmButtonText: 'Ya, Hapus!',
                 cancelButtonText: 'Batal',
                 reverseButtons: true,
-                customClass: { popup: 'rounded-4' }
+                customClass: {
+                    popup: 'rounded-4'
+                }
             }).then((result) => {
                 if (result.isConfirmed) {
                     document.getElementById('delete-form-' + id).submit();

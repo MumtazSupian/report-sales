@@ -5,12 +5,26 @@ namespace App\Http\Controllers\evaluasi;
 use App\Http\Controllers\Controller;
 use App\Models\evaluasi\EvaluasiWiraniaga;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth; // Wajib ditambahkan
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\EvaluasiExport;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class EvaluasiWiraniagaController extends Controller
 {
     public function index()
     {
-        $data = EvaluasiWiraniaga::orderBy('nama_sales')->get();
+        $user = Auth::user();
+        $pusatRoles = ['Admin', 'OM', 'Admin DCA', 'OM DCA'];
+
+        if (in_array($user->role, $pusatRoles)) {
+            $data = EvaluasiWiraniaga::orderBy('nama_sales')->get();
+        } else {
+            $data = EvaluasiWiraniaga::where('cabang', $user->cabang)
+                ->orderBy('nama_sales')
+                ->get();
+        }
+
         $grandTotal = $data->sum('total');
 
         return view('evaluasi.index', compact('data', 'grandTotal'));
@@ -23,6 +37,7 @@ class EvaluasiWiraniagaController extends Controller
 
     public function store(Request $request)
     {
+        $user = Auth::user();
         $data = $request->all();
 
         // Hitung Total & Grading secara otomatis di sisi Server
@@ -30,27 +45,40 @@ class EvaluasiWiraniagaController extends Controller
         $data['total'] = $calculated['total'];
         $data['grading'] = $calculated['grading'];
 
+        // Tambahkan cabang otomatis dari user yang sedang login
+        $data['cabang'] = $user->cabang;
+
         EvaluasiWiraniaga::create($data);
 
         return redirect()->route('evaluasi.index')->with('success', 'Data berhasil disimpan!');
     }
 
-    /**
-     * INI FUNGSI YANG TADI HILANG
-     * Menampilkan halaman formulir edit
-     */
     public function edit($id)
     {
         $row = EvaluasiWiraniaga::findOrFail($id);
+        $user = Auth::user();
+
+        // Keamanan: Cabang tidak boleh edit evaluasi wiraniaga cabang lain
+        if ($user->role == 'BM' && $row->cabang != $user->cabang) {
+            return redirect()->route('evaluasi.index')->with('error', 'Akses dilarang!');
+        }
+
         return view('evaluasi.edit', compact('row'));
     }
 
     public function update(Request $request, $id)
     {
         $row = EvaluasiWiraniaga::findOrFail($id);
+        $user = Auth::user();
+
+        // Proteksi sisi server
+        if ($user->role == 'BM' && $row->cabang != $user->cabang) {
+            return redirect()->route('evaluasi.index')->with('error', 'Update ditolak.');
+        }
+
         $data = $request->all();
 
-        // Hitung Total & Grading secara otomatis di sisi Server sebelum update
+        // Hitung Total & Grading secara otomatis sebelum update
         $calculated = $this->calculateTotalAndGrading($request);
         $data['total'] = $calculated['total'];
         $data['grading'] = $calculated['grading'];
@@ -62,14 +90,18 @@ class EvaluasiWiraniagaController extends Controller
 
     public function destroy($id)
     {
-        EvaluasiWiraniaga::findOrFail($id)->delete();
+        $row = EvaluasiWiraniaga::findOrFail($id);
+        $user = Auth::user();
+
+        // Proteksi Hapus
+        if ($user->role == 'BM' && $row->cabang != $user->cabang) {
+            return redirect()->route('evaluasi.index')->with('error', 'Tidak boleh menghapus data cabang lain!');
+        }
+
+        $row->delete();
         return redirect()->route('evaluasi.index')->with('success', 'Data berhasil dihapus');
     }
 
-    /**
-     * FUNGSI TAMBAHAN (Helper)
-     * Untuk menghitung Total dan Grading sesuai revisi terbaru kamu
-     */
     private function calculateTotalAndGrading($request)
     {
         $jan = (int)$request->input('jan', 0);
@@ -85,7 +117,6 @@ class EvaluasiWiraniagaController extends Controller
         $avg3 = $total3Bulan / 3;
         $avg6 = $total6Bulan / 6;
 
-        // Logika sesuai revisi permintaanmu
         if ($avg6 >= 5 && $total6Bulan >= 31) {
             $grading = "PLATINUM";
         } elseif ($avg6 >= 4 && $total6Bulan >= 25) {
@@ -103,4 +134,31 @@ class EvaluasiWiraniagaController extends Controller
             'grading' => $grading
         ];
     }
+    public function exportExcel()
+{
+    return Excel::download(new EvaluasiExport, 'evaluasi-wiraniaga.xlsx');
 }
+
+public function exportPdf()
+{
+    $user = Auth::user();
+    $pusatRoles = ['Admin', 'OM', 'Admin DCA', 'OM DCA'];
+
+    // Gunakan logika filter yang sama dengan index
+    if (in_array($user->role, $pusatRoles)) {
+        $data = EvaluasiWiraniaga::orderBy('nama_sales')->get();
+    } else {
+        $data = EvaluasiWiraniaga::where('cabang', $user->cabang)->orderBy('nama_sales')->get();
+    }
+
+    $grandTotal = $data->sum('total');
+
+    // Load view khusus untuk PDF (landscape)
+    $pdf = Pdf::loadView('evaluasi.export_pdf', compact('data', 'grandTotal'))
+              ->setPaper('a4', 'landscape');
+
+    return $pdf->download('evaluasi-wiraniaga.pdf');
+}
+}
+
+

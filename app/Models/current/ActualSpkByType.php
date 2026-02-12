@@ -23,6 +23,7 @@ class ActualSpkByType extends Model
         'okt',
         'nov',
         'des',
-        'total'
+        'total',
+        'cabang'
     ];
 }

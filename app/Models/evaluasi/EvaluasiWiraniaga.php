@@ -22,7 +22,8 @@ class EvaluasiWiraniaga extends Model
         'jun',
         'total',
         'evaluasi',
-        'tanggal_keluar'
+        'tanggal_keluar',
+        'cabang'
     ];
 
     // Fungsi statis untuk menghitung grading agar bisa dipakai di Controller & View

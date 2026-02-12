@@ -10,6 +10,7 @@ class SummaryAction extends Model
         'operasional',
         'kondisi_yang_ada',
         'action_perbaikan',
-        'do_dont'
+        'do_dont',
+        'cabang'
     ];
 }
