@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\evaluasi\EvaluasiWiraniaga;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth; // Wajib ditambahkan
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\EvaluasiExport;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class EvaluasiWiraniagaController extends Controller
 {
@@ -14,7 +17,6 @@ class EvaluasiWiraniagaController extends Controller
         $user = Auth::user();
         $pusatRoles = ['Admin', 'OM', 'Admin DCA', 'OM DCA'];
 
-        // Logika Filter: Pusat melihat semua, Cabang hanya melihat wiraniaga di cabangnya
         if (in_array($user->role, $pusatRoles)) {
             $data = EvaluasiWiraniaga::orderBy('nama_sales')->get();
         } else {
@@ -132,4 +134,31 @@ class EvaluasiWiraniagaController extends Controller
             'grading' => $grading
         ];
     }
+    public function exportExcel()
+{
+    return Excel::download(new EvaluasiExport, 'evaluasi-wiraniaga.xlsx');
 }
+
+public function exportPdf()
+{
+    $user = Auth::user();
+    $pusatRoles = ['Admin', 'OM', 'Admin DCA', 'OM DCA'];
+
+    // Gunakan logika filter yang sama dengan index
+    if (in_array($user->role, $pusatRoles)) {
+        $data = EvaluasiWiraniaga::orderBy('nama_sales')->get();
+    } else {
+        $data = EvaluasiWiraniaga::where('cabang', $user->cabang)->orderBy('nama_sales')->get();
+    }
+
+    $grandTotal = $data->sum('total');
+
+    // Load view khusus untuk PDF (landscape)
+    $pdf = Pdf::loadView('evaluasi.export_pdf', compact('data', 'grandTotal'))
+              ->setPaper('a4', 'landscape');
+
+    return $pdf->download('evaluasi-wiraniaga.pdf');
+}
+}
+
+

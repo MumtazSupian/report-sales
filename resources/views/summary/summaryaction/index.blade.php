@@ -4,15 +4,17 @@
 
 @section('content')
     <div style="padding: 20px;">
-        <h2 style="text-align:center; font-weight:800; color:#fff; letter-spacing:0.5px; text-transform:uppercase; margin-bottom:5px;">
+        <h2
+            style="text-align:center; font-weight:800; color:#fff; letter-spacing:0.5px; text-transform:uppercase; margin-bottom:5px;">
             🛠️ ACTION PLAN IMPROVEMENT
         </h2>
         <p style="text-align:center; color: #8fb3d9; margin-bottom:20px;">
             Kelola data operasional, kondisi saat ini, dan rencana tindakan perbaikan
         </p>
 
-        <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin:0 auto 15px auto; width:98%;">
-            <div style="display:flex; gap:10px; align-items:center;">
+        <div
+            style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin:0 auto 15px auto; width:98%;">
+            <div>
                 <a href="{{ url('/summary/dashboard') }}"
                     style="padding:8px 16px; background:#6c757d; color:#fff; border-radius:6px; font-size:13px; font-weight:600; text-decoration:none; box-shadow:0 2px 5px rgba(0,0,0,0.1); transition:0.3s;"
                     onmouseover="this.style.background='#5a6268'" onmouseout="this.style.background='#6c757d'">
@@ -20,11 +22,29 @@
                 </a>
             </div>
 
-            <a href="{{ route('summary.summaryaction.create') }}"
-                style="padding:8px 16px; background:#1e88e5; color:#fff; border-radius:6px; font-size:13px; font-weight:600; text-decoration:none; box-shadow:0 2px 5px rgba(0,0,0,0.1); transition:0.3s;"
-                onmouseover="this.style.background='#1565c0'" onmouseout="this.style.background='#1e88e5'">
-                + Tambah Data
-            </a>
+            {{-- Grup Tombol Kanan --}}
+            <div style="display:flex; gap:8px; align-items:center;">
+                {{-- Tombol Excel --}}
+                <a href="{{ route('summary-action.excel') }}"
+                    style="padding:8px 16px; background:#2e7d32; color:#fff; border-radius:6px; font-size:13px; font-weight:600; text-decoration:none; box-shadow:0 2px 5px rgba(0,0,0,0.1); transition:0.3s;"
+                    onmouseover="this.style.background='#1b5e20'" onmouseout="this.style.background='#2e7d32'">
+                    📗 Export Excel
+                </a>
+
+                {{-- Tombol PDF --}}
+                <a href="{{ route('summary-action.pdf') }}"
+                    style="padding:8px 16px; background:#c62828; color:#fff; border-radius:6px; font-size:13px; font-weight:600; text-decoration:none; box-shadow:0 2px 5px rgba(0,0,0,0.1); transition:0.3s;"
+                    onmouseover="this.style.background='#b71c1c'" onmouseout="this.style.background='#c62828'">
+                    📕 Export PDF
+                </a>
+
+                {{-- Tombol Tambah --}}
+                <a href="{{ route('summary.summaryaction.create') }}"
+                    style="padding:8px 16px; background:#1e88e5; color:#fff; border-radius:6px; font-size:13px; font-weight:600; text-decoration:none; box-shadow:0 2px 5px rgba(0,0,0,0.1); transition:0.3s;"
+                    onmouseover="this.style.background='#1565c0'" onmouseout="this.style.background='#1e88e5'">
+                    + Tambah Aksi
+                </a>
+            </div>
         </div>
 
         {{-- SweetAlert2 Library --}}
@@ -46,7 +66,8 @@
             </script>
         @endif
 
-        <div style="background:#fff; padding:20px; border-radius:14px; box-shadow:0 6px 20px rgba(0,0,0,0.08); overflow-x:auto;">
+        <div
+            style="background:#fff; padding:20px; border-radius:14px; box-shadow:0 6px 20px rgba(0,0,0,0.08); overflow-x:auto;">
             <table width="100%" cellpadding="8" cellspacing="0"
                 style="width:100%; border-collapse:collapse; font-family:'Segoe UI',sans-serif; font-size:13px; text-align:center; border:1px solid #bbb;">
                 <thead style="background:#e3f2fd; color:#0d47a1;">
@@ -61,7 +82,8 @@
                 </thead>
                 <tbody>
                     @forelse ($summary_actions as $s)
-                        <tr style="background:{{ $loop->iteration % 2 == 0 ? '#f7f9fb' : '#ffffff' }}; border-bottom:1px solid #ccc;">
+                        <tr
+                            style="background:{{ $loop->iteration % 2 == 0 ? '#f7f9fb' : '#ffffff' }}; border-bottom:1px solid #ccc;">
                             <td style="border:1px solid #bbb; font-weight:600; text-align:left; padding-left:15px;">
                                 {{ $s->operasional }}
                             </td>
@@ -70,11 +92,13 @@
                             <td style="border:1px solid #bbb; text-align:left;">{{ $s->action_perbaikan }}</td>
                             <td style="border:1px solid #bbb;">
                                 @if ($s->do_dont == 'V')
-                                    <span style="background:#198754; color:white; padding:4px 10px; border-radius:20px; font-size:11px; font-weight:bold;">
+                                    <span
+                                        style="background:#198754; color:white; padding:4px 10px; border-radius:20px; font-size:11px; font-weight:bold;">
                                         ✔ DO
                                     </span>
                                 @elseif ($s->do_dont == 'X')
-                                    <span style="background:#dc3545; color:white; padding:4px 10px; border-radius:20px; font-size:11px; font-weight:bold;">
+                                    <span
+                                        style="background:#dc3545; color:white; padding:4px 10px; border-radius:20px; font-size:11px; font-weight:bold;">
                                         ✖ DON'T
                                     </span>
                                 @else

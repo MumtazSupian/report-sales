@@ -5,7 +5,10 @@ namespace App\Http\Controllers\summary;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\summary\SummaryAction;
-use Illuminate\Support\Facades\Auth; // Wajib ditambahkan
+use Illuminate\Support\Facades\Auth;
+use App\Exports\SummaryActionExport;
+use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class SummaryActionController extends Controller
 {
@@ -19,8 +22,8 @@ class SummaryActionController extends Controller
             $summary_actions = SummaryAction::orderBy('id', 'desc')->get();
         } else {
             $summary_actions = SummaryAction::where('cabang', $user->cabang)
-                                           ->orderBy('id', 'desc')
-                                           ->get();
+                ->orderBy('id', 'desc')
+                ->get();
         }
 
         return view('summary.summaryaction.index', compact('summary_actions'));
@@ -109,5 +112,27 @@ class SummaryActionController extends Controller
 
         return redirect()->route('summary.summaryaction.index')
             ->with('success', 'Data berhasil dihapus');
+    }
+
+    public function exportExcel()
+    {
+        return Excel::download(new SummaryActionExport, 'summary-action.xlsx');
+    }
+
+    public function exportPdf()
+    {
+        $user = Auth::user();
+        $pusatRoles = ['Admin', 'OM', 'Admin DCA', 'OM DCA'];
+
+        if (in_array($user->role, $pusatRoles)) {
+            $actions = SummaryAction::all();
+        } else {
+            $actions = SummaryAction::where('cabang', $user->cabang)->get();
+        }
+
+        $pdf = Pdf::loadView('summary.summaryaction.export_pdf', compact('actions'))
+            ->setPaper('a4', 'landscape');
+
+        return $pdf->download('summary-action.pdf');
     }
 }

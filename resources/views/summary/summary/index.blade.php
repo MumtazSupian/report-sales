@@ -22,11 +22,27 @@
                 </a>
             </div>
 
-            <a href="{{ route('summary.summary.create') }}"
-                style="padding:8px 16px; background:#1e88e5; color:#fff; border-radius:6px; font-size:13px; font-weight:600; text-decoration:none; box-shadow:0 2px 5px rgba(0,0,0,0.1); transition:0.3s;"
-                onmouseover="this.style.background='#1565c0'" onmouseout="this.style.background='#1e88e5'">
-                + Tambah Data
-            </a>
+            <div style="display:flex; gap:8px;">
+                {{-- Tombol Export Excel --}}
+                <a href="{{ route('summary.excel') }}"
+                    style="padding:8px 16px; background:#2e7d32; color:#fff; border-radius:6px; font-size:13px; font-weight:600; text-decoration:none; box-shadow:0 2px 5px rgba(0,0,0,0.1); transition:0.3s;"
+                    onmouseover="this.style.background='#1b5e20'" onmouseout="this.style.background='#2e7d32'">
+                    📗 Excel
+                </a>
+
+                {{-- Tombol Export PDF --}}
+                <a href="{{ route('summary.pdf') }}"
+                    style="padding:8px 16px; background:#c62828; color:#fff; border-radius:6px; font-size:13px; font-weight:600; text-decoration:none; box-shadow:0 2px 5px rgba(0,0,0,0.1); transition:0.3s;"
+                    onmouseover="this.style.background='#b71c1c'" onmouseout="this.style.background='#c62828'">
+                    📕 PDF
+                </a>
+
+                <a href="{{ route('summary.summary.create') }}"
+                    style="padding:8px 16px; background:#1e88e5; color:#fff; border-radius:6px; font-size:13px; font-weight:600; text-decoration:none; box-shadow:0 2px 5px rgba(0,0,0,0.1); transition:0.3s;"
+                    onmouseover="this.style.background='#1565c0'" onmouseout="this.style.background='#1e88e5'">
+                    + Tambah Data
+                </a>
+            </div>
         </div>
 
         {{-- SweetAlert2 Library --}}

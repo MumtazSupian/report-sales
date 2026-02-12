@@ -40,7 +40,7 @@
             Selamat datang di Sistem Manajemen Dealer Suzuki. Platform terpadu untuk mengelola seluruh aspek operasional dealer.
             Klik menu <b>RKA</b> untuk masuk ke modul Rencana Kerja & Anggaran.
         </p>
-        
+
         <div class="quick-actions">
             <h3>Quick Actions</h3>
             <div class="actions-grid">

@@ -97,6 +97,15 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('summary', SummaryController::class);
         Route::resource('summaryaction', SummaryActionController::class);
     });
+
+    Route::get('/evaluasi/export/excel', [EvaluasiWiraniagaController::class, 'exportExcel'])->name('evaluasi.excel');
+    Route::get('/evaluasi/export/pdf', [EvaluasiWiraniagaController::class, 'exportPdf'])->name('evaluasi.pdf');
+
+    Route::get('/summary/export/excel', [SummaryController::class, 'exportExcel'])->name('summary.excel');
+    Route::get('/summary/export/pdf', [SummaryController::class, 'exportPdf'])->name('summary.pdf');
+
+    Route::get('/summary-action/export/excel', [SummaryActionController::class, 'exportExcel'])->name('summary-action.excel');
+    Route::get('/summary-action/export/pdf', [SummaryActionController::class, 'exportPdf'])->name('summary-action.pdf');
 });
 
 // Route::get('/', function () {

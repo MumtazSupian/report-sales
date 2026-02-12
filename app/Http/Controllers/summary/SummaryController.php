@@ -5,7 +5,11 @@ namespace App\Http\Controllers\summary;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\summary\Summary;
-use Illuminate\Support\Facades\Auth; // Wajib ditambahkan
+use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\SummaryExport;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 
 class SummaryController extends Controller
 {
@@ -108,5 +112,25 @@ class SummaryController extends Controller
 
         return redirect()->route('summary.summary.index')
             ->with('success', 'Data berhasil dihapus');
+    }
+    public function exportExcel()
+    {
+        // Class Excel sekarang sudah dikenali karena ada 'use' di atas
+        return Excel::download(new SummaryExport, 'summary-improvement.xlsx');
+    }
+
+    public function exportPdf()
+    {
+        $user = Auth::user();
+        $pusatRoles = ['Admin', 'OM', 'Admin DCA', 'OM DCA'];
+        if (in_array($user->role, $pusatRoles)) {
+            $summaries = Summary::all();
+        } else {
+            $summaries = Summary::where('cabang', $user->cabang)->get();
+        }
+        $pdf = Pdf::loadView('summary.summary.export_pdf', compact('summaries'))
+            ->setPaper('a4', 'landscape');
+
+        return $pdf->download('summary-improvement.pdf');
     }
 }

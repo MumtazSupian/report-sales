@@ -9,7 +9,22 @@
             📊 EVALUASI WIRANIAGA
         </h2>
         <p style="text-align:center; color: #8fb3d9; margin-bottom:20px;">Monitoring kinerja wiraniaga secara periodik</p>
+        <div
+            style="display:flex; justify-content:flex-end; align-items:center; gap:8px; margin:0 auto 15px auto; width:98%;">
+            {{-- Tombol Export Excel --}}
+            <a href="{{ route('evaluasi.excel') }}"
+                style="padding:8px 16px; background:#2e7d32; color:#fff; border-radius:6px; font-size:13px; font-weight:600; text-decoration:none; box-shadow:0 2px 5px rgba(0,0,0,0.1); transition:0.3s;"
+                onmouseover="this.style.background='#1b5e20'" onmouseout="this.style.background='#2e7d32'">
+                📗 Export Excel
+            </a>
 
+            {{-- Tombol Export PDF --}}
+            <a href="{{ route('evaluasi.pdf') }}"
+                style="padding:8px 16px; background:#c62828; color:#fff; border-radius:6px; font-size:13px; font-weight:600; text-decoration:none; box-shadow:0 2px 5px rgba(0,0,0,0.1); transition:0.3s;"
+                onmouseover="this.style.background='#b71c1c'" onmouseout="this.style.background='#c62828'">
+                📕 Export PDF
+            </a>
+        </div>
         <div
             style="display:flex; justify-content:flex-end; align-items:center; gap:8px; margin:0 auto 15px auto; width:98%;">
             <a href="{{ route('evaluasi.create') }}"
@@ -69,7 +84,7 @@
                         <tr
                             style="background:{{ $loop->iteration % 2 == 0 ? '#f7f9fb' : '#ffffff' }}; border-bottom:1px solid #ccc;">
                             <td style="border:1px solid #bbb;">{{ $i + 1 }}</td>
-                             <td style="border:1px solid #bbb; font-weight:bold; color:#2c5282;">{{ $d->cabang }}</td>
+                            <td style="border:1px solid #bbb; font-weight:bold; color:#2c5282;">{{ $d->cabang }}</td>
                             <td style="border:1px solid #bbb;">{{ $d->nama_sales_head }}</td>
                             <td style="border:1px solid #bbb;">{{ $d->nama_sales }}</td>
                             <td style="border:1px solid #bbb;">{{ $d->tanggal_masuk }}</td>
