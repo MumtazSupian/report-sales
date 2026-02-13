@@ -4,11 +4,13 @@
 
 @section('content')
     <div style="padding: 20px; max-width: 1250px; margin: 0 auto;">
-        
-        <h2 style="text-align:center; font-weight:800; color:#fff; letter-spacing:0.5px; text-transform:uppercase; margin-bottom:5px;">
+
+        <h2
+            style="text-align:center; font-weight:800; color:#fff; letter-spacing:0.5px; text-transform:uppercase; margin-bottom:5px;">
             📉 AKTUAL REJECT
         </h2>
-        <p style="text-align:center; color: #8fb3d9; margin-bottom:20px; font-size: 14px;">Monitoring data aktual penolakan (reject) aplikasi berdasarkan leasing</p>
+        <p style="text-align:center; color: #8fb3d9; margin-bottom:20px; font-size: 14px;">Monitoring data aktual penolakan
+            (reject) aplikasi berdasarkan leasing</p>
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
             <div style="display:flex; gap:10px; align-items:center;">
                 <a href="{{ url('/leasing/dashboard') }}"
@@ -20,6 +22,14 @@
                     style="padding: 8px 16px; background: rgba(255,255,255,0.1); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 12px; border: 1px solid rgba(255,255,255,0.1); transition: 0.3s;">
                     🔄 Refresh
                 </a>
+                <div style="display:flex; gap:10px;">
+                    <a href="{{ route('leasing.aktual-reject.excel') }}"
+                        style="padding: 8px 15px; background: #276749; color: white; border-radius: 8px; text-decoration: none; font-size: 12px;">📊
+                        Excel</a>
+                    <a href="{{ route('leasing.aktual-reject.pdf') }}"
+                        style="padding: 8px 15px; background: #e53e3e; color: white; border-radius: 8px; text-decoration: none; font-size: 12px;">📄
+                        PDF</a>
+                </div>
             </div>
 
             <a href="{{ route('leasing.aktual-reject.create') }}"
@@ -28,11 +38,14 @@
             </a>
         </div>
 
-        <div style="background:#fff; padding:15px; border-radius:14px; box-shadow:0 6px 20px rgba(0,0,0,0.15); overflow-x:auto;">
+        <div
+            style="background:#fff; padding:15px; border-radius:14px; box-shadow:0 6px 20px rgba(0,0,0,0.15); overflow-x:auto;">
             @php
                 $months = ['jan', 'feb', 'mar', 'apr', 'mei', 'jun', 'jul', 'agu', 'sep', 'okt', 'nov', 'des'];
                 $grandTotals = [];
-                foreach ($months as $m) { $grandTotals[$m] = $data->sum($m); }
+                foreach ($months as $m) {
+                    $grandTotals[$m] = $data->sum($m);
+                }
                 $grandTotalAll = $data->sum('total');
             @endphp
 
@@ -52,29 +65,31 @@
                 </thead>
                 <tbody>
                     @foreach ($data as $row)
-                        <tr style="background:{{ $loop->iteration % 2 == 0 ? '#fff9fb' : '#ffffff' }}; border-bottom:1px solid #ccc;">
-                            <td style="border:1px solid #bbb; font-weight:600; text-align:left; padding-left:10px;">{{ $row->leasing }}</td>
+                        <tr
+                            style="background:{{ $loop->iteration % 2 == 0 ? '#fff9fb' : '#ffffff' }}; border-bottom:1px solid #ccc;">
+                            <td style="border:1px solid #bbb; font-weight:600; text-align:left; padding-left:10px;">
+                                {{ $row->leasing }}</td>
                             <td style="border:1px solid #bbb; font-weight:bold; color:#2c5282;">{{ $row->cabang }}</td>
                             <td style="border:1px solid #bbb;">{{ $row->tahun }}</td>
                             @foreach ($months as $m)
                                 <td style="border:1px solid #bbb;">{{ number_format($row->$m, 0, ',', '.') }}</td>
                             @endforeach
-                            <td style="border:1px solid #bbb; font-weight: 800; background:#fff0f3;">{{ number_format($row->total, 0, ',', '.') }}</td>
-                            
+                            <td style="border:1px solid #bbb; font-weight: 800; background:#fff0f3;">
+                                {{ number_format($row->total, 0, ',', '.') }}</td>
+
                             <td style="border:1px solid #bbb; white-space:nowrap; padding: 5px;">
                                 <div style="display: flex; gap: 5px; justify-content: center;">
-                                    <a href="{{ route('leasing.aktual-reject.edit', $row->id) }}" 
-                                       style="padding: 4px 8px; background: #3182ce; color: #fff; text-decoration: none; border-radius: 4px; font-weight: 700; font-size: 10px;">
-                                       EDIT
+                                    <a href="{{ route('leasing.aktual-reject.edit', $row->id) }}"
+                                        style="padding: 4px 8px; background: #3182ce; color: #fff; text-decoration: none; border-radius: 4px; font-weight: 700; font-size: 10px;">
+                                        EDIT
                                     </a>
-                                    <form action="{{ route('leasing.aktual-reject.destroy', $row->id) }}" 
-                                          method="POST" 
-                                          id="delete-form-{{ $row->id }}" 
-                                          style="display:none;">
+                                    <form action="{{ route('leasing.aktual-reject.destroy', $row->id) }}" method="POST"
+                                        id="delete-form-{{ $row->id }}" style="display:none;">
                                         @csrf @method('DELETE')
                                     </form>
-                                    <button type="button" onclick="confirmDelete('{{ $row->id }}', '{{ $row->leasing }}')"
-                                            style="padding: 4px 10px; background: #fff5f5; color: #e53e3e; border: 1px solid #fed7d7; border-radius: 4px; font-weight: 700; font-size: 10px; cursor: pointer;">
+                                    <button type="button"
+                                        onclick="confirmDelete('{{ $row->id }}', '{{ $row->leasing }}')"
+                                        style="padding: 4px 10px; background: #fff5f5; color: #e53e3e; border: 1px solid #fed7d7; border-radius: 4px; font-weight: 700; font-size: 10px; cursor: pointer;">
                                         HAPUS
                                     </button>
                                 </div>
@@ -88,7 +103,8 @@
                         @foreach ($months as $m)
                             <td style="border:1px solid #999;">{{ number_format($grandTotals[$m], 0, ',', '.') }}</td>
                         @endforeach
-                        <td style="border:1px solid #999; background:#ad1457;">{{ number_format($grandTotalAll, 0, ',', '.') }}</td>
+                        <td style="border:1px solid #999; background:#ad1457;">
+                            {{ number_format($grandTotalAll, 0, ',', '.') }}</td>
                         <td style="border:1px solid #999;">-</td>
                     </tr>
                 </tfoot>
@@ -108,7 +124,9 @@
                 confirmButtonColor: '#3182ce',
                 cancelButtonText: 'Batal',
                 cancelButtonColor: '#e53e3e',
-                customClass: { popup: 'rounded-4' }
+                customClass: {
+                    popup: 'rounded-4'
+                }
             }).then((result) => {
                 if (result.isConfirmed) {
                     document.getElementById('delete-form-' + id).submit();

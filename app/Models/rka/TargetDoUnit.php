@@ -10,7 +10,8 @@ class TargetDoUnit extends Model
     use HasFactory;
 
     protected $fillable = [
-        'mobil_type',
+        'jenis_unit',
+        'type_unit',
         'tahun',
         'jan','feb','mar','apr','mei','jun',
         'jul','agu','sep','okt','nov','des',

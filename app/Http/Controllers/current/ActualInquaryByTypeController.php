@@ -32,27 +32,49 @@ class ActualInquaryByTypeController extends Controller
     public function create()
     {
         $year = now()->year;
-        return view('current.actual_inquary_by_type.create', compact('year'));
+        $commercial_units = ['NEW CARRY'];
+        $passenger_units = ['APV BLIND VAN', 'ERTIGA', 'XL7', 'SPRESO', 'BALENO', 'IGNIS', 'e-VITARA', 'GRAND VITARA', 'JIMNY 3D', 'JIMNY 5D', 'FRONX'];
+
+        return view('current.actual_inquary_by_type.create', compact('year', 'commercial_units', 'passenger_units'));
     }
 
     public function store(Request $request)
     {
         $user = Auth::user();
         $months = ['jan', 'feb', 'mar', 'apr', 'mei', 'jun', 'jul', 'agu', 'sep', 'okt', 'nov', 'des'];
+        $categories = ['Commercial', 'Passenger'];
 
-        $total = 0;
-        foreach ($months as $m) {
-            $total += (int) $request->$m;
+        if ($request->has('targets') && is_array($request->targets)) {
+            foreach ($months as $month) {
+                if (!isset($request->targets[$month])) continue;
+                
+                foreach ($categories as $category) {
+                    if (!isset($request->targets[$month][$category])) continue;
+
+                    foreach ($request->targets[$month][$category] as $item) {
+                        $typeUnit = $item['type'] ?? null;
+                        $amount = $item['amount'] ?? 0;
+
+                        if ($typeUnit && $amount > 0) {
+                            $dataToCreate = [
+                                'jenis_unit' => $category,
+                                'type_unit'  => $typeUnit,
+                                'tahun'      => $request->tahun,
+                                'cabang'     => $user->cabang,
+                                'total'      => $amount,
+                            ];
+
+                            foreach ($months as $m) {
+                                $dataToCreate[$m] = 0;
+                            }
+                            $dataToCreate[$month] = $amount;
+
+                            ActualInquaryByType::create($dataToCreate);
+                        }
+                    }
+                }
+            }
         }
-
-        // Menyimpan data dengan menyertakan otomatis kolom 'cabang'
-        ActualInquaryByType::create(array_merge(
-            $request->only(array_merge(['mobil_type', 'tahun'], $months)),
-            [
-                'total' => $total,
-                'cabang' => $user->cabang // Cabang diambil dari session login
-            ]
-        ));
 
         return redirect()->route('current.actual-inquary-by-type.index')
             ->with('success', 'Data Inquiry berhasil disimpan');
@@ -68,7 +90,10 @@ class ActualInquaryByTypeController extends Controller
                 ->with('error', 'Anda tidak memiliki akses ke data cabang lain!');
         }
 
-        return view('current.actual_inquary_by_type.edit', compact('actualInquaryByType'));
+        $commercial_units = ['NEW CARRY'];
+        $passenger_units = ['APV BLIND VAN', 'ERTIGA', 'XL7', 'SPRESO', 'BALENO', 'IGNIS', 'e-VITARA', 'GRAND VITARA', 'JIMNY 3D', 'JIMNY 5D', 'FRONX'];
+
+        return view('current.actual_inquary_by_type.edit', compact('actualInquaryByType', 'commercial_units', 'passenger_units'));
     }
 
     public function update(Request $request, ActualInquaryByType $actualInquaryByType)
@@ -80,9 +105,17 @@ class ActualInquaryByTypeController extends Controller
             $total += (int) $request->$m;
         }
 
+        $commercial_units = ['NEW CARRY'];
+        $jenis_unit = in_array($request->type_unit, $commercial_units) ? 'Commercial' : 'Passenger';
+
         $actualInquaryByType->update(array_merge(
-            $request->only(array_merge(['mobil_type', 'tahun'], $months)),
-            ['total' => $total]
+            [
+                'jenis_unit' => $jenis_unit,
+                'type_unit'  => $request->type_unit,
+                'tahun'      => $request->tahun,
+                'total'      => $total
+            ],
+            $request->only($months)
         ));
 
         return redirect()->route('current.actual-inquary-by-type.index')

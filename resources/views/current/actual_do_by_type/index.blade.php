@@ -10,7 +10,6 @@
         </h2>
         <p style="text-align:center; color: #8fb3d9; margin-bottom:20px;">Monitoring data aktual Delivery Order berdasarkan
             tipe mobil</p>
-
         <div
             style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin:0 auto 15px auto; width:98%;">
             <div style="display:flex; gap:10px; align-items:center;">
@@ -86,7 +85,7 @@
                         <tr
                             style="background:{{ $loop->iteration % 2 == 0 ? '#f7f9fb' : '#ffffff' }}; border-bottom:1px solid #ccc;">
                             <td style="border:1px solid #bbb; font-weight:600; text-align:left; padding-left:15px;">
-                                {{ $row->mobil_type }}</td>
+                                {{ $row->type_unit ?? $row->mobil_type }}</td>
                                 <td style="border:1px solid #bbb; font-weight:bold; color:#2c5282;">{{ $row->cabang }}</td>
                             <td style="border:1px solid #bbb;">{{ $row->tahun }}</td>
 

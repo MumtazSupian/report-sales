@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\leasing\AktualReject;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\AktualRejectExport;
 
 class AktualRejectController extends Controller
 {
@@ -34,13 +37,13 @@ class AktualRejectController extends Controller
     public function store(Request $request)
     {
         $user = Auth::user();
-        
+
         if ($user->role !== 'BM') {
             return redirect()->route('leasing.aktual-reject.index')->with('error', 'Hanya BM yang bisa menambah data.');
         }
 
         $total = $request->jan + $request->feb + $request->mar + $request->apr + $request->mei + $request->jun +
-                 $request->jul + $request->agu + $request->sep + $request->okt + $request->nov + $request->des;
+            $request->jul + $request->agu + $request->sep + $request->okt + $request->nov + $request->des;
 
         AktualReject::create([
             'leasing' => $request->leasing,
@@ -58,7 +61,7 @@ class AktualRejectController extends Controller
             'nov'     => $request->nov,
             'des'     => $request->des,
             'total'   => $total,
-            'cabang'  => $user->cabang, 
+            'cabang'  => $user->cabang,
         ]);
 
         return redirect()->route('leasing.aktual-reject.index')->with('success', 'Data Aktual Reject berhasil disimpan');
@@ -86,7 +89,7 @@ class AktualRejectController extends Controller
         }
 
         $total = $request->jan + $request->feb + $request->mar + $request->apr + $request->mei + $request->jun +
-                 $request->jul + $request->agu + $request->sep + $request->okt + $request->nov + $request->des;
+            $request->jul + $request->agu + $request->sep + $request->okt + $request->nov + $request->des;
 
         $data->update([
             'leasing' => $request->leasing,
@@ -124,5 +127,25 @@ class AktualRejectController extends Controller
 
         return redirect()->route('leasing.aktual-reject.index')
             ->with('success', 'Data berhasil dihapus');
+    }
+
+    public function exportExcel()
+    {
+        return Excel::download(new AktualRejectExport, 'Aktual-Reject.xlsx');
+    }
+
+    public function exportPdf()
+    {
+        $user = Auth::user();
+        if (in_array($user->role, ['Admin', 'OM', 'Admin DCA', 'OM DCA'])) {
+            $data = AktualReject::all();
+        } else {
+            $data = AktualReject::where('cabang', $user->cabang)->get();
+        }
+
+        $pdf = Pdf::loadView('leasing.aktual_reject.pdf', compact('data'))
+            ->setPaper('a4', 'landscape');
+
+        return $pdf->download('Laporan-Aktual-Reject.pdf');
     }
 }

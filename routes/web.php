@@ -52,6 +52,12 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/dashboard', function () {
             return view('leasing.dashboard_leasing');
         });
+        Route::get('aktual-aplikasi-in/export-pdf', [AktualAplikasiInController::class, 'exportPdf'])->name('aktual-aplikasi-in.pdf');
+        Route::get('aktual-aplikasi-in/export-excel', [AktualAplikasiInController::class, 'exportExcel'])->name('aktual-aplikasi-in.excel');
+        Route::get('aktual-po/export-excel', [AktualPoController::class, 'exportExcel'])->name('aktual-po.excel');
+        Route::get('aktual-po/export-pdf', [AktualPoController::class, 'exportPdf'])->name('aktual-po.pdf');
+        Route::get('aktual-reject/export-excel', [AktualRejectController::class, 'exportExcel'])->name('aktual-reject.excel');
+        Route::get('aktual-reject/export-pdf', [AktualRejectController::class, 'exportPdf'])->name('aktual-reject.pdf');
         Route::resource('aktual-aplikasi-in', AktualAplikasiInController::class);
         Route::resource('aktual-po', AktualPoController::class);
         Route::resource('aktual-reject', AktualRejectController::class);
@@ -86,6 +92,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/dashboard', function () {
             return redirect()->route('evaluasi.index');
         });
+        Route::get('/evaluasi/export/excel', [EvaluasiWiraniagaController::class, 'exportExcel'])->name('evaluasi.excel');
+        Route::get('/evaluasi/export/pdf', [EvaluasiWiraniagaController::class, 'exportPdf'])->name('evaluasi.pdf');
+
         Route::resource('evaluasi', EvaluasiWiraniagaController::class);
     });
 
@@ -94,18 +103,12 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/dashboard', function () {
             return view('summary.dashboard_summary');
         });
+        Route::get('/summary/export/excel', [SummaryController::class, 'exportExcel'])->name('summary.excel');
+        Route::get('/summary/export/pdf', [SummaryController::class, 'exportPdf'])->name('summary.pdf');
+        Route::get('/summary-action/export/excel', [SummaryActionController::class, 'exportExcel'])->name('summary-action.excel');
+        Route::get('/summary-action/export/pdf', [SummaryActionController::class, 'exportPdf'])->name('summary-action.pdf');
+
         Route::resource('summary', SummaryController::class);
         Route::resource('summaryaction', SummaryActionController::class);
     });
-
-    Route::get('/evaluasi/export/excel', [EvaluasiWiraniagaController::class, 'exportExcel'])->name('evaluasi.excel');
-    Route::get('/evaluasi/export/pdf', [EvaluasiWiraniagaController::class, 'exportPdf'])->name('evaluasi.pdf');
-
-    Route::get('/summary/export/excel', [SummaryController::class, 'exportExcel'])->name('summary.excel');
-    Route::get('/summary/export/pdf', [SummaryController::class, 'exportPdf'])->name('summary.pdf');
-
-    Route::get('/summary-action/export/excel', [SummaryActionController::class, 'exportExcel'])->name('summary-action.excel');
-    Route::get('/summary-action/export/pdf', [SummaryActionController::class, 'exportPdf'])->name('summary-action.pdf');
 });
-
-

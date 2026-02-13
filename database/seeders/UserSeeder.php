@@ -59,7 +59,7 @@ class UserSeeder extends Seeder
                 'email' => 'om@dca.com',
                 'password' => Hash::make('omdca123'),
                 'role' => 'OM',
-                'cabang' => 'Pusat',
+                'cabang' => 'HO',
             ],
 
             // Admin
@@ -68,13 +68,13 @@ class UserSeeder extends Seeder
                 'email' => 'admin@dca.com',
                 'password' => Hash::make('admindca123'),
                 'role' => 'Admin',
-                'cabang' => 'Pusat',
+                'cabang' => 'HO',
             ],
         ];
 
         foreach ($users as $user) {
             User::updateOrCreate(
-                ['email' => $user['email']], 
+                ['email' => $user['email']],
                 $user
             );
         }

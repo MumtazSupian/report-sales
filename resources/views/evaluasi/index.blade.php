@@ -79,7 +79,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {{-- perbaiki logika --}}
                     @foreach ($data as $i => $d)
                         <tr
                             style="background:{{ $loop->iteration % 2 == 0 ? '#f7f9fb' : '#ffffff' }}; border-bottom:1px solid #ccc;">
@@ -90,47 +89,29 @@
                             <td style="border:1px solid #bbb;">{{ $d->tanggal_masuk }}</td>
                             <td style="border:1px solid #bbb;">{{ $d->tanggal_evaluasi }}</td>
 
-                            {{-- Baris Grading Baru --}}
+                            {{-- Kolom Grading: Mengambil langsung dari Database --}}
                             <td style="border:1px solid #bbb; text-align:center;">
                                 @php
-                                    $jan = $d->jan ?? 0;
-                                    $feb = $d->feb ?? 0;
-                                    $mar = $d->mar ?? 0;
-                                    $apr = $d->apr ?? 0;
-                                    $mei = $d->mei ?? 0;
-                                    $jun = $d->jun ?? 0;
+                                    // Logika warna berdasarkan teks grading dari database
+                                    $color = '#f44336'; // Default Merah (Evaluasi)
 
-                                    $total3 = $jan + $feb + $mar;
-                                    $total6 = $total3 + $apr + $mei + $jun;
-                                    $avg3 = $total3 / 3;
-                                    $avg6 = $total6 / 6;
-
-                                    $text = 'TRAINEE';
-                                    $color = '#4caf50';
-
-                                    if ($avg6 >= 5 && $total6 >= 31) {
-                                        $text = 'PLATINUM';
-                                        $color = '#1a237e';
-                                    } elseif ($avg6 >= 4 && $total6 >= 25) {
-                                        $text = 'GOLD -> KADAR PLATINUM';
-                                        $color = '#ff9800';
-                                    } elseif ($avg3 >= 2 && $total3 >= 7) {
-                                        $text = 'SILVER -> KADAR GOLD';
-                                        $color = '#9e9e9e';
-                                    } elseif ($avg3 >= 1) {
-                                        $text = 'TRAINEE -> KADAR SILVER';
-                                        $color = '#4caf50';
-                                    } else {
-                                        $text = 'TRAINEE -> EVALUASI';
-                                        $color = '#f44336';
+                                    if ($d->grading == 'PLATINUM') {
+                                        $color = '#1a237e'; // Biru Tua
+                                    } elseif (str_contains($d->grading, 'KADAR PLATINUM')) {
+                                        $color = '#ff9800'; // Oranye
+                                    } elseif (str_contains($d->grading, 'KADAR GOLD')) {
+                                        $color = '#78909c'; // Abu-abu kebiruan (Silver/Gold)
+                                    } elseif (str_contains($d->grading, 'KADAR SILVER')) {
+                                        $color = '#4caf50'; // Hijau
                                     }
                                 @endphp
 
                                 <span
-                                    style="padding: 4px 8px; border-radius: 4px; color: #fff; font-weight: bold; font-size: 9px; background: {{ $color }}; white-space: nowrap;">
-                                    {{ $text }}
+                                    style="padding: 4px 8px; border-radius: 4px; color: #fff; font-weight: bold; font-size: 9px; background: {{ $color }}; white-space: nowrap; display: inline-block;">
+                                    {{ $d->grading ?? 'TRAINEE->EVALUASI' }}
                                 </span>
                             </td>
+
                             <td style="border:1px solid #bbb;">{{ $d->jan }}</td>
                             <td style="border:1px solid #bbb;">{{ $d->feb }}</td>
                             <td style="border:1px solid #bbb;">{{ $d->mar }}</td>
@@ -141,9 +122,9 @@
                             <td style="border:1px solid #bbb;">{{ Str::limit($d->evaluasi, 20) }}</td>
                             <td style="border:1px solid #bbb;">{{ $d->tanggal_keluar }}</td>
                             <td style="border:1px solid #bbb; white-space:nowrap;">
+                                {{-- Tombol Aksi --}}
                                 <a href="{{ route('evaluasi.edit', $d->id) }}"
                                     style="color:#1976d2; font-weight:600; text-decoration:none; margin-right:5px;">Edit</a>
-
                                 <form action="{{ route('evaluasi.destroy', $d->id) }}" method="POST"
                                     style="display:inline;" id="delete-form-{{ $d->id }}">
                                     @csrf @method('DELETE')

@@ -15,18 +15,24 @@ return new class extends Migration
             $table->id();
 
             // enum mobil_type
-            $table->enum('mobil_type', [
+            // 1. Kategori (Commercial / Passenger)
+            $table->enum('jenis_unit', ['Commercial', 'Passenger']);
+
+            // 2. Type Unit (Strict Enum)
+            $table->enum('type_unit', [
                 'NEW CARRY',
-                'APV',
+                'APV BLIND VAN',
                 'ERTIGA',
                 'XL7',
                 'SPRESO',
-                'BALENO',
+                'IGNIS',
+                'e-VITARA',
                 'GRAND VITARA',
                 'JIMNY 3D',
                 'JIMNY 5D',
                 'FRONX',
-            ])->nullable();
+                'BALENO'
+            ]);
 
             $table->year('tahun');
 

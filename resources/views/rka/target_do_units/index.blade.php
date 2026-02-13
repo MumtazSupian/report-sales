@@ -42,7 +42,8 @@
                 style="width:100%; border-collapse:collapse; font-family:'Segoe UI',sans-serif; font-size:11px; text-align:center; border:1px solid #bbb;">
                 <thead style="background:#e3f2fd; color:#0d47a1;">
                     <tr style="border-bottom:2px solid #90caf9;">
-                        <th style="border:1px solid #999; padding: 12px; text-align: left;">MOBIL TYPE</th>
+                        <th style="border:1px solid #999; padding: 12px; text-align: left;">TYPE UNIT</th>
+                        <th style="border:1px solid #999; width: 80px;">KATEGORI</th>
                         <th style="border:1px solid #999; width: 80px;">CABANG</th>
                         <th style="border:1px solid #999; width: 60px;">TAHUN</th>
                         @foreach ($months as $m)
@@ -57,7 +58,8 @@
                         <tr
                             style="background:{{ $loop->iteration % 2 == 0 ? '#f7faff' : '#ffffff' }}; border-bottom:1px solid #ccc;">
                             <td style="border:1px solid #bbb; font-weight:600; text-align:left; padding-left:12px;">
-                                {{ $row->mobil_type }}</td>
+                                {{ $row->type_unit }}</td>
+                            <td style="border:1px solid #bbb;">{{ $row->jenis_unit }}</td>
                             <td style="border:1px solid #bbb; font-weight:bold; color:#2c5282;">{{ $row->cabang }}</td>
                             <td style="border:1px solid #bbb;">{{ $row->tahun }}</td>
                             @foreach ($months as $m)
@@ -77,7 +79,7 @@
                                     </form>
 
                                     <button type="button"
-                                        onclick="confirmDelete('{{ $row->id }}', '{{ $row->mobil_type }}')"
+                                        onclick="confirmDelete('{{ $row->id }}', '{{ $row->type_unit }}')"
                                         style="padding: 4px 8px; background: #fff5f5; color: #e53e3e; border: 1px solid #fed7d7; border-radius: 4px; font-weight: 700; font-size: 10px; cursor: pointer;">
                                         HAPUS
                                     </button>

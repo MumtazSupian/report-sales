@@ -7,7 +7,7 @@
                 EDIT TARGET DO UNIT
             </h2>
             <div style="width: 50px; height: 4px; background: #3182ce; margin: 10px auto; border-radius: 10px;"></div>
-            <p style="color: #cbd5e0; font-size: 14px;">Perbarui data target untuk tipe {{ $data->mobil_type }}</p>
+            <p style="color: #cbd5e0; font-size: 14px;">Perbarui data target untuk tipe {{ $data->type_unit }}</p>
         </div>
 
         <div
@@ -18,14 +18,28 @@
                 <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 10px;">
                     <div>
                         <label
-                            style="display: block; font-weight: 700; color: #2d3748; margin-bottom: 8px; font-size: 13px; text-transform: uppercase;">Mobil
-                            Type</label>
-                        <select name="mobil_type" required
+                            style="display: block; font-weight: 700; color: #2d3748; margin-bottom: 8px; font-size: 13px; text-transform: uppercase;">
+                            Type Unit
+                        </label>
+                        <select name="type_unit" required
                             style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 14px; color: #4a5568;">
-                            @foreach (['NEW CARRY', 'APV', 'ERTIGA', 'XL7', 'SPRESO', 'e-Vitara', 'GRAND VITARA', 'JIMNY 3D', 'JIMNY 5D', 'FRONX'] as $type)
-                                <option value="{{ $type }}" {{ $data->mobil_type == $type ? 'selected' : '' }}>
-                                    {{ $type }}</option>
-                            @endforeach
+                            <option value="" disabled>Pilih Unit</option>
+                            
+                            <optgroup label="Commercial">
+                                @foreach ($commercial_units as $unit)
+                                    <option value="{{ $unit }}" {{ $data->type_unit == $unit ? 'selected' : '' }}>
+                                        {{ $unit }}
+                                    </option>
+                                @endforeach
+                            </optgroup>
+
+                            <optgroup label="Passenger">
+                                @foreach ($passenger_units as $unit)
+                                    <option value="{{ $unit }}" {{ $data->type_unit == $unit ? 'selected' : '' }}>
+                                        {{ $unit }}
+                                    </option>
+                                @endforeach
+                            </optgroup>
                         </select>
                     </div>
                     <div>

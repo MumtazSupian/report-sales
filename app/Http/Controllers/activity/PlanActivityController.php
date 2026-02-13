@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Activity;
 
 use App\Http\Controllers\Controller;
-use App\Models\Activity\PlanActivity; 
+use App\Models\Activity\PlanActivity;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth; 
+use Illuminate\Support\Facades\Auth;
 
 class PlanActivityController extends Controller
 {
@@ -30,7 +30,7 @@ class PlanActivityController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        $data['cabang'] = Auth::user()->cabang; 
+        $data['cabang'] = Auth::user()->cabang;
 
         $total = $request->total_cost ?? 0;
 
@@ -45,7 +45,7 @@ class PlanActivityController extends Controller
     public function edit($id)
     {
         $activity = PlanActivity::findOrFail($id);
-        
+
         if (!in_array(Auth::user()->role, ['Admin', 'OM']) && $activity->cabang !== Auth::user()->cabang) {
             abort(403, 'tidak punya akses ke data cabang lain!');
         }
@@ -56,7 +56,7 @@ class PlanActivityController extends Controller
     public function update(Request $request, $id)
     {
         $activity = PlanActivity::findOrFail($id);
-        
+
         if (!in_array(Auth::user()->role, ['Admin', 'OM']) && $activity->cabang !== Auth::user()->cabang) {
             abort(403);
         }
@@ -75,7 +75,7 @@ class PlanActivityController extends Controller
     public function destroy($id)
     {
         $activity = PlanActivity::findOrFail($id);
-        
+
         if (!in_array(Auth::user()->role, ['Admin', 'OM']) && $activity->cabang !== Auth::user()->cabang) {
             abort(403);
         }

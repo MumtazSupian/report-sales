@@ -11,18 +11,21 @@ return new class extends Migration
         Schema::create('target_do_units', function (Blueprint $table) {
             $table->id();
 
-            $table->enum('mobil_type', [
+            $table->enum('jenis_unit', ['Commercial', 'Passenger']);
+            $table->enum('type_unit', [
                 'NEW CARRY',
-                'APV',
+                'APV BLIND VAN',
                 'ERTIGA',
                 'XL7',
                 'SPRESO',
-                'e-Vitara',
+                'IGNIS',
+                'e-VITARA',
                 'GRAND VITARA',
                 'JIMNY 3D',
                 'JIMNY 5D',
-                'FRONX'
-            ])->nullable();
+                'FRONX',
+                'BALENO'
+            ]);
 
             $table->year('tahun')->nullable();
 

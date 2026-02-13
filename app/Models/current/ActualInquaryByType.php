@@ -9,7 +9,8 @@ class ActualInquaryByType extends Model
     protected $table = 'actual_inquary_by_type';
 
     protected $fillable = [
-        'mobil_type',
+        'jenis_unit',
+        'type_unit',
         'tahun',
         'jan',
         'feb',

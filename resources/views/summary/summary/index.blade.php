@@ -24,14 +24,14 @@
 
             <div style="display:flex; gap:8px;">
                 {{-- Tombol Export Excel --}}
-                <a href="{{ route('summary.excel') }}"
+                <a href="{{ route('summary.summary.excel') }}"
                     style="padding:8px 16px; background:#2e7d32; color:#fff; border-radius:6px; font-size:13px; font-weight:600; text-decoration:none; box-shadow:0 2px 5px rgba(0,0,0,0.1); transition:0.3s;"
                     onmouseover="this.style.background='#1b5e20'" onmouseout="this.style.background='#2e7d32'">
                     📗 Excel
                 </a>
 
                 {{-- Tombol Export PDF --}}
-                <a href="{{ route('summary.pdf') }}"
+                <a href="{{ route('summary.summary.pdf') }}"
                     style="padding:8px 16px; background:#c62828; color:#fff; border-radius:6px; font-size:13px; font-weight:600; text-decoration:none; box-shadow:0 2px 5px rgba(0,0,0,0.1); transition:0.3s;"
                     onmouseover="this.style.background='#b71c1c'" onmouseout="this.style.background='#c62828'">
                     📕 PDF

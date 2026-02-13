@@ -30,27 +30,51 @@ class ActualSpkByTypeController extends Controller
     public function create()
     {
         $year = now()->year;
-        return view('current.actual_spk_by_type.create', compact('year'));
+        $commercial_units = ['NEW CARRY'];
+        $passenger_units = ['APV BLIND VAN', 'ERTIGA', 'XL7', 'SPRESO', 'BALENO', 'IGNIS', 'e-VITARA', 'GRAND VITARA', 'JIMNY 3D', 'JIMNY 5D', 'FRONX'];
+
+        return view('current.actual_spk_by_type.create', compact('year', 'commercial_units', 'passenger_units'));
     }
 
     public function store(Request $request)
     {
         $user = Auth::user();
         $months = ['jan', 'feb', 'mar', 'apr', 'mei', 'jun', 'jul', 'agu', 'sep', 'okt', 'nov', 'des'];
+        $categories = ['Commercial', 'Passenger'];
 
-        $total = 0;
-        foreach ($months as $m) {
-            $total += (int) $request->$m;
+        if ($request->has('targets') && is_array($request->targets)) {
+            foreach ($months as $month) {
+                if (!isset($request->targets[$month])) continue;
+                
+                foreach ($categories as $category) {
+                    if (!isset($request->targets[$month][$category])) continue;
+
+                    foreach ($request->targets[$month][$category] as $item) {
+                        $typeUnit = $item['type'] ?? null;
+                        $amount = $item['amount'] ?? 0;
+
+                        if ($typeUnit && $amount > 0) {
+                            $dataToCreate = [
+                                'jenis_unit' => $category,
+                                'type_unit'  => $typeUnit,
+                                'tahun'      => $request->tahun,
+                                'cabang'     => $user->cabang,
+                                'total'      => $amount,
+                            ];
+
+                            // Initialize all months to 0
+                            foreach ($months as $m) {
+                                $dataToCreate[$m] = 0;
+                            }
+                            // Set the specific month amount
+                            $dataToCreate[$month] = $amount;
+
+                            ActualSpkByType::create($dataToCreate);
+                        }
+                    }
+                }
+            }
         }
-
-        // Simpan data dengan menyertakan kolom cabang otomatis dari profil user
-        ActualSpkByType::create(array_merge(
-            $request->only(array_merge(['mobil_type', 'tahun'], $months)),
-            [
-                'total' => $total,
-                'cabang' => $user->cabang // Cabang otomatis terisi
-            ]
-        ));
 
         return redirect()->route('current.actual-spk-by-type.index')
             ->with('success', 'Data SPK berhasil disimpan');
@@ -66,7 +90,10 @@ class ActualSpkByTypeController extends Controller
                 ->with('error', 'Akses dilarang! Ini bukan data cabang Anda.');
         }
 
-        return view('current.actual_spk_by_type.edit', compact('actualSpkByType'));
+        $commercial_units = ['NEW CARRY'];
+        $passenger_units = ['APV BLIND VAN', 'ERTIGA', 'XL7', 'SPRESO', 'BALENO', 'IGNIS', 'e-VITARA', 'GRAND VITARA', 'JIMNY 3D', 'JIMNY 5D', 'FRONX'];
+
+        return view('current.actual_spk_by_type.edit', compact('actualSpkByType', 'commercial_units', 'passenger_units'));
     }
 
     public function update(Request $request, ActualSpkByType $actualSpkByType)
@@ -85,9 +112,17 @@ class ActualSpkByTypeController extends Controller
             $total += (int) $request->$m;
         }
 
+        $commercial_units = ['NEW CARRY'];
+        $jenis_unit = in_array($request->type_unit, $commercial_units) ? 'Commercial' : 'Passenger';
+
         $actualSpkByType->update(array_merge(
-            $request->only(array_merge(['mobil_type', 'tahun'], $months)),
-            ['total' => $total]
+            [
+                'jenis_unit' => $jenis_unit,
+                'type_unit'  => $request->type_unit,
+                'tahun'      => $request->tahun,
+                'total'      => $total
+            ],
+            $request->only($months)
         ));
 
         return redirect()->route('current.actual-spk-by-type.index')
