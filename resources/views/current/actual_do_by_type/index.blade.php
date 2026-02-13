@@ -19,7 +19,6 @@
                     ⬅ Kembali
                 </a>
 
-                {{-- Fitur Refresh yang ditambahkan --}}
                 <a href="{{ route('current.actual-do-by-type.index') }}"
                     style="padding:8px 16px; background:#f8f9fa; color:#333; border: 1px solid #ddd; border-radius:6px; font-size:13px; font-weight:600; text-decoration:none; transition:0.3s; box-shadow:0 2px 5px rgba(0,0,0,0.05);"
                     onmouseover="this.style.background='#e2e6ea'" onmouseout="this.style.background='#f8f9fa'">
@@ -34,10 +33,8 @@
             </a>
         </div>
 
-        {{-- SweetAlert2 Library --}}
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-        {{-- Notifikasi Sukses --}}
         @if (session('success'))
             <script>
                 Swal.fire({

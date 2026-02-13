@@ -17,10 +17,8 @@ class ActualInquaryByTypeController extends Controller
 
         // Logika Filter Data
         if (in_array($user->role, $pusatRoles)) {
-            // Jika admin/pusat, ambil semua data
             $data = ActualInquaryByType::all();
         } else {
-            // Jika cabang, filter berdasarkan kolom cabang milik user
             $data = ActualInquaryByType::where('cabang', $user->cabang)->get();
         }
 
@@ -84,7 +82,6 @@ class ActualInquaryByTypeController extends Controller
     {
         $user = Auth::user();
 
-        // Validasi Keamanan: Mencegah akses lintas cabang
         if ($user->role == 'BM' && $actualInquaryByType->cabang != $user->cabang) {
             return redirect()->route('current.actual-inquary-by-type.index')
                 ->with('error', 'Anda tidak memiliki akses ke data cabang lain!');
@@ -126,7 +123,6 @@ class ActualInquaryByTypeController extends Controller
     {
         $user = Auth::user();
 
-        // Validasi Keamanan sebelum hapus
         if ($user->role == 'BM' && $actualInquaryByType->cabang != $user->cabang) {
             return redirect()->route('current.actual-inquary-by-type.index')
                 ->with('error', 'Dilarang menghapus data cabang lain!');

@@ -118,19 +118,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($soi_performance as $item)
-                            @php
-                                // Lookup Target Data from $soi_combined
-                                $target = collect($soi_combined)->where('source_inquiry', $item->source_name)->first();
-                            @endphp
+                        @foreach ($soi_performance_data as $item)
                             <tr>
                                 <td
                                     style="border: 1px solid #000; text-align: left; background: #ffff00; font-weight: bold; padding: 4px;">
                                     {{ $item->source_name }}
                                 </td>
-                                <td style="border: 1px solid #000;">{{ $target->trg_inq ?? 0 }}</td>
+                                <td style="border: 1px solid #000;">{{ $item->trg_inq }}</td>
                                 <td style="border: 1px solid #000;">{{ $item->act_inq }}</td>
-                                <td style="border: 1px solid #000;">{{ $target->trg_do ?? 0 }}</td>
+                                <td style="border: 1px solid #000;">{{ $item->trg_do }}</td>
                                 <td style="border: 1px solid #000;">{{ $item->act_do }}</td>
                             </tr>
                         @endforeach
@@ -138,13 +134,10 @@
                     <tfoot style="background: #00b0f0; font-weight: bold;">
                         <tr>
                             <td style="border: 1px solid #000; text-align: left; padding: 4px;">GRAND TOTAL</td>
-                            {{-- Sum Targets from $soi_combined --}}
-                            <td style="border: 1px solid #000;">{{ collect($soi_combined)->sum('trg_inq') }}</td>
-                            {{-- Sum Actuals from $soi_performance --}}
-                            <td style="border: 1px solid #000;">{{ collect($soi_performance)->sum('act_inq') }}</td>
-                            
-                            <td style="border: 1px solid #000;">{{ collect($soi_combined)->sum('trg_do') }}</td>
-                            <td style="border: 1px solid #000;">{{ collect($soi_performance)->sum('act_do') }}</td>
+                            <td style="border: 1px solid #000;">{{ $soi_performance_data->sum('trg_inq') }}</td>
+                            <td style="border: 1px solid #000;">{{ $soi_performance_data->sum('act_inq') }}</td>
+                            <td style="border: 1px solid #000;">{{ $soi_performance_data->sum('trg_do') }}</td>
+                            <td style="border: 1px solid #000;">{{ $soi_performance_data->sum('act_do') }}</td>
                         </tr>
                     </tfoot>
                 </table>

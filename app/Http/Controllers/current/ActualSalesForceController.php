@@ -58,7 +58,6 @@ class ActualSalesForceController extends Controller
     {
         $user = Auth::user();
 
-        // Keamanan: Cegah user edit data cabang lain via URL manual
         if ($user->role == 'BM' && $actualSalesforce->cabang != $user->cabang) {
             return redirect()->route('current.actual-salesforces.index')
                 ->with('error', 'Akses dilarang! Anda hanya bisa mengedit data cabang Anda.');
@@ -71,7 +70,6 @@ class ActualSalesForceController extends Controller
     {
         $user = Auth::user();
 
-        // Proteksi tambahan di sisi server
         if ($user->role == 'BM' && $actualSalesforce->cabang != $user->cabang) {
             return redirect()->route('current.actual-salesforces.index')->with('error', 'Akses ditolak.');
         }
@@ -95,7 +93,6 @@ class ActualSalesForceController extends Controller
     {
         $user = Auth::user();
 
-        // Keamanan: Hanya boleh hapus data milik sendiri
         if ($user->role == 'BM' && $actualSalesforce->cabang != $user->cabang) {
             return redirect()->route('current.actual-salesforces.index')
                 ->with('error', 'Waduh, tidak boleh hapus data cabang lain!');

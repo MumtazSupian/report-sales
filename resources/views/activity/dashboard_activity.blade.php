@@ -25,14 +25,14 @@
 
             <div class="activity-card">
                 <div class="icon-box">📅</div>
-                <h3>Marketing Plan</h3>
+                <h3>Activity Plan</h3>
                 <p>Susun rencana kegiatan, tentukan target (P, HP, SPK), dan estimasi budget mingguan/bulanan.</p>
                 <a href="{{ route('activity.plan.index') }}" class="activity-btn">Kelola Data</a>
             </div>
 
             <div class="activity-card">
                 <div class="icon-box">📊</div>
-                <h3>Marketing Actual</h3>
+                <h3>Activity Actual</h3>
                 <p>Input realisasi hasil kegiatan di lapangan dan pantau efektivitas biaya (Cost/P & Cost/SPK).</p>
                 <a href="{{ route('activity.actual.index') }}" class="activity-btn">Kelola Data</a>
             </div>

@@ -83,7 +83,6 @@ class ActualDoByTypeController extends Controller
     {
         $user = Auth::user();
 
-        // Proteksi agar user cabang lain tidak bisa edit lewat URL
         if ($user->role == 'BM' && $actualDoByType->cabang != $user->cabang) {
             return redirect()->route('current.actual-do-by-type.index')->with('error', 'Akses dilarang!');
         }
@@ -123,7 +122,6 @@ class ActualDoByTypeController extends Controller
     {
         $user = Auth::user();
 
-        // Proteksi hapus data
         if ($user->role == 'BM' && $actualDoByType->cabang != $user->cabang) {
             return redirect()->route('current.actual-do-by-type.index')
                              ->with('error', 'Waduh, mau hapus punya siapa? Gak boleh ya!');

@@ -83,8 +83,6 @@ class ActualSpkByTypeController extends Controller
     public function edit(ActualSpkByType $actualSpkByType)
     {
         $user = Auth::user();
-
-        // Keamanan: Cegah user edit data cabang lain via URL manual
         if ($user->role == 'BM' && $actualSpkByType->cabang != $user->cabang) {
             return redirect()->route('current.actual-spk-by-type.index')
                 ->with('error', 'Akses dilarang! Ini bukan data cabang Anda.');
@@ -100,7 +98,6 @@ class ActualSpkByTypeController extends Controller
     {
         $user = Auth::user();
 
-        // Proteksi sisi server
         if ($user->role == 'BM' && $actualSpkByType->cabang != $user->cabang) {
             return redirect()->route('current.actual-spk-by-type.index')->with('error', 'Akses ditolak.');
         }
@@ -133,7 +130,6 @@ class ActualSpkByTypeController extends Controller
     {
         $user = Auth::user();
 
-        // Keamanan: Hanya boleh hapus data milik cabang sendiri
         if ($user->role == 'BM' && $actualSpkByType->cabang != $user->cabang) {
             return redirect()->route('current.actual-spk-by-type.index')
                 ->with('error', 'Waduh, mau hapus data cabang lain? Tidak bisa!');

@@ -38,7 +38,6 @@ class DashboardController extends Controller
         $bulan = $request->get('filter_bulan', $bulanDefault);
 
         // 2. DEFINE MASTER LIST MOBIL (Sesuai ENUM Paman)
-        // Kita pakai ini sebagai patokan utama agar semua mobil muncul
         $listMobil = [
             'NEW CARRY',
             'APV BLIND VAN',
@@ -54,15 +53,13 @@ class DashboardController extends Controller
             'BALENO',
         ];
 
-        $performance = []; // Array penampung hasil akhir
+        $performance = []; 
 
         foreach ($listMobil as $namaMobil) {
             // A. Standarisasi Nama untuk Pencarian Database (Huruf kecil & trim)
             $searchName = strtolower(trim($namaMobil));
 
             // B. AMBIL DATA TARGET (RKA)
-            // Kita cari di tabel target apakah mobil ini ada targetnya?
-            // Mapping Legacy Names to New Type Units
             $typeMapping = [
                 'new carry'     => ['NEW CARRY'],
                 'apv blind van' => ['APV BLIND VAN'],
@@ -79,7 +76,7 @@ class DashboardController extends Controller
                 'fronx'         => ['FRONX']
             ];
 
-            $targetTypes = $typeMapping[$searchName] ?? [$searchName]; // Fallback to name if not in map
+            $targetTypes = $typeMapping[$searchName] ?? [$searchName];
 
             $qTarget = TargetDoUnit::whereIn('type_unit', $targetTypes);
             
@@ -96,7 +93,6 @@ class DashboardController extends Controller
             }
 
             // C. AMBIL DATA ACTUAL (DO, SPK, INQ)
-            // Kita cari di tabel actual
             $qActDo  = ActualDoByType::where('type_unit', $namaMobil)->where('tahun', $tahunSekarang);
             $qActSpk = ActualSpkByType::where('type_unit', $namaMobil)->where('tahun', $tahunSekarang);
             $qActInq = ActualInquaryByType::where('type_unit', $namaMobil)->where('tahun', $tahunSekarang);
@@ -112,9 +108,8 @@ class DashboardController extends Controller
             $dInq = $qActInq->first();
 
             // D. BENTUK DATA BARIS (OBJECT BARU)
-            // Kita buat object manual agar struktur datanya rapih
             $row = new \stdClass();
-            $row->mobil_type = $namaMobil; // Pakai nama dari List Master (Biar rapih huruf besar semua)
+            $row->mobil_type = $namaMobil;
             
             // Masukkan Nilai Target Bulan Berjalan (Kalau data target gak ada, anggap 0)
             $row->$bulan = $dTarget ? $dTarget->$bulan : 0; 
@@ -129,7 +124,7 @@ class DashboardController extends Controller
             $ytdActDo  = 0;
             
             foreach ($bulanMap as $m) {
-                // Simpan data target per bulan ke row object (untuk keperluan view detail jika ada)
+                // Simpan data target per bulan ke row object 
                 $row->$m = $dTarget ? ($dTarget->$m ?? 0) : 0;
 
                 // Hitung akumulasi
@@ -152,7 +147,7 @@ class DashboardController extends Controller
             $performance[] = $row;
         }
 
-        // 3. LOGIKA LEASING (Sama seperti sebelumnya)
+        // 3. LOGIKA LEASING
         $leasingList = ['Suzuki Finance', 'BCA Finance', 'KKB BCA', 'Mandiri Tunas Finance', 'KKB MANDIRI', 'BSI', 'Mandiri Utama Finance', 'Indomobil Finance', 'Adira Finance', 'BNI Finance', 'MAYBANK', 'Oto Multiartha Finance', 'NIAGA Finance', 'Clipan Finance', 'Lain - Lain'];
         $leasing_performance = [];
         
@@ -188,52 +183,52 @@ class DashboardController extends Controller
             ];
         }
 
-        // 4. SOI
-        $all_sources = TargetInquiry::pluck('source_inquiry')->merge(TargetDoBySoi::pluck('source_inquiry'))->unique();
-        $soi_combined = [];
-        foreach ($all_sources as $source) {
-            $qi = TargetInquiry::where('source_inquiry', $source);
-            $qd = TargetDoBySoi::where('source_inquiry', $source);
-            if ($user->role !== 'admin') {
-                $qi->where('cabang', $user->cabang);
-                $qd->where('cabang', $user->cabang);
-            }
-            $di = $qi->first(); $dd = $qd->first();
-            $soi_combined[] = (object)[
-                'source_inquiry' => $source, 
-                'trg_inq' => $di ? intval($di->$bulan) : 0, 
-                'trg_do' => $dd ? intval($dd->$bulan) : 0
-            ];
-        }
-
-        // 5. PERFORMANCE SOI (ACTUAL)
-        $actInqQuery = ActualSourceInquary::where('tahun', $tahunSekarang);
-        $actDoQuery = ActualSourceDoInquary::where('tahun', $tahunSekarang);
+        // 4. PERFORMANCE SOI (DYNAMIC)
+        $targetInqQuery = TargetInquiry::query();
+        $targetDoSoiQuery = TargetDoBySoi::query();
+        $actualInqQuery = ActualSourceInquary::where('tahun', $tahunSekarang);
+        $actualDoSoiQuery = ActualSourceDoInquary::where('tahun', $tahunSekarang);
 
         if ($user->role !== 'admin') {
-            $actInqQuery->where('cabang', $user->cabang);
-            $actDoQuery->where('cabang', $user->cabang);
+            $targetInqQuery->where('cabang', $user->cabang);
+            $targetDoSoiQuery->where('cabang', $user->cabang);
+            $actualInqQuery->where('cabang', $user->cabang);
+            $actualDoSoiQuery->where('cabang', $user->cabang);
         }
 
-        // Get Data & Group By Source
-        $actInqData = $actInqQuery->get()->groupBy('source_inquary')->map(function ($rows) use ($bulan) {
-            return $rows->sum($bulan);
-        });
+        // Fetch all data
+        $tInqData = $targetInqQuery->get();
+        $tDoData = $targetDoSoiQuery->get();
+        $aInqData = $actualInqQuery->get();
+        $aDoData = $actualDoSoiQuery->get();
 
-        $actDoData = $actDoQuery->get()->groupBy('source_inquary')->map(function ($rows) use ($bulan) {
-            return $rows->sum($bulan);
-        });
+        // Collect all unique sources from ALL 4 tables
+        $all_sources = collect()
+            ->merge($tInqData->pluck('source_inquiry'))
+            ->merge($tDoData->pluck('source_inquiry'))
+            ->merge($aInqData->pluck('source_inquary'))
+            ->merge($aDoData->pluck('source_inquary'))
+            ->unique()
+            ->filter()
+            ->values();
 
-        // Merge Unique Sources
-        $allActualSources = $actInqData->keys()->merge($actDoData->keys())->unique();
-        
-        $soi_performance = [];
-        foreach ($allActualSources as $source) {
-            $soi_performance[] = (object)[
-                'source_name' => $source,
-                'act_inq'     => $actInqData->get($source, 0),
-                'act_do'      => $actDoData->get($source, 0),
-            ];
+        $soi_performance_data = [];
+        foreach ($all_sources as $source) {
+            $trg_inq = $tInqData->where('source_inquiry', $source)->sum($bulan);
+            $trg_do  = $tDoData->where('source_inquiry', $source)->sum($bulan);
+            $act_inq = $aInqData->where('source_inquary', $source)->sum($bulan);
+            $act_do  = $aDoData->where('source_inquary', $source)->sum($bulan);
+
+            // Only add if there's any data for this source (to avoid empty rows if filter results in all 0)
+            if ($trg_inq > 0 || $trg_do > 0 || $act_inq > 0 || $act_do > 0) {
+                $soi_performance_data[] = (object)[
+                    'source_name' => $source,
+                    'trg_inq'     => $trg_inq,
+                    'act_inq'     => $act_inq,
+                    'trg_do'      => $trg_do,
+                    'act_do'      => $act_do,
+                ];
+            }
         }
 
         // 6. SALES FORCE PERFORMANCE
@@ -256,11 +251,6 @@ class DashboardController extends Controller
             return $rows->sum($bulan);
         });
 
-        // Merge Targets and Actuals
-        // We use Targets as the base because standard gradings should come from there.
-        // If there are extra gradings in Actuals that are not in Targets, we might miss them if we strictly loop Targets.
-        // So let's collect all unique gradings first.
-        
         $allGradings = $sfTargets->pluck('grading')
             ->merge($actSfData->keys())
             ->merge($actDoSfData->keys())
@@ -268,7 +258,6 @@ class DashboardController extends Controller
 
         $salesforce_performance = [];
         foreach ($allGradings as $grading) {
-            // Find target for this grading (if any)
             $targetRow = $sfTargets->firstWhere('grading', $grading);
             
             $salesforce_performance[] = (object)[
@@ -276,18 +265,16 @@ class DashboardController extends Controller
                 'trg_sf'  => $targetRow ? ($targetRow->$bulan ?? 0) : 0,
                 'act_sf'  => $actSfData->get($grading, 0),
                 'act_do'  => $actDoSfData->get($grading, 0),
-                // Add other target fields if needed later
             ];
         }
 
         return view('dashboard', [
-            'performance'   => collect($performance), // Sekarang isinya array object lengkap
-            'salesforce'    => collect($salesforce_performance), // Updated to use merged collection
-            'soi_combined'  => $soi_combined,
-            'soi_performance' => $soi_performance,
-            'leasing_performance' => $leasing_performance,
-            'bulan'         => $bulan,
-            'bulan_list'    => $bulanMap
+            'performance'          => collect($performance),
+            'salesforce'           => collect($salesforce_performance),
+            'soi_performance_data' => collect($soi_performance_data),
+            'leasing_performance'  => $leasing_performance,
+            'bulan'                => $bulan,
+            'bulan_list'           => $bulanMap
         ]);
     }
 }
