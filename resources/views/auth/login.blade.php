@@ -43,14 +43,14 @@
                     <select name="cabang" required
                         style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 10px; background: #f8fafc; font-size: 15px; outline: none; cursor: pointer; color: #1e293b;">
                         <option value="" disabled selected>Pilih Cabang</option>
-                        <option value="Cianjur" {{ old('cabang') == 'Cianjur' ? 'selected' : '' }}>Cianjur</option>
+                        <option value="Cianjur" {{ old('cabang') == 'Cianjur' ? 'selected' : '' }}>CIANJUR</option>
                         <option value="Ciawi" {{ old('cabang') == 'Ciawi' ? 'selected' : '' }}>CIAWI</option>
                         <option value="Cinere" {{ old('cabang') == 'Cinere' ? 'selected' : '' }}>CINERE</option>
                         <option value="Cipanas" {{ old('cabang') == 'Cipanas' ? 'selected' : '' }}>CIPANAS</option>
                         <option value="Jatiasih" {{ old('cabang') == 'Jatiasih' ? 'selected' : '' }}>JATIASIH</option>
                         <option value="HO" {{ old('cabang') == 'HO' ? 'selected' : '' }}>HO</option>
                     </select>
-                </div>
+                </div> 
 
                 <div>
                     <label
