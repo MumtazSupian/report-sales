@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User; // Pastikan model User di-import
+use App\Models\User;
+use App\Http\Controllers\Controller;
 
 class LoginController extends Controller
 {
@@ -15,36 +16,48 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        // 1. Validasi input awal
-        $credentials = $request->validate([
-            'name' => 'required',
+        $request->validate([
+            'username' => 'required',
             'password' => 'required',
-            'cabang' => 'required', // Tambahkan validasi cabang wajib diisi
+            'cabang'   => 'required',
+            'role'     => 'required',
         ]);
 
-        // 2. Cek apakah User dengan nama tersebut ada dan apakah cabangnya sesuai
-        $user = User::where('name', $request->name)->first();
+        $user = User::where('name', $request->username)->first();
 
         if ($user) {
+            // Cek Cabang
             if ($user->cabang !== $request->cabang) {
-                // Jika user ada tapi cabang salah, kirim alert error khusus
-                return back()->withErrors([
-                    'name' => "Maaf, akun {$request->name} tidak terdaftar untuk cabang {$request->cabang}!"
-                ])->withInput();
+                return back()->withErrors(['username' => "Akun tidak terdaftar untuk cabang {$request->cabang}!"])->withInput();
+            }
+
+            // Cek Role
+            // Khusus untuk OM, kita izinkan jika user di DB punya role 'OM' atau 'Admin'
+            if ($request->role === 'OM') {
+                if (!in_array($user->role, ['OM', 'Admin'])) {
+                    return back()->withErrors(['username' => "Akses ditolak! Anda bukan OM/Admin."])->withInput();
+                }
+            } else {
+                // Untuk BM dan SH harus tepat sama
+                if ($user->role !== $request->role) {
+                    return back()->withErrors(['username' => "Akses ditolak! Role Anda bukan {$request->role}."])->withInput();
+                }
             }
         }
 
-    
-        if (Auth::attempt($request->only('name', 'password'))) {
+        if (Auth::attempt(['name' => $request->username, 'password' => $request->password])) {
             $request->session()->regenerate();
             return redirect()->route('dashboard');
         }
-        return back()->withErrors(['name' => 'Nama atau Password salah!'])->withInput();
+
+        return back()->withErrors(['username' => 'Username atau Password salah!'])->withInput();
     }
 
     public function logout(Request $request)
     {
         Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
         return redirect('/');
     }
 }

@@ -6,6 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\leasing\AktualAplikasiIn;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\AktualAplikasiInExport;
+
 
 class AktualAplikasiInController extends Controller
 {
@@ -34,7 +38,7 @@ class AktualAplikasiInController extends Controller
     public function store(Request $request)
     {
         $user = Auth::user();
-        
+
         if ($user->role !== 'BM') {
             return redirect()->route('leasing.aktual-aplikasi-in.index')->with('error', 'Hanya BM yang bisa menambah data.');
         }
@@ -61,7 +65,7 @@ class AktualAplikasiInController extends Controller
             'nov'     => $request->nov,
             'des'     => $request->des,
             'total'   => $total,
-            'cabang'  => $user->cabang, 
+            'cabang'  => $user->cabang,
         ]);
 
         return redirect()->route('leasing.aktual-aplikasi-in.index')->with('success', 'Data Aktual Aplikasi In berhasil disimpan');
@@ -130,5 +134,29 @@ class AktualAplikasiInController extends Controller
 
         return redirect()->route('leasing.aktual-aplikasi-in.index')
             ->with('success', 'Data berhasil dihapus');
+    }
+
+    public function exportPdf()
+    {
+        $user = Auth::user();
+        $pusatRoles = ['Admin', 'OM', 'Admin DCA', 'OM DCA'];
+
+        // Ambil data sesuai akses
+        if (in_array($user->role, $pusatRoles)) {
+            $data = AktualAplikasiIn::all();
+        } else {
+            $data = AktualAplikasiIn::where('cabang', $user->cabang)->get();
+        }
+
+        // Load view khusus PDF dan download
+        $pdf = Pdf::loadView('leasing.aktual_aplikasi_in.pdf', compact('data'))
+            ->setPaper('a4', 'landscape'); // Set landscape karena kolomnya banyak (Jan-Des)
+
+        return $pdf->download('Laporan-Aktual-Aplikasi.pdf');
+    }
+
+    public function exportExcel()
+    {
+        return Excel::download(new AktualAplikasiInExport, 'Aktual-Aplikasi-In.xlsx');
     }
 }

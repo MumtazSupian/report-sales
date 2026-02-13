@@ -8,8 +8,7 @@
         <div style="margin-bottom: 30px;">
             <h2 style="font-weight: 800; text-transform: uppercase; letter-spacing: 1px; text-align: center; padding: 10px;">
                 DASHBOARD PERFORMANCE</h2>
-        </div>
-
+            </div>
         {{-- 1. TABLE SALES PERFORMANCE --}}
         <div style="background: white; border-radius: 8px; padding: 15px; margin-bottom: 25px; overflow-x: auto;">
             {{-- Judul otomatis berubah sesuai bulan dari Controller --}}
@@ -128,29 +127,6 @@
                 </table>
             </div>
 
-    <div class="welcome-card">
-        <div class="welcome-header">
-            <div class="welcome-icon">🏢</div>
-            <h3>Dashboard Utama Suzuki</h3>
-        </div>
-        <p>
-            Selamat datang di Sistem Manajemen Dealer Suzuki. Platform terpadu untuk mengelola seluruh aspek operasional dealer.
-            Klik menu <b>RKA</b> untuk masuk ke modul Rencana Kerja & Anggaran.
-        </p>
-
-        <div class="quick-actions">
-            <h3>Quick Actions</h3>
-            <div class="actions-grid">
-                <a href="{{ url('rka/dashboard') }}" class="action-btn">
-                    <span class="action-btn-icon">📊</span> <span>Open RKA Module</span>
-                </a>
-                <a href="{{ url('activity/dashboard') }}" class="action-btn">
-                    <span class="action-btn-icon">📅</span> <span>Activity Plan</span>
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
             {{-- 3. TABLE SALES FORCE PERFORMANCE --}}
             <div style="background: white; border-radius: 8px; padding: 15px; overflow-x: auto;">
                 <h4 style="color: #0d47a1; margin-bottom: 10px; font-weight: bold;">👥 SALES FORCE PERFORMANCE ({{ strtoupper($bulan) }})</h4>

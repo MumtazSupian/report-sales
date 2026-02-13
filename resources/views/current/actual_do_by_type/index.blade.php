@@ -10,7 +10,6 @@
         </h2>
         <p style="text-align:center; color: #8fb3d9; margin-bottom:20px;">Monitoring data aktual Delivery Order berdasarkan
             tipe mobil</p>
-
         <div
             style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin:0 auto 15px auto; width:98%;">
             <div style="display:flex; gap:10px; align-items:center;">

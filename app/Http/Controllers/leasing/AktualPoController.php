@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\leasing\AktualPo;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\AktualPoExport;
 
 class AktualPoController extends Controller
 {
@@ -34,7 +37,7 @@ class AktualPoController extends Controller
     public function store(Request $request)
     {
         $user = Auth::user();
-        
+
         if ($user->role !== 'BM') {
             return redirect()->route('leasing.aktual-po.index')->with('error', 'Hanya BM yang dapat menambah data.');
         }
@@ -61,7 +64,7 @@ class AktualPoController extends Controller
             'nov'     => $request->nov,
             'des'     => $request->des,
             'total'   => $total,
-            'cabang'  => $user->cabang, 
+            'cabang'  => $user->cabang,
         ]);
 
         return redirect()->route('leasing.aktual-po.index')->with('success', 'Data Aktual PO berhasil disimpan');
@@ -129,5 +132,25 @@ class AktualPoController extends Controller
 
         return redirect()->route('leasing.aktual-po.index')
             ->with('success', 'Data PO berhasil dihapus');
+    }
+
+    public function exportExcel()
+    {
+        return Excel::download(new AktualPoExport, 'Aktual-PO.xlsx');
+    }
+
+    public function exportPdf()
+    {
+        $user = Auth::user();
+        if (in_array($user->role, ['Admin', 'OM', 'Admin DCA', 'OM DCA'])) {
+            $data = AktualPo::all();
+        } else {
+            $data = AktualPo::where('cabang', $user->cabang)->get();
+        }
+
+        $pdf = Pdf::loadView('leasing.aktual_po.pdf', compact('data'))
+            ->setPaper('a4', 'landscape');
+
+        return $pdf->download('Laporan-Aktual-PO.pdf');
     }
 }
