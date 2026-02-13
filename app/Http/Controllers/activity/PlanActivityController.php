@@ -6,6 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Activity\PlanActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
+// use App\Exports\PlanActivityExport;
+
 
 class PlanActivityController extends Controller
 {
@@ -82,5 +86,20 @@ class PlanActivityController extends Controller
 
         $activity->delete();
         return redirect()->route('activity.plan.index')->with('success', 'Data Plan berhasil dihapus');
+    }
+   public function exportPdf()
+{
+    $user = Auth::user();
+    $data = in_array($user->role, ['Admin', 'OM', 'Admin DCA', 'OM DCA'])
+            ? PlanActivity::all()
+            : PlanActivity::where('cabang', $user->cabang)->get();
+    $pdf = Pdf::loadView('activity.plan.pdf', compact('data'))
+              ->setPaper('a4', 'landscape');
+
+    return $pdf->download('Laporan-Plan-Activity.pdf');
+}
+    public function exportExcel()
+    {
+        return Excel::download(new \App\Exports\PlanActivityExport, 'Plan-Activity.xlsx');
     }
 }

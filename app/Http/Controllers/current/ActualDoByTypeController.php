@@ -32,7 +32,7 @@ class ActualDoByTypeController extends Controller
         $year = now()->year;
         $commercial_units = ['NEW CARRY'];
         $passenger_units = ['APV BLIND VAN', 'ERTIGA', 'XL7', 'SPRESO', 'BALENO', 'IGNIS', 'e-VITARA', 'GRAND VITARA', 'JIMNY 3D', 'JIMNY 5D', 'FRONX'];
-        
+
         return view('current.actual_do_by_type.create', compact('year', 'commercial_units', 'passenger_units'));
     }
 
@@ -45,7 +45,7 @@ class ActualDoByTypeController extends Controller
         if ($request->has('targets') && is_array($request->targets)) {
             foreach ($months as $month) {
                 if (!isset($request->targets[$month])) continue;
-                
+
                 foreach ($categories as $category) {
                     if (!isset($request->targets[$month][$category])) continue;
 
@@ -96,7 +96,7 @@ class ActualDoByTypeController extends Controller
     public function update(Request $request, ActualDoByType $actualDoByType)
     {
         $months = ['jan', 'feb', 'mar', 'apr', 'mei', 'jun', 'jul', 'agu', 'sep', 'okt', 'nov', 'des'];
-        
+
         $total = 0;
         foreach ($months as $m) {
             $total += $request->$m;

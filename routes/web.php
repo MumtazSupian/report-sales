@@ -68,6 +68,12 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/dashboard', function () {
             return view('activity.dashboard_activity');
         });
+        Route::get('plan/export-excel', [PlanActivityController::class, 'exportExcel'])->name('plan.excel');
+        Route::get('plan/export-pdf', [PlanActivityController::class, 'exportPdf'])->name('plan.pdf');
+        
+        Route::get('actual/export-excel', [ActualActivityController::class, 'exportExcel'])->name('actual.excel');
+        Route::get('actual/export-pdf', [ActualActivityController::class, 'exportPdf'])->name('actual.pdf');
+
         Route::resource('plan', PlanActivityController::class);
         Route::resource('actual', ActualActivityController::class);
     });

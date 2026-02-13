@@ -17,15 +17,12 @@ class AktualAplikasiInExport implements FromCollection, WithHeadings, WithMappin
         $user = Auth::user();
         $pusatRoles = ['Admin', 'OM', 'Admin DCA', 'OM DCA'];
 
-        // Mengambil data sesuai hak akses user (Sama dengan logika di Controller)
         if (in_array($user->role, $pusatRoles)) {
             return AktualAplikasiIn::all();
         } else {
             return AktualAplikasiIn::where('cabang', $user->cabang)->get();
         }
     }
-
-    // Judul Kolom di Excel
     public function headings(): array
     {
         return [
@@ -35,8 +32,6 @@ class AktualAplikasiInExport implements FromCollection, WithHeadings, WithMappin
             'TOTAL'
         ];
     }
-
-    // Mapping data ke kolom yang sesuai
     public function map($row): array
     {
         return [
@@ -49,7 +44,6 @@ class AktualAplikasiInExport implements FromCollection, WithHeadings, WithMappin
         ];
     }
 
-    // Styling agar Header Excel Tebal (Bold)
     public function styles(Worksheet $sheet)
     {
         return [

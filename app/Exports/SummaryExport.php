@@ -2,7 +2,6 @@
 
 namespace App\Exports;
 
-// UBAH BAGIAN INI: Sesuaikan dengan lokasi model di controller Anda
 use App\Models\summary\Summary;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;

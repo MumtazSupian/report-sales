@@ -14,8 +14,7 @@ class ActualInquaryByTypeController extends Controller
         $year = now()->year;
         $user = Auth::user();
         $pusatRoles = ['Admin', 'OM', 'Admin DCA', 'OM DCA'];
-
-        // Logika Filter Data
+        // Logika Filter Data berdasarkan role dan cabang
         if (in_array($user->role, $pusatRoles)) {
             $data = ActualInquaryByType::all();
         } else {

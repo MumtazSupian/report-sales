@@ -87,8 +87,6 @@ class ActualDoSalesForceController extends Controller
     public function destroy(ActualDoSalesforce $actualDoSalesforce)
     {
         $user = Auth::user();
-        
-        // Keamanan: Cegah user hapus data milik cabang lain
         if ($user->role == 'BM' && $actualDoSalesforce->cabang != $user->cabang) {
             return redirect()->route('current.actual-do-salesforces.index')
                              ->with('error', 'Waduh, tidak bisa hapus data cabang lain!');

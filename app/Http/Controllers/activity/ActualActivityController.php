@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Activity;
 
 use App\Http\Controllers\Controller;
-use App\Models\Activity\ActualActivity; 
+use App\Models\Activity\ActualActivity;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth; 
+use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ActualActivityExport;
 
 class ActualActivityController extends Controller
 {
@@ -30,7 +33,7 @@ class ActualActivityController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        $data['cabang'] = Auth::user()->cabang; 
+        $data['cabang'] = Auth::user()->cabang;
 
         $total = $request->total_cost ?? 0;
 
@@ -45,7 +48,7 @@ class ActualActivityController extends Controller
     public function edit($id)
     {
         $activity = ActualActivity::findOrFail($id);
-        
+
         if (!in_array(Auth::user()->role, ['Admin', 'OM']) && $activity->cabang !== Auth::user()->cabang) {
             abort(403, 'tidak punya akses ke data cabang lain!');
         }
@@ -56,14 +59,14 @@ class ActualActivityController extends Controller
     public function update(Request $request, $id)
     {
         $activity = ActualActivity::findOrFail($id);
-        
+
         if (!in_array(Auth::user()->role, ['Admin', 'OM']) && $activity->cabang !== Auth::user()->cabang) {
             abort(403);
         }
 
         $data = $request->all();
         $total = $request->total_cost ?? 0;
-        
+
         $data['cost_p'] = ($request->actual_p > 0) ? $total / $request->actual_p : 0;
         $data['cost_spk'] = ($request->actual_spk > 0) ? $total / $request->actual_spk : 0;
         $data['cost_do'] = ($request->actual_do > 0) ? $total / $request->actual_do : 0;
@@ -75,7 +78,7 @@ class ActualActivityController extends Controller
     public function destroy($id)
     {
         $activity = ActualActivity::findOrFail($id);
-        
+
         if (!in_array(Auth::user()->role, ['Admin', 'OM']) && $activity->cabang !== Auth::user()->cabang) {
             abort(403);
         }
@@ -83,4 +86,22 @@ class ActualActivityController extends Controller
         $activity->delete();
         return redirect()->route('activity.actual.index')->with('success', 'Data Actual berhasil dihapus');
     }
+    public function exportExcel()
+{
+    return Excel::download(new ActualActivityExport, 'Actual-Activity.xlsx');
+}
+
+public function exportPdf()
+{
+    $user = Auth::user();
+    $data = in_array($user->role, ['Admin', 'OM', 'Admin DCA', 'OM DCA'])
+            ? ActualActivity::all()
+            : ActualActivity::where('cabang', $user->cabang)->get();
+
+    $pdf = Pdf::loadView('activity.actual.pdf', compact('data'))
+              ->setPaper('a4', 'landscape');
+
+    return $pdf->download('Laporan-Actual-Activity.pdf');
+}
+
 }

@@ -16,6 +16,14 @@
                     style="padding: 8px 15px; background: rgba(255,255,255,0.1); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 12px; border: 1px solid rgba(255,255,255,0.1); transition: 0.3s;">
                     🔄 Refresh
                 </a>
+                <a href="{{ route('activity.actual.excel') }}"
+                    style="padding: 8px 15px; background: #276749; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 12px; border: 1px solid #2f855a; transition: 0.3s; margin-left: 5px;">
+                    📊 Excel
+                </a>
+                <a href="{{ route('activity.actual.pdf') }}"
+                    style="padding: 8px 15px; background: #e53e3e; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 12px; margin-left: 5px;">
+                    📄 PDF
+                </a>
             </div>
 
             <a href="{{ route('activity.actual.create') }}"
